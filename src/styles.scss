@@ -1,0 +1,89 @@
+@charset "utf-8";
+
+// Customization
+
+// You can easily customize Bulma with your own variables.
+// Just uncomment the following block to see the result.
+
+@import "../node_modules/bulma/sass/utilities/_all.sass";
+
+$widescreen-enabled: false;
+$fullhd-enabled: false;
+
+// Modal temp settings
+$modal-content-width: 800px;
+$modal-background-background-color: bulmaRgba($scheme-invert, 0.7);
+// $modal-background-background-color: rgba(255,255,255,0.8);
+
+// // 1. Import the initial variables
+// @import "../node_modules/bulma/sass/utilities/initial-variables"
+// // @import "../node_modules/bulma/sass/utilities/functions"
+// // @import "../node_modules/bulma/sass/utilities/_all.sass"
+// // @import "../node_modules/bulma/sass/elements/_all.sass"
+// @import "../node_modules/bulma/bulma.sass"
+// // @import "../node_modules/bulma/bulma"
+
+@import "../node_modules/bulma/bulma.sass";
+
+.modal-wide {
+    .modal-card {
+        // width: $modal-content-width;
+        @include desktop {
+            width: 1200px !important;
+        }
+    }
+}
+
+.container.is-narrow {
+    width: $desktop !important;
+}
+
+.is-ok {
+    color: transparent !important;
+    animation-name: save-background;
+    animation-duration: 1.5s;
+}
+
+.is-ok:after {
+    color: $info;
+    font-family: "Font Awesome 5 Free";
+    content: "";
+    position: absolute;
+    font-weight: 100;
+    animation-name: save-text;
+    animation-duration: 1.5s;
+}
+
+.is-ok:hover:after {
+    color: $button-text-hover-color;
+}
+
+.is-ok.is-outlined:after {
+    color: $info;
+}
+
+.is-ok.is-outlined:hover:after {
+    color: white;
+}
+
+@keyframes save-background {
+    5% {
+        bacgkround-color: green;
+    }
+    90% {
+        background-color: $success;
+    }
+}
+
+@keyframes save-text {
+    10% {
+        color: findColorInvert($info);
+    }
+    30% {
+        content: "\f164";
+    }
+    100% {
+        color: findColorInvert($info);
+        content: "\f164";
+    }
+}

@@ -1,0 +1,108 @@
+<nav class="navbar" role="navigation" aria-label="main navigation" (document:keydown.alt.n)="shortcutNewTransaction();">
+    <div class="container" [class.is-fluid]="is_full">
+        <div class="navbar-brand">
+            <a class="navbar-item" routerLink='/'>
+                <img src="favicon.ico">
+                <strong>Gardenzilla</strong>
+                <!-- <strong>Gardenzilla</strong> -->
+            </a>
+            <a class="navbar-item is-hidden-desktop" [routerLink]="['/repository', repository_id, 'transaction', 'new']"
+                *ngIf="repository_id">
+                <span class="icon">
+                    <i class="fas fa-plus"></i>
+                </span>
+            </a>
+            <a class="navbar-item is-hidden-desktop" routerLink="/pos">
+                <span class="tag is-warning">POS</span>
+            </a>
+            <a role="button" class="navbar-burger burger" [ngClass]="{'is-active': isActive}" aria-label="menu"
+                aria-expanded="false" data-target="navbarBasicExample" (click)="isActive = isActive ? false : true">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div id="navbarBasicExample" class="navbar-menu" [ngClass]="{'is-active': isActive}">
+            <div class="navbar-start">
+                <a class="navbar-item is-hidden-mobile" routerLink="/pos">
+                    <span class="tag is-warning">POS</span>
+                </a>
+                <a class="navbar-item" routerLink="/product">
+                    Termékek
+                </a>
+                <a class="navbar-item" routerLink="/customer">
+                    Vásárlók
+                </a>
+                <a class="navbar-item" routerLink="/">
+                    ISSUE
+                </a>
+
+
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        Egyéb
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" routerLink="/stock">
+                            Raktárak
+                        </a>
+                        <a class="navbar-item" routerLink="/">
+                            Számlák
+                        </a>
+                        <a class="navbar-item" routerLink="/">
+                            Eladások
+                        </a>
+                        <a class="navbar-item" routerLink="/user">
+                            Felhasználók
+                        </a>
+                        <a class="navbar-item" routerLink="/">
+                            Bevételezés
+                        </a>
+                        <a class="navbar-item" routerLink="/">
+                            Beszerzési források
+                        </a>
+                        <a class="navbar-item" routerLink="/">
+                            Kosarak
+                        </a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item">
+                            Report an issue
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="navbar-end">
+                <a class="navbar-item is-hidden-touch"
+                    [routerLink]="['/repository', repository_id, 'transaction', 'new']" *ngIf="repository_id">
+                    <span class="icon">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                </a>
+                <a class="navbar-item" routerLink="/">
+                    <div class="menu">
+                        <div class="pix"></div>
+                        <div class="pix"></div>
+                        <div class="pix"></div>
+                        <div class="pix"></div>
+                        <div class="pix"></div>
+                        <div class="pix"></div>
+                        <div class="pix"></div>
+                        <div class="pix"></div>
+                        <div class="pix"></div>
+                    </div>
+                </a>
+                <a class="navbar-item" routerLink='/profile'>{{username}}</a>
+                <div class="navbar-item">
+                    <a (click)="logout()" class="has-text-grey">
+                        <span class="icon">
+                            <i class="fas fa-power-off"></i>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

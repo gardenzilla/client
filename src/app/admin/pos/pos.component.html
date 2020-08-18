@@ -1,0 +1,590 @@
+<section class="section">
+    <div class="container is-fluid is-overlay">
+        <div class="columns">
+            <div class="column is-4">
+                <p class="title is-4 is-inline-block">Keresés</p>
+                <!-- <p class="subtitle is-inline-block ml-4">
+                    <a title="Haladó keresés">
+                        <span class="icon has-text-grey">
+                            <i class="fas fa-search-plus" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                </p> -->
+                <div class="field has-addons">
+                    <div class="control is-expanded has-icons-left">
+                        <input #searchInput type="text" class="input" placeholder="Keresés..." [(ngModel)]="search"
+                            (keyup)="checkSearchType()" (keydown.esc)="clearSearch()"
+                            (keydown.enter)="searchEnter($event)">
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-box fa-xs" *ngIf="!isSearchUser"></i>
+                            <i class="fas fa-user fa-xs" *ngIf="isSearchUser"></i>
+                        </span>
+                    </div>
+                    <div class="control">
+                        <a class="button">Keresés</a>
+                    </div>
+                </div>
+                <div class="message is-warning" *ngIf="isSearchUser">
+                    <div class="message-body"><a>Új vásárló létrehozása</a></div>
+                </div>
+                <table class="table is-fullwidth">
+                    <tbody>
+                        <ng-container *ngIf="!search">
+                            <tr>
+                                <td class="has-text-centered pt-6">
+                                    <span class="icon has-text-grey-lighter is-large">
+                                        <i class="fas fa-ellipsis-h fa-3x" aria-hidden="true"></i>
+                                    </span>
+                                    <p class="subtitle is-5 has-text-grey-lighter">(Keresés)</p>
+                                </td>
+                            </tr>
+                        </ng-container>
+                        <!-- Customer search demo -->
+                        <ng-container *ngIf="isSearchUser && search">
+                            <tr *ngFor="let customer of egCustomers.display()">
+                                <td>
+                                    <p class="title is-6">{{customer.name}}</p>
+                                    <p class="subtitle is-7">{{customer.address}}
+                                        <br>Adószám: {{customer.taxnumber}}
+                                    </p>
+                                </td>
+                                <td class="is-narrow"><button class="button is-small mt-3">Hozzáad</button></td>
+                            </tr>
+                        </ng-container>
+                        <!-- Product search demo -->
+                        <ng-container *ngIf="!isSearchUser && search">
+                            <tr *ngFor="let sku of egProducts.display()">
+                                <td>
+                                    <p class="title is-6">{{sku.name}}, {{sku.quantity}} {{sku.unit}}</p>
+                                    <p class="subtitle is-7">{{sku.net_retail_price | number}} HUF</p>
+                                </td>
+                                <td class="is-narrow has-text-centered">
+                                    <a (click)="uplDetails.open()">
+                                        <span class="icon has-text-danger is-small"
+                                            *ngIf="sku.stock_ok == 0 && sku.stock_global == 0">
+                                            <i class="fas fa-exclamation" aria-hidden="true"></i>
+                                        </span>
+                                        <span class="icon has-text-warning-dark is-small"
+                                            *ngIf="sku.stock_ok == 0 && sku.stock_global > 0">
+                                            <i class="far fa-hourglass" aria-hidden="true"></i>
+                                        </span>
+                                        <span class="icon has-text-grey is-small">
+                                            <i class="far fa-list-alt" aria-hidden="true"></i>
+                                        </span>
+                                    </a>
+                                    <p class="subtitle is-7">
+                                        <span>{{sku.stock_ok}}</span>
+                                        /
+                                        <span>{{sku.stock_injured}}</span> /
+                                        <span>{{sku.stock_global}}</span></p>
+                                </td>
+                                <td>
+                                    <button class="button is-small">Kosárba</button>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+                <pagernav [data]="egProducts" offline=true count=7 isCompact=true></pagernav>
+            </div>
+            <div class="column">
+                <div class="columns">
+                    <div class="column">
+                        <p class="title is-4 is-inline-block">Kosár</p>
+                        <p class="subtitle is-inline-block ml-4">
+                            <a title="Nyitott kosarak" (click)="displayCarts()">
+                                <span class="icon has-text-grey">
+                                    <span class="fa-stack">
+                                        <i class="fas fa-shopping-bag"></i>
+                                        <i class="fas fa-circle circle"></i>
+                                    </span>
+                                </span>
+
+                            </a>
+                        </p>
+                        <!-- <p class="subtitle is-inline-block ml-4">
+                            <a (click)="message('Önnek egy aktív kosara van')">
+                                <span class="icon has-text-grey">
+                                    <i class="far fa-list-alt" aria-hidden="true"></i>
+                                </span>
+                            </a>
+                        </p> -->
+                        <p class="subtitle is-inline-block ml-4">
+                            <a>
+                                <span class="icon has-text-grey">
+                                    <i class="fas fa-percentage" aria-hidden="true"></i>
+                                </span>
+                            </a>
+                        </p>
+                        <!-- <p class="subtitle is-inline-block ml-4">
+                            <a>
+                                <span class="icon has-text-grey">
+                                    <i class="fas fa-th" aria-hidden="true"></i>
+                                </span>
+                            </a>
+                        </p> -->
+                        <p class="subtitle is-inline-block ml-4">
+                            <a>
+                                <span class="icon has-text-grey">
+                                    <i class="fas fa-history" aria-hidden="true"></i>
+                                </span>
+                            </a>
+                        </p>
+                        <p class="subtitle is-inline-block ml-4">
+                            <a (click)="clearUpls()">
+                                <span class="icon has-text-grey">
+                                    <i class="fas fa-eraser" aria-hidden="true"></i>
+                                </span>
+                            </a>
+                        </p>
+                        <p class="subtitle is-inline-block ml-4">
+                            <a title="Új kosár" (click)="openNewCart()">
+                                <span class="icon has-text-grey">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                </span>
+                            </a>
+                        </p>
+                        <p class="subtitle is-inline-block is-pulled-right">
+                            <span class="mr-4 is-size-6 has-text-danger" *ngIf="isToggleOn">Termék
+                                eltávolítása</span>
+                            <a (click)="cartModeSwitch()" title="Termékek betétele, vagy eltávolítása">
+                                <span class="icon has-text-grey">
+                                    <i class="fas" [class.fa-toggle-off]="!isToggleOn"
+                                        [class.has-text-grey]="!isToggleOn" [class.fa-toggle-on]="isToggleOn"
+                                        [class.has-text-success]="isToggleOn" aria-hidden="true"></i>
+                                </span>
+                            </a>
+                        </p>
+                    </div>
+                    <div class="column is-3">
+
+                    </div>
+                </div>
+                <!-- <div class="tabs is-small">
+                    <ul>
+                        <li class="is-active"><a>Kosár 1</a></li>
+                        <li><a>Kosár 2</a></li>
+                        <li><a>Mezei Péter</a></li>
+                        <li><a>Kosár 4</a></li>
+                        <li class="has-text-centered">
+                            <a href="#">
+                                <span class="has-text-centered">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div> -->
+                <div class="columns">
+                    <div class="column">
+                        <table class="table is-fullwidth cart">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Név</th>
+                                    <th>Kiszerelés</th>
+                                    <th></th>
+                                    <th>Mennyiség</th>
+                                    <th>Ár</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="is-narrow"></td>
+                                    <td>
+                                        <!-- <i class="fas fa-caret-down" aria-hidden="true"></i> -->
+                                        Kerti lombsebprű
+                                    </td>
+                                    <td class="is-narrow">1 db</td>
+                                    <td class="is-narrow">
+                                        <a (click)="uplsPerSku.open()">
+                                            <span class="icon has-text-success">
+                                                <i class="fas fa-check-circle"></i>
+                                            </span>
+                                        </a>
+                                    </td>
+                                    <td class="is-narrow">
+                                        <a (click)="cartItemPieceSetter.open()">9/9</a>
+                                        <!-- <div class="field has-addons">
+                                            <div class="control">
+                                                <div class="button is-small">+</div>
+                                            </div>
+                                            <div class="control">
+                                                <div class="button is-small">-</div>
+                                            </div>
+                                        </div> -->
+                                    </td>
+                                    <td class="is-narrow">450.500 Ft</td>
+                                </tr>
+                                <tr class="has-background-warning-light">
+                                    <td class="is-narrow"></td>
+                                    <td>Yara Milla lombtrágya 20-4-4</td>
+                                    <td class="is-narrow">2 kg</td>
+                                    <td class="is-narrow">
+                                        <a (click)="demo()">
+                                            <span class="icon has-text-warning">
+                                                <i class="fas fa-exclamation-triangle"></i>
+                                            </span>
+                                        </a>
+                                    </td>
+                                    <td class="is-narrow">
+                                        3/1
+                                    </td>
+                                    <td class="is-narrow">3.500 Ft</td>
+                                </tr>
+                                <tr>
+                                    <td class="is-narrow"></td>
+                                    <td>UPL Benevia növényvédőszer krumplibogár ellen</td>
+                                    <td class="is-narrow">50 ml</td>
+                                    <td class="is-narrow">
+                                        <span class="icon has-text-success">
+                                            <i class="fas fa-check-circle"></i>
+                                        </span>
+                                    </td>
+                                    <td class="is-narrow">
+                                        1/1
+                                    </td>
+                                    <td class="is-narrow">3.500 Ft</td>
+                                </tr>
+                                <tr>
+                                    <td class="is-narrow"></td>
+                                    <td>Bordóilé neo SC 1 liter</td>
+                                    <td class="is-narrow">1 liter</td>
+                                    <td class="is-narrow">
+                                        <span class="icon has-text-success">
+                                            <i class="fas fa-check-circle"></i>
+                                        </span>
+                                    </td>
+                                    <td class="is-narrow">
+                                        1/1
+                                    </td>
+                                    <td class="is-narrow">3.900 Ft</td>
+                                </tr>
+                                <tr>
+                                    <td class="is-narrow">
+                                        <span class="icon has-text-success">
+                                            <i class="fas fa-cut egg"></i>
+                                        </span>
+                                    </td>
+                                    <td>Bordóilé neo SC 1 liter</td>
+                                    <td class="is-narrow">300 ml</td>
+                                    <td class="is-narrow">
+                                        <span class="icon has-text-success">
+                                            <i class="fas fa-check-circle"></i>
+                                        </span>
+                                    </td>
+                                    <td class="is-narrow">
+                                        1/1
+                                    </td>
+                                    <td class="is-narrow">1.750 Ft</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="column is-3 has-background-danger-light">
+                        <p class="title">127.000 Ft</p>
+                        <p class="subtitle is-spaced">100.000 Ft
+                            <span class="icon has-text-grey" (click)="message('A kosár nettó összege')">
+                                <i class="fas fa-info-circle"></i>
+                            </span>
+                        </p>
+                        <p class="title is-5">Vásárló</p>
+                        <p class="subtitle is-5 is-spaced">
+                            Mezei Péter
+                            <a title="Vásárló törlése">
+                                <span class="icon has-text-grey is-size-6">
+                                    <i class="fas fa-times" aria-hidden="true"></i>
+                                </span>
+                            </a>
+                        </p>
+                        <p class="title is-5">Kedvezmény</p>
+                        <p class="subtitle is-5 is-spaced">0%</p>
+                        <p class="title is-5">Számla</p>
+                        <p class="subtitle is-5 is-spaced">4522 Nyírtass, Bem út 23/B.</p>
+                        <p class="title is-5">Adószám</p>
+                        <p class="subtitle is-5 is-spaced">-</p>
+                        <div class="buttons are-medium">
+                            <button class="button is-success is-fullwidth">Lezárás</button>
+                            <button class="button is-danger is-fullwidth is-outlined">Törlés</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- <button (click)="demo1.open()">Demo1</button>
+<button (click)="demo2.open()">Demo2</button>
+<button (click)="demo3.open()">Demo3</button> -->
+
+<modal title="Nyitott kosaraim" #cartList>
+    <table class="table is-size-7">
+        <thead>
+            <tr>
+                <th>Vásárló</th>
+                <th>Darabszám</th>
+                <th>Termékek</th>
+                <th>Nyitás dátuma</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="is-narrow">-</td>
+                <td class="is-narrow">5</td>
+                <td>Teldor ampullás, Laudis, Gladiátor Forte</td>
+                <td class="is-narrow">2020-08-01 14:12:09</td>
+                <td class="">
+                    <div class="buttons">
+                        <button class="button is-small is-success is-outlined">Választ</button>
+                        <button class="button is-small">Törlés</button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="is-narrow">Mezei Péter</td>
+                <td class="is-narrow">5</td>
+                <td></td>
+                <td class="is-narrow">2020-08-01 14:12:09</td>
+                <td class="">
+                    <div class="buttons">
+                        <button class="button is-small is-success is-outlined">Választ</button>
+                        <button class="button is-small">Törlés</button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</modal>
+
+<modal #keyboardShortcuts [title]="'Billenytű parancsok listája'">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Billentyű neve</th>
+                <th>Parancs</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>F1</td>
+                <td>Keresés aktiválása</td>
+            </tr>
+            <tr>
+                <td>F2</td>
+                <td>Részletes keresés aktiválása</td>
+            </tr>
+            <tr>
+                <td>F3</td>
+                <td>Nyitott kosarak listája</td>
+            </tr>
+            <tr>
+                <td>F4</td>
+                <td>Új kosár</td>
+            </tr>
+            <tr>
+                <td>F5</td>
+                <td>Kosár lezárása; tovább a fizetéshez</td>
+            </tr>
+            <tr>
+                <td>F6</td>
+                <td>Kosár mód váltás. Termék betétel / kivétel</td>
+            </tr>
+            <tr>
+                <td>F9</td>
+                <td>Billentyű parancsok listája</td>
+            </tr>
+        </tbody>
+    </table>
+</modal>
+
+<modal #uplDetails [title]="'Raktári adatok'">
+    <div class="columns is-mobile">
+        <div class="column">
+            <p class="subtitle is-pulled-left is-text-5">Helyben
+                <span class="has-text-weight-bold">13 db</span>
+            </p>
+        </div>
+        <div class="column">
+            <div class="tabs is-centered is-toggle is-toggle-rounded is-small">
+                <ul>
+                    <li class="is-active">
+                        <a>
+                            <span>Helyi raktár (13)</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <span>Máshol (2)</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="column"></div>
+    </div>
+    <!-- <p class="title is-4">Bordóilé neo SC, 250 ml</p> -->
+    <!-- <div class="field has-addons">
+        <div class="control">
+            <input class="input" type="text" placeholder="UPL keresés">
+        </div>
+        <div class="control">
+            <a class="button is-info">
+                Keresés
+            </a>
+        </div>
+    </div> -->
+    <table class="table is-fullwidth mt-5">
+        <thead class="is-size-7">
+            <tr>
+                <th>#</th>
+                <th>UPL ID</th>
+                <th>Név</th>
+                <th>Kiszerelés</th>
+                <th>Szavatosság</th>
+                <th>Bontott</th>
+                <th>Bruttó ár</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="is-size-7">
+            <tr *ngFor="let item of [0,1,2,3,4,5,6,7,8,9,10,11,12]; index as i">
+                <td class="is-narrow">{{i+1}}</td>
+                <td class="is-narrow">
+                    <a>{{234234234 + i}}</a>
+                </td>
+                <td>Bordóilé neo SC, 250 ml</td>
+                <td class="is-narrow">250 ml</td>
+                <td class="is-narrow">2021-08-12</td>
+                <td class="is-narrow">
+                    <span class="icon has-text-grey" *ngIf="i % 2 != 0">
+                        <i class="fas fa-cut"></i>
+                    </span>
+                </td>
+                <td class="is-narrow">{{1750 | number}} HUF</td>
+                <td>
+                    <div class="buttons">
+                        <!-- <a title="Kosárba" class="button is-small">Kosárba</a> -->
+                        <a title="Megbont" class="button is-small" *ngIf="i % 2 != 0">Megbont</a>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <pagernav [data]="egCustomers" isSmall="true" offline="true"></pagernav>
+    <table class="table is-size-7">
+        <thead>
+            <tr>
+                <th>Raktár neve</th>
+                <th>Hibátlan</th>
+                <th>Bontott</th>
+                <th>Lejárt</th>
+                <th>Selejt</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of [0,1,2,3,4,5]; index as i" [class.has-background-primary]="i % 2 == 0">
+                <td>Nyírtass bolt - {{i}}</td>
+                <td>{{4 * (i % 3)}}</td>
+                <td>{{0}}</td>
+                <td>{{0}}</td>
+                <td>{{0}}</td>
+            </tr>
+        </tbody>
+    </table>
+</modal>
+
+<modal #uplsPerSku title="SKU részletek">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>UPL ID</th>
+                <th>Név</th>
+                <th>Kiszerelés</th>
+                <th>Szavatosság</th>
+                <th>Bruttó ár</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let upl of egUpls; index as i">
+                <td>{{i+1}}</td>
+                <td><a>{{upl.id + i}}</a></td>
+                <td>{{upl.sku_name}}, {{upl.quantity}} {{upl.unit}}</td>
+                <td>{{upl.quantity}} {{upl.unit}}</td>
+                <td>{{upl.best_before}}</td>
+                <td>{{upl.gross_retail_price | number}} HUF</td>
+                <td>
+                    <!-- <button class="button is-outlined is-danger is-small">Eltávolítás</button> -->
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</modal>
+
+<modal #cartItemPieceSetter [title]="'Darabszám'">
+    <p class="subtitle">Kerti lobseprű</p>
+    <div class="field has-addons">
+        <div class="control">
+            <input type="text" class="input" value="9">
+        </div>
+        <div class="control">
+            <button class="button">+</button>
+        </div>
+        <div class="control">
+            <button class="button">-</button>
+        </div>
+    </div>
+</modal>
+
+<modal #demo2 title="Demo2" [hasCancel]="true" [callbackSubmit]="['Létrehoz', demo]">
+    Hello Bello
+</modal>
+
+<modal #demo3 title="demo3">
+    <p class="title">Hello Bello</p>
+</modal>
+
+<modal #demo1 title="Demo TITLE">
+    <div class="columns">
+        <div class="column is-4">
+            <aside class="menu">
+                <p class="menu-label">
+                    General
+                </p>
+                <ul class="menu-list">
+                    <li><a>Dashboard</a></li>
+                    <li><a>Customers</a></li>
+                </ul>
+                <p class="menu-label">
+                    Administration
+                </p>
+                <ul class="menu-list">
+                    <li><a>Team Settings</a></li>
+                    <li><a>Team Settings 2</a></li>
+                </ul>
+            </aside>
+        </div>
+        <div class="column content">
+            <p class="title is-4">Hello bello</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore labore temporibus perferendis
+                eveniet, libero doloremque!</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore labore temporibus perferendis
+                eveniet, libero doloremque!</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore labore temporibus perferendis
+                eveniet, libero doloremque!</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore labore temporibus perferendis
+                eveniet, libero doloremque!</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore labore temporibus perferendis
+                eveniet, libero doloremque!</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore labore temporibus perferendis
+                eveniet, libero doloremque!</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore labore temporibus perferendis
+                eveniet, libero doloremque!</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore labore temporibus perferendis
+                eveniet, libero doloremque!</p>
+        </div>
+    </div>
+</modal>

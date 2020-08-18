@@ -1,0 +1,17 @@
+<div class="buttons has-addons is-centered" *ngIf="(data.pages().length > 1) && !offline" [class.are-small]="isSmall">
+    <a class="button" [routerLink]="['./']" [queryParams]="{page: data.previous_page()}" queryParamsHandling="merge"
+        *ngIf="!isCompact">Előző</a>
+    <ng-container *ngFor="let page of data.pages()">
+        <a class="button" [routerLink]="['./']" [queryParams]="{page: page}" queryParamsHandling="merge"
+            [class.is-info]="data.current_page == page">{{page}}</a>
+    </ng-container>
+    <a class="button" [routerLink]="['./']" [queryParams]="{page: data.next_page()}" queryParamsHandling="merge"
+        *ngIf="!isCompact">Következő</a>
+</div>
+<div class="buttons has-addons is-centered" *ngIf="(data.pages().length > 1) && offline" [class.are-small]="isSmall">
+    <a class="button" (click)="data.next()" *ngIf="!isCompact">Előző</a>
+    <ng-container *ngFor="let page of data.pages()">
+        <a class="button" (click)="data.navigate_to(page)" [class.is-info]="data.current_page == page">{{page}}</a>
+    </ng-container>
+    <a class="button" (click)="data.back()" *ngIf="!isCompact">Következő</a>
+</div>
