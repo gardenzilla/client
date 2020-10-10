@@ -12,7 +12,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let customer of customers">
-                    <td><a href="#">{{customer.name}}</a></td>
+                    <td><a href="#">{{customer.name || "-"}}</a></td>
                     <td>{{customer.email}}</td>
                     <td>{{customer.address.zip}} {{customer.address.location}}, {{customer.address.address}}</td>
                     <td>{{customer.tax_number || "-"}}</td>
