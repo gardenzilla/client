@@ -1,5 +1,28 @@
 <section class="section">
     <div class="container">
+        <p class="title">Vásárlóink</p>
+        <table class="table is-striped">
+            <thead>
+                <tr>
+                    <th>Név</th>
+                    <th>Email</th>
+                    <th>Cím</th>
+                    <th>Adószám</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let customer of customers">
+                    <td><a href="#">{{customer.name}}</a></td>
+                    <td>{{customer.email}}</td>
+                    <td>{{customer.address.zip}} {{customer.address.location}}, {{customer.address.address}}</td>
+                    <td>{{customer.tax_number || "-"}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+<section class="section">
+    <div class="container">
         <p class="title is-3">Vásárlóink</p>
         <p class="subtitle">{{param || "-"}}</p>
         <button class="button" routerLink="./" [queryParams]="{message:'Hello', other: true}">Hello</button>

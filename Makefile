@@ -7,6 +7,6 @@ build:
 	ng build --outputPath=dist
 
 dev:
-	ng serve
+	ng serve --port 4700
 
 serve: dev

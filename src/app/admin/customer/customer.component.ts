@@ -4,6 +4,7 @@ import { Profile } from 'src/app/class/profile';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { Customer } from 'src/app/interface/customer';
 
 @Component({
   selector: 'app-user',
@@ -21,6 +22,12 @@ export class CustomerComponent implements OnInit {
     message: "",
     page: 0,
   };
+
+  wohoo: Profile = {} as Profile;
+  wifii = <Profile>{};
+  wofoo: Profile = <Profile>{};
+
+  customers: Customer[] = [];
 
   filterSubmit() {
     /**
@@ -53,6 +60,9 @@ export class CustomerComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.http.get<Customer[]>("/customer/all").subscribe(res => {
+      this.customers = res;
+    });
     this.http.get<Profile[]>("/user/all").subscribe((val) => {
       val = val.sort((a, b) => a.date_created > b.date_created ? 1 : -1);
       this.users.set_data(val);
