@@ -40,6 +40,7 @@ import { PagernavComponent } from './partial/pagernav/pagernav.component';
 import { StockComponent } from './stock/stock.component';
 import { ModalComponent } from './partial/modal/modal.component';
 import { ProductComponent } from './product/product.component';
+import { HelloComponent } from './partial/hello/hello.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { ProductComponent } from './product/product.component';
     ProjectDetailComponent,
     CustomerComponent,
     PosComponent,
-    StockComponent
+    StockComponent,
+    HelloComponent
   ],
   imports: [
     ChartsModule,

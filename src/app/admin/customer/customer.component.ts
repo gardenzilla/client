@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { Pager } from 'src/app/class/pager';
 import { Profile } from 'src/app/class/profile';
 import { HttpClient } from '@angular/common/http';
@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { Customer } from 'src/app/interface/customer';
 import { CustomerService } from 'src/app/services/customer/customer.service';
+import { HelloComponent } from '../partial/hello/hello.component';
 
 @Component({
   selector: 'app-user',
@@ -16,6 +17,9 @@ export class CustomerComponent implements OnInit {
   customers$: Observable<Customer[]>;
 
   constructor(private customer_service: CustomerService) { }
+
+  @ViewChild('hello')
+  hello: HelloComponent;
 
   ngOnInit() {
     this.customers$ = this.customer_service.get_all();
