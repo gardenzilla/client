@@ -1,3 +1,3 @@
 <!-- <button class="button is-success is-outlined" type="submit" [class.is-ok]="model.isOk"
     [class.is-loading]="model.isLoading">{{name}}</button> -->
-<button [@tryLoad]="_isLoading ? 'loading' : 'done'" class="button" (click)="load()">{{name}}</button>
+<button [@animateBtn]="state" class="button" (click)="load()">{{name}}</button>

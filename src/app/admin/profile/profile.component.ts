@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { ButtonSubmitComponent } from '../partial/button-submit/button-submit.component';
 import { ProfileService } from 'src/app/services/profile/profile.service';
 import { HttpError } from 'src/app/interface/error';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile',
@@ -20,20 +21,16 @@ export class ProfileComponent implements OnInit {
   profile: Profile = <Profile>{};
   password: NewPassword = <NewPassword>{};
 
-  isProfileSaving: boolean = false;
-  isPasswordSaving: boolean = false;
-
   constructor(private profileService: ProfileService, private loginService: LoginService) {
     profileService.get().subscribe(res => this.profile = res);
   }
 
-  submitProfile() {
-    this.profileService.update(this.profile).subscribe(res => this.isProfileSaving = false);
+  submitProfile = (): Observable<Profile> => {
+    return this.profileService.update(this.profile).pipe(tap(res => this.profile = res));
   }
 
-  submitPwd() {
-    this.profileService.updatePassword(this.password).subscribe(
-      res => this.isPasswordSaving = false);
+  submitPwd = (): Observable<any> => {
+    return this.profileService.updatePassword(this.password);
   }
 
   ngOnInit() {
