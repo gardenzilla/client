@@ -1,6 +1,4 @@
 import { Component, OnInit, HostListener, ViewChild, ElementRef, ComponentRef, ViewChildren, Host } from '@angular/core';
-import { Pager } from 'src/app/class/pager';
-import { Profile } from 'src/app/class/profile';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';

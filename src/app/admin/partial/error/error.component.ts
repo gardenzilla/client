@@ -18,7 +18,6 @@ export class ErrorComponent implements OnInit {
   constructor(private errorService: ErrorService) { }
 
   @HostListener('document:keydown.esc', ['$event'])
-  @HostListener('document:keydown.enter', ['$event'])
   close(event?: Event) {
     if (event) {
       event.preventDefault();

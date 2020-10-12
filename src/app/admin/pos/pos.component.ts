@@ -1,5 +1,4 @@
 import { Component, OnInit, HostListener, ViewChild, ElementRef, ComponentRef, ViewChildren, Host } from '@angular/core';
-import { Pager } from 'src/app/class/pager';
 import { Profile } from 'src/app/class/profile';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -27,7 +26,7 @@ export class PosComponent implements OnInit {
   life: number = 42;
   isSearchUser: boolean = false;
 
-  egCustomers: Pager<any> = new Pager([
+  egCustomers: any[] = [
     { name: 'Example 1', address: '4522 Nyírtass, Alkotmány út 55.', taxnumber: '2346543-1-23' },
     { name: 'Example 2', address: '4522 Nyírtass, Alkotmány út 55.', taxnumber: '2346543-1-23' },
     { name: 'Example 3', address: '4522 Nyírtass, Alkotmány út 55.', taxnumber: '2346543-1-23' },
@@ -47,15 +46,15 @@ export class PosComponent implements OnInit {
     { name: 'Example 17', address: '4522 Nyírtass, Alkotmány út 55.', taxnumber: '2346543-1-23' },
     { name: 'Example 18', address: '4522 Nyírtass, Alkotmány út 55.', taxnumber: '2346543-1-23' },
     { name: 'Example 19', address: '4522 Nyírtass, Alkotmány út 55.', taxnumber: '2346543-1-23' },
-  ]);
+  ];
 
-  egProducts: Pager<any> = new Pager([
+  egProducts: any[] = [
     { name: 'Bordóilé neo SC', quantity: 250, unit: 'ml', net_retail_price: 3900.0, stock_ok: 3, stock_injured: 1, stock_global: 0 },
     { name: 'Bordóilé neo SC', quantity: 1, unit: 'l', net_retail_price: 1500.12, stock_ok: 24, stock_injured: 0, stock_global: 0 },
     { name: 'Bordóilé neo SC', quantity: 5, unit: 'l', net_retail_price: 9500.0, stock_ok: 0, stock_injured: 1, stock_global: 0 },
     { name: 'Bordóilé neo SC', quantity: 20, unit: 'l', net_retail_price: 32900.0, stock_ok: 0, stock_injured: 1, stock_global: 5 },
     { name: 'Gardena kerti locsoló + tömlő', quantity: 25, unit: 'm', net_retail_price: 11700.27, stock_ok: 1, stock_injured: 0, stock_global: 0 },
-  ]);
+  ];
 
   egUpls: any[] = [
     { id: 1231234, sku_name: 'Kerti lombseprű', quantity: 1, unit: 'kg', gross_retail_price: 7900.12, best_before: '2022-04-15' },

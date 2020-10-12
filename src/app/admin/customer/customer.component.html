@@ -16,19 +16,16 @@
                     <th>Adószám</th>
                 </tr>
             </thead>
-            <tbody *ngIf="customers$ | async as _customers; else loading">
-                <tr *ngFor="let customer of _customers">
+            <tbody *ngIf="customers; else loading">
+                <tr *ngFor="let customer of customers.display()">
                     <td><a [routerLink]="['.', customer.id]">{{customer.name || "-"}}</a></td>
                     <td>{{customer.email}}</td>
                     <td>{{customer.address.zip}} {{customer.address.location}}, {{customer.address.address}}</td>
                     <td>{{customer.tax_number || "-"}}</td>
                 </tr>
             </tbody>
-            <ng-template #loading>
-                <tbody>
-                    Loading..
-                </tbody>
-            </ng-template>
+            <ng-template #loading>Loading..</ng-template>
         </table>
+        <pagination [(data)]="customers" [count]="2"></pagination>
     </div>
 </section>

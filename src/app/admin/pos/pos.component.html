@@ -41,7 +41,7 @@
                         </ng-container>
                         <!-- Customer search demo -->
                         <ng-container *ngIf="isSearchUser && search">
-                            <tr *ngFor="let customer of egCustomers.display()">
+                            <tr *ngFor="let customer of egCustomers">
                                 <td>
                                     <p class="title is-6">{{customer.name}}</p>
                                     <p class="subtitle is-7">{{customer.address}}
@@ -53,7 +53,7 @@
                         </ng-container>
                         <!-- Product search demo -->
                         <ng-container *ngIf="!isSearchUser && search">
-                            <tr *ngFor="let sku of egProducts.display()">
+                            <tr *ngFor="let sku of egProducts">
                                 <td>
                                     <p class="title is-6">{{sku.name}}, {{sku.quantity}} {{sku.unit}}</p>
                                     <p class="subtitle is-7">{{sku.net_retail_price | number}} HUF</p>
@@ -85,7 +85,7 @@
                         </ng-container>
                     </tbody>
                 </table>
-                <pagernav [data]="egProducts" offline=true count=7 isCompact=true></pagernav>
+                <pagination [data]="egProducts" offline=true count=7 isCompact=true></pagination>
             </div>
             <div class="column">
                 <div class="columns">
@@ -472,7 +472,7 @@
             </tr>
         </tbody>
     </table>
-    <pagernav [data]="egCustomers" isSmall="true" offline="true"></pagernav>
+    <pagination [data]="egCustomers" isSmall="true" offline="true"></pagination>
     <table class="table is-size-7">
         <thead>
             <tr>

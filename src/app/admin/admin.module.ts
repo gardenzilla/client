@@ -38,7 +38,7 @@ import { CustomerNewComponent } from './customer/new/customer-new.component';
 import { CustomerDetailComponent } from './customer/details/customer-detail.component';
 import { PosComponent } from './pos/pos.component';
 import { PosLayoutComponent } from './layout/pos-layout/pos-layout.component';
-import { PagernavComponent } from './partial/pagernav/pagernav.component';
+import { PaginationComponent } from './partial/pagination/pagination.component';
 import { StockComponent } from './stock/stock.component';
 import { ModalComponent } from './partial/modal/modal.component';
 import { ProductComponent } from './product/product.component';
@@ -49,7 +49,7 @@ import { ErrorComponent } from './partial/error/error.component';
   declarations: [
     LayoutComponent,
     PosLayoutComponent,
-    PagernavComponent,
+    PaginationComponent,
     NavbarComponent,
     ProfileComponent,
     ButtonSubmitComponent,

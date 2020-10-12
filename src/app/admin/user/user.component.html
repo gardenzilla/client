@@ -5,7 +5,7 @@
             <!-- Left side -->
             <div class="level-left">
                 <div class="level-item">
-                    <form (ngSubmit)="filterSubmit()" #filterForm="ngForm">
+                    <form  #filterForm="ngForm">
                         <div class="field has-addons">
                             <p class="control">
                                 <input class="input" type="text" placeholder="Keresés ..." [(ngModel)]="filter"
@@ -41,7 +41,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let user of users.display(); index as i;">
+                <tr *ngFor="let user of users; index as i;">
                     <td>
                         <a [routerLink]="['./', user.username]" tabindex="0">{{user.username}}</a>
                     </td>
@@ -54,7 +54,7 @@
             </tbody>
         </table>
 
-        <pagernav [data]="users"></pagernav>
+        <pagination [data]="users"></pagination>
 
     </div>
 </section>
