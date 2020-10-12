@@ -1,6 +1,12 @@
 <section class="section">
     <div class="container">
         <p class="title">Vásárlóink</p>
+        <a class="button is-rounded" [routerLink]="['new']">
+            <span class="icon">
+            <i class="fas fa-plus"></i>
+            </span>
+            <span>Új vásárló</span>
+        </a>
         <table class="table is-striped">
             <thead>
                 <tr>
@@ -12,7 +18,7 @@
             </thead>
             <tbody *ngIf="customers$ | async as _customers; else loading">
                 <tr *ngFor="let customer of _customers">
-                    <td><a href="#">{{customer.name || "-"}}</a></td>
+                    <td><a [routerLink]="['.', customer.id]">{{customer.name || "-"}}</a></td>
                     <td>{{customer.email}}</td>
                     <td>{{customer.address.zip}} {{customer.address.location}}, {{customer.address.address}}</td>
                     <td>{{customer.tax_number || "-"}}</td>

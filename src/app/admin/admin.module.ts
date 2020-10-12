@@ -34,6 +34,8 @@ import { TransactionDetailComponent } from './transaction/transaction-detail/tra
 import { ProjectNewComponent } from './project/project-new/project-new.component';
 import { ProjectDetailComponent } from './project/project-detail/project-detail.component';
 import { CustomerComponent } from './customer/customer.component';
+import { CustomerNewComponent } from './customer/new/customer-new.component';
+import { CustomerDetailComponent } from './customer/details/customer-detail.component';
 import { PosComponent } from './pos/pos.component';
 import { PosLayoutComponent } from './layout/pos-layout/pos-layout.component';
 import { PagernavComponent } from './partial/pagernav/pagernav.component';
@@ -81,7 +83,9 @@ import { ErrorComponent } from './partial/error/error.component';
     PosComponent,
     StockComponent,
     HelloComponent,
-    ErrorComponent
+    ErrorComponent,
+    CustomerNewComponent,
+    CustomerDetailComponent
   ],
   imports: [
     ChartsModule,

@@ -69,6 +69,8 @@ export class ButtonSubmitComponent implements OnInit {
   ngOnInit() { }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

@@ -16,3 +16,13 @@ export interface Address {
     location: string,
     address: string
 }
+
+export interface CustomerNew {
+    name: string,
+    email: string,
+    phone: string,
+    tax_number: string,
+    zip: string,
+    location: string,
+    address: string
+}

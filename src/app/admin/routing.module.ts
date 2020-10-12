@@ -27,6 +27,8 @@ import { TransactionDetailComponent } from './transaction/transaction-detail/tra
 import { ProjectNewComponent } from './project/project-new/project-new.component';
 import { ProjectDetailComponent } from './project/project-detail/project-detail.component';
 import { CustomerComponent } from './customer/customer.component';
+import { CustomerNewComponent } from './customer/new/customer-new.component';
+import { CustomerDetailComponent } from './customer/details/customer-detail.component';
 import { PosComponent } from './pos/pos.component';
 import { PosLayoutComponent } from './layout/pos-layout/pos-layout.component';
 import { StockComponent } from './stock/stock.component';
@@ -49,7 +51,13 @@ const routes: Routes = [
         path: '', component: DashboardComponent,
       },
       { path: 'stock', component: StockComponent, data: { title: 'Raktár', breadcrumb: 'Raktár' } },
-      { path: 'customer', component: CustomerComponent, data: { title: 'Vásárlók', breadcrumb: 'Vásárlók' } },
+      {
+        path: 'customer', children: [
+          { path: '', component: CustomerComponent },
+          { path: 'new', component: CustomerNewComponent },
+          { path: ':customer_id', component: CustomerDetailComponent }
+        ]
+      },
       { path: 'profile', component: ProfileComponent, data: { breadcrumb: 'Felhasználói profil' } },
       // { path: 'pos', component: PosComponent, data: { breadcrumb: 'POS' } },
       {

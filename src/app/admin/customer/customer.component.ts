@@ -10,7 +10,7 @@ import { HelloComponent } from '../partial/hello/hello.component';
 import { ErrorService } from 'src/app/services/error/error.service';
 
 @Component({
-  selector: 'app-user',
+  selector: 'app-customer',
   templateUrl: './customer.component.html',
   styleUrls: ['./customer.component.css']
 })

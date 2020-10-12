@@ -1,0 +1,66 @@
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-6">
+                <h1 class="title">Vásárló</h1>
+                <form (ngSubmit)="submit()" #customerForm="ngForm">
+                    <div class="field">
+                        <label class="label">Név</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Vásárló neve" name="name"
+                                [(ngModel)]="customer.name" required autofocus>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Email</label>
+                        <div class="control">
+                            <input class="input" type="email" placeholder="Vásárló email címe" name="email"
+                                [(ngModel)]="customer.email">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Telefonszám</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Vásárló telefonszáma" name="phone"
+                                [(ngModel)]="customer.phone">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Adószám</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Vásárló adószáma" name="taxnumber"
+                                [(ngModel)]="customer.tax_number">
+                        </div>
+                    </div>
+                    <p class="subtitle mt-6">Lakcím</p>
+                    <div class="field">
+                        <label class="label">Irányítószám</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Irányítószám" name="zip"
+                                [(ngModel)]="customer.address.zip" required>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Település</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Település neve" name="location"
+                                [(ngModel)]="customer.address.location" required>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Utca, házszám</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Utca, házszám" name="address"
+                                [(ngModel)]="customer.address.address" required>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <button-submit [callback]="submitCallback" name="Mentés"></button-submit>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
