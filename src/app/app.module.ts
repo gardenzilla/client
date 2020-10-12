@@ -19,6 +19,7 @@ import { ModalService } from './services/modal/modal.service';
 import { CustomerService } from './services/customer/customer.service';
 import { ProfileService } from './services/profile/profile.service';
 import { ErrorService } from './services/error/error.service';
+import { AutofocusDirective } from './autofocus.directive';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { ErrorService } from './services/error/error.service';
     LoginComponent,
     PasswordresetComponent,
     EmptyComponent,
+    AutofocusDirective,
   ],
   imports: [
     BrowserModule,

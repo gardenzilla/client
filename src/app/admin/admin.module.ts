@@ -85,7 +85,7 @@ import { ErrorComponent } from './partial/error/error.component';
     HelloComponent,
     ErrorComponent,
     CustomerNewComponent,
-    CustomerDetailComponent
+    CustomerDetailComponent,
   ],
   imports: [
     ChartsModule,

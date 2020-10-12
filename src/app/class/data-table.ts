@@ -9,6 +9,7 @@ export class DataTable<T> {
     }
     setData(data: T[]) {
         this.data = data;
+        this.currentPage = 1;
     }
     next() { this.currentPage = this.getNextPage(); }
     getNextPage(): number { return this.currentPage < this.maxPageNumber() ? this.currentPage + 1 : this.currentPage; }

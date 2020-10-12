@@ -12,15 +12,35 @@ import { ErrorService } from 'src/app/services/error/error.service';
   styleUrls: ['./customer.component.css'],
 })
 export class CustomerComponent implements OnInit {
-  customers$: Observable<Customer[]>;
   customers: DataTable<Customer> = new DataTable([]);
+  customersOriginal: Customer[] = [];
+  filterString: string = '';
+  applieadFilter: string = '';
 
   constructor(private customer_service: CustomerService,
     private errorService: ErrorService) { }
 
+  removeFilter() {
+    this.applieadFilter = '';
+    this.filterString = '';
+    this.applyFilter();
+  }
+
+  applyFilter() {
+    this.applieadFilter = this.filterString;
+    let filteredResult = this.customersOriginal.filter((i) =>
+      i.name.toUpperCase().includes(this.applieadFilter.toUpperCase()));
+
+    console.log(this.customersOriginal);
+
+    this.customers.setData(filteredResult);
+  }
+
   ngOnInit() {
-    this.customers$ = this.customer_service.get_all();
-    this.customer_service.get_all().subscribe(res => this.customers.setData(res));
+    this.customer_service.get_all().subscribe(res => {
+      this.customers.setData(res);
+      this.customersOriginal = res;
+    });
     // this.http.get<Profile[]>("/user/all").subscribe((val) => {
     //   val = val.sort((a, b) => a.date_created > b.date_created ? 1 : -1);
     //   this.users.set_data(val);
