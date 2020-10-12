@@ -1,15 +1,15 @@
-Error service + modal
-Button refacet and finalize
-TableView + pagination + filter
+[x] Error service + modal
+[ ] Button refact and finalize
+[ ] TableView + pagination + filter
 --
-Customer list + pagination
-Customer details + update
-New customer + redirect
+[ ] Customer list + pagination
+[ ] Customer details + update
+[ ] New customer + redirect
 --
-License center protos
-License center service
-License center API
+[ ] License center protos
+[ ] License center service
+[ ] License center API
 --
-License center integration into customer details page
+[ ] License center integration into customer details page
 --
-Manual presentation + start
+[ ] Manual presentation + start
