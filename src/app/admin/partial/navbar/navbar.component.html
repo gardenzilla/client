@@ -12,9 +12,9 @@
                     <i class="fas fa-plus"></i>
                 </span>
             </a>
-            <a class="navbar-item is-hidden-desktop" routerLink="/pos">
+            <!-- <a class="navbar-item is-hidden-desktop" routerLink="/pos">
                 <span class="tag is-warning">POS</span>
-            </a>
+            </a> -->
             <a role="button" class="navbar-burger burger" [ngClass]="{'is-active': isActive}" aria-label="menu"
                 aria-expanded="false" data-target="navbarBasicExample" (click)="isActive = isActive ? false : true">
                 <span aria-hidden="true"></span>
@@ -25,21 +25,21 @@
 
         <div id="navbarBasicExample" class="navbar-menu" [ngClass]="{'is-active': isActive}">
             <div class="navbar-start">
-                <a class="navbar-item is-hidden-mobile" routerLink="/pos">
+                <!-- <a class="navbar-item is-hidden-mobile" routerLink="/pos">
                     <span class="tag is-warning">POS</span>
                 </a>
                 <a class="navbar-item" routerLink="/product">
                     Termékek
-                </a>
+                </a> -->
                 <a class="navbar-item" routerLink="/customer">
                     Vásárlók
                 </a>
-                <a class="navbar-item" routerLink="/">
+                <!-- <a class="navbar-item" routerLink="/">
                     ISSUE
-                </a>
+                </a> -->
 
 
-                <div class="navbar-item has-dropdown is-hoverable">
+                <!-- <!-- <div class="navbar-item has-dropdown is-hoverable">
                     <a class="navbar-link">
                         Egyéb
                     </a>
@@ -71,7 +71,7 @@
                             Report an issue
                         </a>
                     </div>
-                </div>
+                </div> -->
             </div>
 
             <div class="navbar-end">
@@ -81,7 +81,7 @@
                         <i class="fas fa-plus"></i>
                     </span>
                 </a>
-                <a class="navbar-item" routerLink="/">
+                <!-- <a class="navbar-item" routerLink="/">
                     <div class="menu">
                         <div class="pix"></div>
                         <div class="pix"></div>
@@ -93,7 +93,7 @@
                         <div class="pix"></div>
                         <div class="pix"></div>
                     </div>
-                </a>
+                </a> -->
                 <a class="navbar-item" routerLink='/profile'>{{username}}</a>
                 <div class="navbar-item">
                     <a (click)="logout()" class="has-text-grey">

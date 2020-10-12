@@ -22,7 +22,6 @@ export class ProfileComponent implements OnInit {
 
   isProfileSaving: boolean = false;
   isPasswordSaving: boolean = false;
-  passwordError: HttpError;
 
   constructor(private profileService: ProfileService, private loginService: LoginService) {
     profileService.get().subscribe(res => this.profile = res);
@@ -34,8 +33,7 @@ export class ProfileComponent implements OnInit {
 
   submitPwd() {
     this.profileService.updatePassword(this.password).subscribe(
-      res => this.isPasswordSaving = false,
-      err => this.passwordError = err);
+      res => this.isPasswordSaving = false);
   }
 
   ngOnInit() {

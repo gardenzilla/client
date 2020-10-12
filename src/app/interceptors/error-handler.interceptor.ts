@@ -1,38 +1,36 @@
 import { tap, map, catchError } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { ErrorResponse } from '../class/error-response';
 import { throwError } from 'rxjs';
 import { HttpError } from '../class/http-error';
+import { ErrorService } from '../services/error/error.service';
 // import { Router } from '@angular/router';
 
 @Injectable()
 export class ErrorHandlerInterceptor implements HttpInterceptor {
-    constructor() { }
 
+    constructor(private errorService: ErrorService) { }
     /**
      * TODO: Refact this whole error part
      */
-    private handleError(error: HttpErrorResponse) {
+    private transformError(error: HttpErrorResponse): HttpError {
         if (error.error instanceof ErrorEvent) {
             // A client-side or network error occurred. Handle it accordingly.
-            return throwError(new HttpError('danger', 'Oooo'))
+            return new HttpError('danger', 'Oooo');
         } else {
             if (error.status == 0) {
-                alert("HIBA: A szerver nem elérhető, kommunikációs hiba!");
-                return throwError(
-                    new HttpError('danger', 'A Gardenova szerver nem elérhető! \
-                    Vagy a szerver hibás, vagynincs internet kapcsolat'))
+                return new HttpError('danger', 'A Gardenzilla szerver nem elérhető! \
+                    Vagy a szerver hibás, vagynincs internet kapcsolat');
             }
             // If there is 401 redirect to login
             if (error.status == 401) {
                 // this.router.navigateByUrl('/login');
             }
             if (error.status == 400) {
-                console.log("BAD REQUEST: " + error.error.message);
-                return throwError(new HttpError('warning', error.error.message));
+                return new HttpError('warning', error.error.message, 400);
             } else {
-                return throwError(new HttpError('danger', error.error.message));
+                return new HttpError('danger', error.error.message, 400);
             }
         }
     };
@@ -40,7 +38,10 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler) {
         return next.handle(req)
             .pipe(
-                catchError(this.handleError)
+                catchError((error: HttpErrorResponse) => {
+                    this.errorService.open(this.transformError(error));
+                    return throwError(error);
+                })
             );
     }
 }

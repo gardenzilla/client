@@ -51,10 +51,6 @@
                 <hr>
                 <h1 class="title">Jelszó módosítása</h1>
                 <p class="subtitle is-6">Kérünk add meg az új jelszavadat</p>
-                <div class="notification is-light" [ngClass]="'is-' + passwordError.kind" *ngIf='passwordError'>
-                    <button class="delete" (click)='passwordError = null'></button>
-                    {{passwordError.message}}
-                </div>
                 <form (ngSubmit)="submitPwd()" #passwordForm="ngForm">
                     <error-display [model]="password"></error-display>
                     <div class="field">

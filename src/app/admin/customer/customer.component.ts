@@ -7,6 +7,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Customer } from 'src/app/interface/customer';
 import { CustomerService } from 'src/app/services/customer/customer.service';
 import { HelloComponent } from '../partial/hello/hello.component';
+import { ErrorService } from 'src/app/services/error/error.service';
 
 @Component({
   selector: 'app-user',
@@ -16,10 +17,15 @@ import { HelloComponent } from '../partial/hello/hello.component';
 export class CustomerComponent implements OnInit {
   customers$: Observable<Customer[]>;
 
-  constructor(private customer_service: CustomerService) { }
+  constructor(private customer_service: CustomerService,
+    private errorService: ErrorService) { }
 
   @ViewChild('hello')
   hello: HelloComponent;
+
+  doError() {
+    this.errorService.open({ kind: 'warning', message: 'Demo Error' });
+  }
 
   ngOnInit() {
     this.customers$ = this.customer_service.get_all();

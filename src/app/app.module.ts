@@ -18,6 +18,7 @@ import { RouterParamService } from './services/router-param/router-param.service
 import { ModalService } from './services/modal/modal.service';
 import { CustomerService } from './services/customer/customer.service';
 import { ProfileService } from './services/profile/profile.service';
+import { ErrorService } from './services/error/error.service';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { ProfileService } from './services/profile/profile.service';
     httpInterceptorProviders,
     ModalService,
     CustomerService,
-    ProfileService],
+    ProfileService,
+    ErrorService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

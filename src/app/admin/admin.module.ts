@@ -41,6 +41,7 @@ import { StockComponent } from './stock/stock.component';
 import { ModalComponent } from './partial/modal/modal.component';
 import { ProductComponent } from './product/product.component';
 import { HelloComponent } from './partial/hello/hello.component';
+import { ErrorComponent } from './partial/error/error.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +80,8 @@ import { HelloComponent } from './partial/hello/hello.component';
     CustomerComponent,
     PosComponent,
     StockComponent,
-    HelloComponent
+    HelloComponent,
+    ErrorComponent
   ],
   imports: [
     ChartsModule,

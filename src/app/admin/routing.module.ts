@@ -34,19 +34,19 @@ import { ProductComponent } from './product/product.component';
 
 const routes: Routes = [
   {
-    path: 'pos', component: PosLayoutComponent, canActivateChild: [AuthGuard], children: [
+    path: 'pos', component: LayoutComponent, canActivateChild: [AuthGuard], children: [
       { path: '', component: PosComponent, data: { title: "POS" } }
     ]
   },
   {
-    path: 'product', component: PosLayoutComponent, canActivateChild: [AuthGuard], children: [
+    path: 'product', component: LayoutComponent, canActivateChild: [AuthGuard], children: [
       { path: '', component: ProductComponent, data: { title: "Termékek" } }
     ]
   },
   {
     path: '', component: LayoutComponent, canActivateChild: [AuthGuard], children: [
       {
-        path: '', component: ProfileComponent,
+        path: '', component: DashboardComponent,
       },
       { path: 'stock', component: StockComponent, data: { title: 'Raktár', breadcrumb: 'Raktár' } },
       { path: 'customer', component: CustomerComponent, data: { title: 'Vásárlók', breadcrumb: 'Vásárlók' } },
