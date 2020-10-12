@@ -1,8 +1,12 @@
 <section class="section">
     <div class="container">
         <div class="columns">
-            <div class="column is-6">
+            <div class="column">
                 <h1 class="title">Vásárló</h1>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column is-6">
                 <form (ngSubmit)="submit()">
                     <div class="field">
                         <label class="label">Név</label>
@@ -60,6 +64,15 @@
                         </div>
                     </div>
                 </form>
+            </div>
+            <div class="column is-3">
+                <div class="notification">
+                    <p class="subtitle is-5">
+                        Vásárlói adatok
+                    </p>
+                    Készítette: {{customer.created_by}} <br>
+                    Készült: {{customer.date_created | date}}
+                </div>
             </div>
         </div>
     </div>
