@@ -2,9 +2,9 @@
 [x] Button refact and finalize
 [ ] TableView + pagination + filter
 --
-[ ] Customer list + pagination
-[ ] Customer details + update
-[ ] New customer + redirect
+[ ] Customer list + pagination + filter
+[x] Customer details + update
+[x] New customer + redirect
 --
 [ ] License center protos
 [ ] License center service
