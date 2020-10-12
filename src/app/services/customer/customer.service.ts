@@ -16,4 +16,7 @@ export class CustomerService {
   get_by_id(id: string): Observable<Customer> {
     return this.http.get<Customer>("/customer/" + id);
   }
+  // update_by_id(id: string, customer: Customer): Observable<Customer> {
+  //   return this.http.post<Customer>("/")
+  // }
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, Output, EventEmitter } from '@angular/core';
 import {
   trigger,
   state,
@@ -35,7 +35,13 @@ export class ButtonSubmitComponent implements OnChanges {
     set true when loading, and false when its done
     we can set it manually from a parent component using
     load() and done() methods */
-  isLoading: boolean = false;
+  @Input()
+  get isLoading(): boolean { return this._isLoading };
+  set isLoading(v: boolean) {
+    this._isLoading = v;
+  }
+
+  @Output() isLoadingChange: EventEmitter<boolean> = new EventEmitter();
 
   @Input()
   get name(): string { return this._name; }
@@ -43,14 +49,13 @@ export class ButtonSubmitComponent implements OnChanges {
     this._name = (name && name.trim()) || this._default_name;
   }
 
-  @Input()
-  callback: () => void;
-
   private _default_name: string = 'Mentés';
   private _name: string = 'Mentés';
+  _isLoading: boolean;
 
   load() {
-    this.isLoading = true;
+    this._isLoading = true;
+    this.isLoadingChange.emit(this.isLoading);
   }
 
   ngOnChanges() { }

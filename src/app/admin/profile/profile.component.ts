@@ -7,6 +7,8 @@ import { LoginService } from 'src/app/services/login/login.service';
 import { Model } from 'src/app/class/model';
 import { Observable } from 'rxjs';
 import { ButtonSubmitComponent } from '../partial/button-submit/button-submit.component';
+import { ProfileService } from 'src/app/services/profile/profile.service';
+import { HttpError } from 'src/app/interface/error';
 
 @Component({
   selector: 'app-profile',
@@ -18,17 +20,23 @@ export class ProfileComponent implements OnInit {
   profile: Profile = <Profile>{};
   password: NewPassword = <NewPassword>{};
 
-  isFormLoading: boolean = false;
+  isProfileSaving: boolean = false;
+  isPasswordSaving: boolean = false;
+  passwordError: HttpError;
 
-  constructor(private http: HttpClient, private loginService: LoginService) {
-    this.http.get<Profile>('/profile').subscribe(res => this.profile = res);
+  constructor(private profileService: ProfileService, private loginService: LoginService) {
+    profileService.get().subscribe(res => this.profile = res);
   }
 
   submitProfile() {
-    this.http.post<Profile>('/profile', this.profile).subscribe(() => this.isFormLoading = false);
+    this.profileService.update(this.profile).subscribe(res => this.isProfileSaving = false);
   }
 
-  submitPwd() { }
+  submitPwd() {
+    this.profileService.updatePassword(this.password).subscribe(
+      res => this.isPasswordSaving = false,
+      err => this.passwordError = err);
+  }
 
   ngOnInit() {
     // this.profile.status.subscribe((val) => this.loginService.setUserName(val.name));

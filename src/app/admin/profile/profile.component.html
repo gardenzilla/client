@@ -43,16 +43,18 @@
                                 <!-- <button-submit [model]="profile">
                                 </button-submit> -->
                                 <!-- <button class="button" type="button">Jelszó módosítása</button> -->
-                                <button-submit [isLoading]="isFormLoading" name="Mentés">
-                                </button-submit>
+                                <button-submit [(isLoading)]="isProfileSaving" name="Mentés"></button-submit>
                             </div>
                         </div>
                     </div>
                 </form>
                 <hr>
                 <h1 class="title">Jelszó módosítása</h1>
-                <p class="subtitle is-6">Kérünk add meg az új jelszavadat
-                </p>
+                <p class="subtitle is-6">Kérünk add meg az új jelszavadat</p>
+                <div class="notification is-light" [ngClass]="'is-' + passwordError.kind" *ngIf='passwordError'>
+                    <button class="delete" (click)='passwordError = null'></button>
+                    {{passwordError.message}}
+                </div>
                 <form (ngSubmit)="submitPwd()" #passwordForm="ngForm">
                     <error-display [model]="password"></error-display>
                     <div class="field">
@@ -76,6 +78,7 @@
                                 <!-- <button class="button is-info is-outlined" type="submit"
                                     [class.is-ok]="password.isOk">Módosítás</button> -->
                                 <!-- <button-submit [model]="password" name="Jelszó módosítása"></button-submit> -->
+                                <button-submit [(isLoading)]="isPasswordSaving" name="Mentés"></button-submit>
                             </div>
                         </div>
                     </div>

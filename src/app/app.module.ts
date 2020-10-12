@@ -17,6 +17,7 @@ import { httpInterceptorProviders } from './interceptors';
 import { RouterParamService } from './services/router-param/router-param.service';
 import { ModalService } from './services/modal/modal.service';
 import { CustomerService } from './services/customer/customer.service';
+import { ProfileService } from './services/profile/profile.service';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,14 @@ import { CustomerService } from './services/customer/customer.service';
     AdminModule,
     AppRoutingModule,
   ],
-  providers: [DataService, LoginService, RouterParamService, httpInterceptorProviders, ModalService, CustomerService],
+  providers: [
+    DataService,
+    LoginService,
+    RouterParamService,
+    httpInterceptorProviders,
+    ModalService,
+    CustomerService,
+    ProfileService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
