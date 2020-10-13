@@ -21,10 +21,10 @@ import { Subscription } from 'rxjs';
       state('in', style({
       })),
       transition('in => out', [
-        animate('1s')
+        animate('0.2s')
       ]),
       transition('out => in', [
-        animate('0.3s')
+        animate('0.2s')
       ]),
     ]),
   ],
