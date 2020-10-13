@@ -44,6 +44,7 @@ import { ModalComponent } from './partial/modal/modal.component';
 import { ProductComponent } from './product/product.component';
 import { HelloComponent } from './partial/hello/hello.component';
 import { ErrorComponent } from './partial/error/error.component';
+import { SnackBarComponent } from './partial/snack-bar/snack-bar.component';
 
 @NgModule({
   declarations: [
@@ -86,6 +87,7 @@ import { ErrorComponent } from './partial/error/error.component';
     ErrorComponent,
     CustomerNewComponent,
     CustomerDetailComponent,
+    SnackBarComponent,
   ],
   imports: [
     ChartsModule,

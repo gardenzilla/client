@@ -7,7 +7,7 @@ import { HttpError } from 'src/app/interface/error';
 })
 export class ErrorService {
 
-  errors$: Subject<HttpError> = new Subject;
+  errors$: Subject<HttpError> = new Subject();
 
   constructor() { }
 

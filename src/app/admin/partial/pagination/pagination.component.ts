@@ -24,20 +24,20 @@ export class PaginationComponent implements OnInit {
   routeSubscription: Subscription;
 
   _data: DataTable<any>;
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, private cd: ChangeDetectorRef) { }
 
-  ngOnInit() { }
-
-  ngDoCheck() {
+  ngOnInit() { 
     this.routeSubscription = this.route.queryParams.subscribe(params => {
-      let goto: number = 1;
-      if (params.page) {
-        let tryint = parseInt(params.page);
-        goto = tryint != NaN ? tryint : 1;
-      }
-      this._data.setPageSize(this.count);
-      this._data.navigateTo(goto);
-      this.dataChange.emit(this._data);
+      setTimeout(() => {
+        let goto: number = 1;
+        if (params.page) {
+          let tryint = parseInt(params.page);
+          goto = tryint != NaN ? tryint : 1;
+        }
+        this._data.setPageSize(this.count);
+        this._data.navigateTo(goto);
+        this.dataChange.emit(this._data);
+      });
     });
   }
 

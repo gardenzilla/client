@@ -8,6 +8,7 @@ import {
   // ...
 } from '@angular/animations';
 import { Observable, Subscription } from 'rxjs';
+import { SnackBarService } from 'src/app/services/snack-bar/snack-bar.service';
 
 @Component({
   selector: 'button-submit',
@@ -51,16 +52,19 @@ import { Observable, Subscription } from 'rxjs';
 export class ButtonSubmitComponent implements OnInit {
   @Input() callback: () => Observable<any>;
   @Input() name: string = "Mentés";
+  @Input() snackBarMessage?: string;
 
   subscription: Subscription;
   state: string = "idle";
+
+  constructor(private snackService: SnackBarService) { }
 
   load() {
     this.state = 'loading';
     this.subscription = this.callback().subscribe(
       () => { },
       () => { this.state = 'error' },
-      () => { this.state = 'done' });
+      () => { this.state = 'done'; if (this.snackBarMessage) { this.snackService.displaySnack(this.snackBarMessage) } });
     setTimeout(() => {
       this.state = 'idle';
     }, 1200);

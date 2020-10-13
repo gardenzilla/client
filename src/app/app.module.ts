@@ -20,6 +20,7 @@ import { CustomerService } from './services/customer/customer.service';
 import { ProfileService } from './services/profile/profile.service';
 import { ErrorService } from './services/error/error.service';
 import { AutofocusDirective } from './autofocus.directive';
+import { SnackBarService } from './services/snack-bar/snack-bar.service';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { AutofocusDirective } from './autofocus.directive';
     ModalService,
     CustomerService,
     ProfileService,
-    ErrorService],
+    ErrorService,
+    SnackBarService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

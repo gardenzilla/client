@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { HttpError } from 'src/app/class/http-error';
 import { CustomerService } from 'src/app/services/customer/customer.service';
 import { Address, Customer, CustomerNew } from 'src/app/interface/customer';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-customer-new',
@@ -18,9 +20,9 @@ export class CustomerNewComponent implements OnInit {
 
   constructor(private customerService: CustomerService, private router: Router) { }
 
-  submit() {
-    this.customerService.new(this.customer).subscribe(
-      newCustomer => this.router.navigateByUrl(`/customer/${newCustomer.id}`)
+  submit = (): Observable<Customer> => {
+    return this.customerService.new(this.customer).pipe(
+      tap(newCustomer => this.router.navigateByUrl(`/customer/${newCustomer.id}`))
     );
   }
 

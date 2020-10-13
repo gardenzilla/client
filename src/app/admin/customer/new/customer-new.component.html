@@ -55,7 +55,8 @@
                 </div>
                 <div class="field">
                     <div class="control">
-                        <button class="button" type="submit">Létrehozás</button>
+                        <button-submit [name]="'Létrehozás'" [callback]="submit" [snackBarMessage]="'Vásárló létrehozva'"></button-submit>
+                        <!-- <button class="button" type="submit">Létrehozás</button> -->
                     </div>
                 </div>
             </form>
