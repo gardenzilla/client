@@ -5,7 +5,7 @@
                 <h1 class="title">Felhasználói profil</h1>
                 <p class="subtitle is-4">Itt szerkesztheted a felhasználói adataidat
                 </p>
-                <form (ngSubmit)="submitProfile()" #loginForm="ngForm" #hello>
+                <form #loginForm="ngForm" #hello>
                     <error-display [model]="profile"></error-display>
                     <div class="field">
                         <label class="label">Felhasználói név</label>
@@ -51,7 +51,7 @@
                 <hr>
                 <h1 class="title">Jelszó módosítása</h1>
                 <p class="subtitle is-6">Kérünk add meg az új jelszavadat</p>
-                <form (ngSubmit)="submitPwd()" #passwordForm="ngForm">
+                <form #passwordForm="ngForm">
                     <error-display [model]="password"></error-display>
                     <div class="field">
                         <label class="label">Új jelszó</label>

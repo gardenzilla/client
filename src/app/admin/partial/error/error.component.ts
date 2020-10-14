@@ -13,7 +13,7 @@ export class ErrorComponent implements OnInit {
 
   errorSubscription: Subscription;
   isOpen: boolean = false;
-  error: HttpError = <HttpError>{};
+  error: HttpError;
 
   constructor(private errorService: ErrorService) { }
 
@@ -23,6 +23,7 @@ export class ErrorComponent implements OnInit {
       event.preventDefault();
     }
     this.isOpen = false;
+    this.error = null;
   }
 
   ngOnInit(): void {
