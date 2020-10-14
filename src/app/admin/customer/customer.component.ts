@@ -12,44 +12,20 @@ import { ErrorService } from 'src/app/services/error/error.service';
   styleUrls: ['./customer.component.css'],
 })
 export class CustomerComponent implements OnInit {
-  customers: DataTable<Customer>;
-  customersOriginal: Customer[] = [];
+  customers: Customer[];
   filterString: string = '';
-  applieadFilter: string = '';
+  filter: (c: Customer) => boolean;
 
   constructor(private customer_service: CustomerService,
     private errorService: ErrorService) { }
 
-  removeFilter() {
-    this.applieadFilter = '';
-    this.filterString = '';
-    this.applyFilter();
-  }
-
-  applyFilter() {
-    this.applieadFilter = this.filterString;
-    let filteredResult = this.customersOriginal.filter((i) =>
-      i.name.toUpperCase().includes(this.applieadFilter.toUpperCase()));
-
-    console.log(this.customersOriginal);
-
-    this.customers.setData(filteredResult);
+  applyFilter(f: string) {
+    this.filter = (c: Customer) => { return c.name.toLocaleLowerCase().includes(f); };
   }
 
   ngOnInit() {
     this.customer_service.get_all().subscribe(res => {
-      this.customers = new DataTable(res);
-      this.customersOriginal = res;
+      this.customers = res;
     });
-    // this.http.get<Profile[]>("/user/all").subscribe((val) => {
-    //   val = val.sort((a, b) => a.date_created > b.date_created ? 1 : -1);
-    //   this.users.set_data(val);
-    //   this.buffer = val;
-    // });
-    // this.routeSubscription = this.route.queryParams.subscribe(params => {
-    //   if (params.message) {
-    //     this.param = params.message;
-    //   }
-    // });
   }
 }

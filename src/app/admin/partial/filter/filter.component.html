@@ -1,0 +1,24 @@
+<div class="columns">
+    <div class="column is-10">
+        <div class="field has-addons">
+            <div class="control">
+                <input [(ngModel)]="filterString" class="input" type="text" placeholder="Find a repository" name="filter"
+                    (keydown.enter)="applyFilter()" (keydown.esc)="removeFilter()">
+            </div>
+            <div class="control">
+                <a class="button is-info" (click)="applyFilter()">
+                Keresés
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="column is-6">
+        <div *ngIf="appliedFilter">
+            szűrő:
+            <span class="tag is-primary is-light">
+                {{appliedFilter}}
+                <button class="delete is-small" (click)="removeFilter()"></button>
+            </span>
+        </div>
+    </div>
+</div>

@@ -14,30 +14,11 @@
                     </a>
                 </div>
                 <div class="level-item">
-                    <div class="field has-addons">
-                        <div class="control">
-                            <input [(ngModel)]="filterString" class="input" type="text" placeholder="Find a repository" name="filter"
-                                (keydown.enter)="applyFilter()" (keydown.esc)="removeFilter()">
-                        </div>
-                        <div class="control">
-                            <a class="button is-info" (click)="applyFilter()">
-                            Keresés
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="level-item">
-                    <div *ngIf="applieadFilter">
-                        szűrő:
-                        <span class="tag is-primary is-light">
-                            {{applieadFilter}}
-                            <button class="delete is-small" (click)="removeFilter()"></button>
-                        </span>
-                    </div>
+                    <app-filter (filter)="applyFilter($event)"></app-filter>
                 </div>
             </div>
         </div>
-        <table class="table is-striped is-fullwidth">
+        <app-table #table [dataSource]="customers" [filter]="filter">
             <thead>
                 <tr>
                     <th>Név</th>
@@ -46,17 +27,16 @@
                     <th>Adószám</th>
                 </tr>
             </thead>
-            <tbody *ngIf="customers; else loading">
-                <tr *ngFor="let customer of customers.display()">
+            <tbody>
+                <tr *ngFor="let customer of table.display">
                     <td><a [routerLink]="['.', customer.id]">{{customer.name || "-"}}</a></td>
                     <td>{{customer.email}}</td>
                     <td>{{customer.address.zip}} {{customer.address.location}}, {{customer.address.address}}</td>
                     <td>{{customer.tax_number || "-"}}</td>
                 </tr>
             </tbody>
-            <ng-template #loading>Loading..</ng-template>
-        </table>
-        <pagination *ngIf="customers" [(data)]="customers" [count]="20"></pagination>
+        </app-table>
+        <!-- <pagination *ngIf="customers" [(data)]="customers" [count]="20"></pagination> -->
             </div>
         </div>
     </div>

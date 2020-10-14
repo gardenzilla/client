@@ -33,12 +33,13 @@ import { PosComponent } from './pos/pos.component';
 import { PosLayoutComponent } from './layout/pos-layout/pos-layout.component';
 import { StockComponent } from './stock/stock.component';
 import { ProductComponent } from './product/product.component';
+import { HelloComponent } from './partial/hello/hello.component';
 
 const routes: Routes = [
   {
     path: 'pos', component: LayoutComponent, canActivateChild: [AuthGuard], children: [
       { path: '', component: PosComponent, data: { title: "POS" } }
-    ]
+    ],
   },
   {
     path: 'product', component: LayoutComponent, canActivateChild: [AuthGuard], children: [
@@ -49,6 +50,9 @@ const routes: Routes = [
     path: '', component: LayoutComponent, canActivateChild: [AuthGuard], children: [
       {
         path: '', component: DashboardComponent,
+      },
+      {
+        path: 'hello', component: HelloComponent
       },
       { path: 'stock', component: StockComponent, data: { title: 'Raktár', breadcrumb: 'Raktár' } },
       {

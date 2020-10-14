@@ -1,4 +1,14 @@
-<p>hello works!</p>
-<p class="subtitle">Counter is {{counter}}</p>
-<button class="button" (click)="counter = counter + 1">+</button>
-<button class="button" (click)="counter = counter - 1">-</button>
+<app-table #table [dataSource]="data">
+    <thead>
+        <tr>
+            <th>Név</th>
+            <th>Kor</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let customer of table.dataSource">
+            <td>{{customer.name}}</td>
+            <td>{{customer.age}}</td>
+        </tr>
+    </tbody>
+</app-table>

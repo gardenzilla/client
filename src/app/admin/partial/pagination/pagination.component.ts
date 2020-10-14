@@ -44,5 +44,4 @@ export class PaginationComponent implements OnInit {
   ngOnDestroy() {
     this.routeSubscription.unsubscribe();
   }
-
 }

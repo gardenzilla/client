@@ -45,6 +45,8 @@ import { ProductComponent } from './product/product.component';
 import { HelloComponent } from './partial/hello/hello.component';
 import { ErrorComponent } from './partial/error/error.component';
 import { SnackBarComponent } from './partial/snack-bar/snack-bar.component';
+import { TableComponent } from './partial/table/table.component';
+import { FilterComponent } from './partial/filter/filter.component';
 
 @NgModule({
   declarations: [
@@ -88,6 +90,8 @@ import { SnackBarComponent } from './partial/snack-bar/snack-bar.component';
     CustomerNewComponent,
     CustomerDetailComponent,
     SnackBarComponent,
+    TableComponent,
+    FilterComponent,
   ],
   imports: [
     ChartsModule,
