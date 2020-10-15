@@ -1,4 +1,4 @@
-<div class="buttons has-addons is-centered" *ngIf="(_data.pages().length > 1) && !offline" [class.are-small]="isSmall">
+<!-- <div class="buttons has-addons is-centered" *ngIf="(_data.pages().length > 1) && !offline" [class.are-small]="isSmall">
     <a class="button" [routerLink]="['./']" [queryParams]="{page: _data.getPreviousPage()}" queryParamsHandling="merge"
         *ngIf="!isCompact">Előző</a>
     <ng-container *ngFor="let page of _data.pages()">
@@ -14,4 +14,21 @@
         <a class="button" (click)="_data.navigateTo(page)" [class.is-info]="_data.getCurrentPage() == page">{{page}}</a>
     </ng-container>
     <a class="button" (click)="_data.back()" *ngIf="!isCompact">Következő</a>
+</div> -->
+<div class="level">
+    <div class="level-right">
+        <div class="level-item">
+            <input type="text" class="input is-small" name="pageSize" [(ngModel)]="pageSize" (document:keyup.enter)="resizePage()">
+        </div>
+        <div class="level-item">
+            <div class="buttons has-addons is-centered" *ngIf="(pageCount > 1)">
+                <a class="button is-small" (click)="goto(previousPage)">Előző</a>
+                <ng-container *ngFor="let page of pages">
+                    <a class="button is-small" (click)="goto(page)"
+                        [class.is-info]="currentPage == page">{{page}}</a>
+                </ng-container>
+                <a class="button is-small" (click)="goto(nextPage)">Következő</a>
+            </div>
+        </div>
+    </div>
 </div>

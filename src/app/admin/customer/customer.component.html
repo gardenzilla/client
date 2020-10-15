@@ -3,40 +3,78 @@
         <div class="columns">
             <div class="column is-12">
                 <p class="title">Vásárlóink</p>
-        <div class="level">
-            <div class="level-left">
-                <div class="level-item">
-                    <a class="button is-rounded" [routerLink]="['new']">
-                        <span class="icon">
-                        <i class="fas fa-plus"></i>
-                        </span>
-                        <span>Új vásárló</span>
-                    </a>
+                <div class="level">
+                    <div class="level-left">
+                        <div class="level-item">
+                            <a class="button is-rounded" [routerLink]="['new']">
+                                <span class="icon">
+                                <i class="fas fa-plus"></i>
+                                </span>
+                                <span>Új vásárló</span>
+                            </a>
+                        </div>
+                        <div class="level-item">
+                            <!-- <app-filter (filter)="applyFilter($event)"></app-filter> -->
+                            <div class="field has-addons">
+                                <div class="control">
+                                    <input [(ngModel)]="filterString" class="input" type="text" placeholder="Find a repository" name="filter"
+                                        (keydown.enter)="applyFilter()" (keydown.esc)="removeFilter()">
+                                </div>
+                                <div class="control">
+                                    <a class="button is-info" (click)="applyFilter()">
+                                    Keresés
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="level-item">
+                            <div *ngIf="filter">
+                                szűrő:
+                                <span class="tag is-primary is-light">
+                                    {{filterString}}
+                                    <button class="delete is-small" (click)="removeFilter()"></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="level-item">
-                    <app-filter (filter)="applyFilter($event)"></app-filter>
-                </div>
-            </div>
-        </div>
-        <app-table #table [dataSource]="customers" [filter]="filter">
-            <thead>
-                <tr>
-                    <th>Név</th>
-                    <th>Email</th>
-                    <th>Cím</th>
-                    <th>Adószám</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let customer of table.display">
-                    <td><a [routerLink]="['.', customer.id]">{{customer.name || "-"}}</a></td>
-                    <td>{{customer.email}}</td>
-                    <td>{{customer.address.zip}} {{customer.address.location}}, {{customer.address.address}}</td>
-                    <td>{{customer.tax_number || "-"}}</td>
-                </tr>
-            </tbody>
-        </app-table>
-        <!-- <pagination *ngIf="customers" [(data)]="customers" [count]="20"></pagination> -->
+                <!-- <app-table #table [dataSource]="customers" [filter]="filter">
+                    <thead>
+                        <tr>
+                            <th>Név</th>
+                            <th>Email</th>
+                            <th>Cím</th>
+                            <th>Adószám</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let customer of table.display">
+                            <td><a [routerLink]="['.', customer.id]">{{customer.name || "-"}}</a></td>
+                            <td>{{customer.email}}</td>
+                            <td>{{customer.address.zip}} {{customer.address.location}}, {{customer.address.address}}</td>
+                            <td>{{customer.tax_number || "-"}}</td>
+                        </tr>
+                    </tbody>
+                </app-table> -->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Név</th>
+                            <th>Email</th>
+                            <th>Cím</th>
+                            <th>Adószám</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let customer of customers.display$ | async">
+                            <td><a [routerLink]="['.', customer.id]">{{customer.name || "-"}}</a></td>
+                            <td>{{customer.email}}</td>
+                            <td>{{customer.address.zip}} {{customer.address.location}}, {{customer.address.address}}</td>
+                            <td>{{customer.tax_number || "-"}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <pagination [data]="customers" [handleUrl]="false"></pagination>
             </div>
         </div>
     </div>
