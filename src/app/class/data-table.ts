@@ -9,7 +9,7 @@ export class DataTable<T> {
     ) { }
     private currentPage: number = 1;
     setPageSize(to: number) {
-        this.pageSize = to;
+        this.pageSize = to > 0 ? to : 1;
         this.currentPage = 1;
         this.render();
     }
@@ -37,7 +37,8 @@ export class DataTable<T> {
             this.currentPage,
             this.getPreviousPage(),
             this.getNextPage(),
-            this.pageSize)
+            this.pageSize,
+            this.data.length)
         );
     }
 }
@@ -48,6 +49,7 @@ export class PaginationObject {
         public currentPage: number,
         public previousPage: number,
         public nextPage: number,
-        public pageSize: number
+        public pageSize: number,
+        public dataCount: number
     ) {}
 }

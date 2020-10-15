@@ -18,7 +18,10 @@
 <div class="level">
     <div class="level-right">
         <div class="level-item">
-            <input type="text" class="input is-small" name="pageSize" [(ngModel)]="pageSize" (document:keyup.enter)="resizePage()">
+            <p class="is-size-7">Összesen <strong>{{dataCount}} elem</strong></p>
+        </div>
+        <div class="level-item">
+            <input type="text" class="input is-small" name="pageSize" [(ngModel)]="_pageSize" (document:keyup.enter)="_resizePage()">
         </div>
         <div class="level-item">
             <div class="buttons has-addons is-centered" *ngIf="(pageCount > 1)">

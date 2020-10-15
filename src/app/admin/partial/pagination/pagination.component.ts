@@ -67,6 +67,8 @@ export class PaginationComponent implements OnInit {
   nextPage: number;
   pages: number[] = [];
   pageSize: number;
+  _pageSize: number;
+  dataCount: number;
 
   constructor(private router: Router, private route: ActivatedRoute) {}
 
@@ -82,6 +84,10 @@ export class PaginationComponent implements OnInit {
     this._controller.setPageSize(this.pageSize);
   }
 
+  _resizePage() {
+    this.router.navigate([], { queryParams: { size: this._pageSize }, queryParamsHandling: 'merge' });
+  }
+
   subscribePagination(): Subscription {
     return this._controller.paginationObject$.subscribe(controller => {
       this.pageCount = controller.pageCount;
@@ -89,6 +95,8 @@ export class PaginationComponent implements OnInit {
       this.previousPage = controller.previousPage;
       this.nextPage = controller.nextPage;
       this.pageSize = controller.pageSize;
+      this._pageSize = controller.pageSize;
+      this.dataCount = controller.dataCount;
       this.fillPages();
       if (this.handleUrl) {
         if (this.currentPage != this._queryParamPage) {
@@ -117,12 +125,24 @@ export class PaginationComponent implements OnInit {
         let tryint = parseInt(params.page);
         gotoPage = tryint != NaN ? tryint : 1;
       }
+      let _pageSize: number = this.pageSize;
+      if (params.size) {
+        let sizeint = parseInt(params.size);
+        if (sizeint != NaN) {
+          _pageSize = sizeint;
+        }
+      }
       this._queryParamPage = gotoPage;
       if (this.handleUrl) {
         if (this.currentPage != this._queryParamPage) {
           setTimeout(() => {
-            console.log(`Navigation requested. Current is ${this.currentPage}, query is ${this._queryParamPage}`);
             this._controller.navigateTo(this._queryParamPage);
+          });
+        }
+        if (this.pageSize != _pageSize) {
+          setTimeout(() => {
+            this.pageSize = _pageSize;
+            this.resizePage();
           });
         }
       }
