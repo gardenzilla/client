@@ -56,25 +56,28 @@
                         </tr>
                     </tbody>
                 </app-table> -->
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Név</th>
-                            <th>Email</th>
-                            <th>Cím</th>
-                            <th>Adószám</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let customer of customers.display$ | async">
-                            <td><a [routerLink]="['.', customer.id]">{{customer.name || "-"}}</a></td>
-                            <td>{{customer.email}}</td>
-                            <td>{{customer.address.zip}} {{customer.address.location}}, {{customer.address.address}}</td>
-                            <td>{{customer.tax_number || "-"}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <pagination [data]="customers" [handleUrl]="false"></pagination>
+                <ng-container *ngIf="customers; else loading">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Név</th>
+                                <th>Email</th>
+                                <th>Cím</th>
+                                <th>Adószám</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let customer of customers.display$ | async">
+                                <td><a [routerLink]="['.', customer.id]">{{customer.name || "-"}}</a></td>
+                                <td>{{customer.email}}</td>
+                                <td>{{customer.address.zip}} {{customer.address.location}}, {{customer.address.address}}</td>
+                                <td>{{customer.tax_number || "-"}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <pagination [data]="customers" [handleUrl]="true"></pagination>
+                </ng-container>
+                <ng-template #loading>Loading customers ...</ng-template>
             </div>
         </div>
     </div>

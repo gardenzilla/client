@@ -99,7 +99,7 @@ export class PaginationComponent implements OnInit {
   }
 
   setQueryParams(to: number) {
-    this.router.navigate(['./'], { queryParams: { page: to }, queryParamsHandling: 'merge' });
+    this.router.navigate([], { queryParams: { page: to }, queryParamsHandling: 'merge' });
   }
 
   goto(to: number) {
@@ -120,7 +120,10 @@ export class PaginationComponent implements OnInit {
       this._queryParamPage = gotoPage;
       if (this.handleUrl) {
         if (this.currentPage != this._queryParamPage) {
-          this._controller.navigateTo(this._queryParamPage);
+          setTimeout(() => {
+            console.log(`Navigation requested. Current is ${this.currentPage}, query is ${this._queryParamPage}`);
+            this._controller.navigateTo(this._queryParamPage);
+          });
         }
       }
     });

@@ -12,7 +12,7 @@ import { ErrorService } from 'src/app/services/error/error.service';
   styleUrls: ['./customer.component.css'],
 })
 export class CustomerComponent implements OnInit {
-  customers: DataTable<Customer> = new DataTable([], 2);
+  customers: DataTable<Customer>;
   filterString: string = '';
   filter: (c: Customer) => boolean;
 
@@ -30,7 +30,7 @@ export class CustomerComponent implements OnInit {
 
   ngOnInit() {
     this.customer_service.get_all().subscribe(res => {
-      this.customers.setData(res);
+      this.customers = new DataTable(res, 5);
     });
   }
 }
