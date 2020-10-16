@@ -11,6 +11,7 @@ export class DataTable<T> {
     private filteredData: T[];
     applyFilter(f: (c: T) => boolean) {
         this.filteredData = this.data.filter(f);
+        this.currentPage = 1;
         this.render();
     }
     setPageSize(to: number) {
