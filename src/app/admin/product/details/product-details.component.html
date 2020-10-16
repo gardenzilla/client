@@ -1,0 +1,58 @@
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column">
+                <h1 class="title">Termék adatai</h1>
+                <p class="subtitle">{{product.name}}</p>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column is-6">
+                <form>
+                    <div class="field">
+                        <label class="label">SKU</label>
+                        <div class="control">
+                            <input class="input static" type="text" name="sku"
+                                [(ngModel)]="product.sku" disabled>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Név</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Termék neve" name="name"
+                                [(ngModel)]="product.name" required autofocus>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Mennyiség</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Mennyiség" name="quantity"
+                                [(ngModel)]="product.quantity" required>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Mennyiségi egység</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Mennyiségi egység" name="unit"
+                                [(ngModel)]="product.unit" required>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <button-submit [callback]="submit" [snackBarMessage]="'Sikeresen mentve'" name="Mentés"></button-submit>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="column is-3">
+                <div class="notification">
+                    <p class="subtitle is-5">
+                        Termék adatok
+                    </p>
+                    Készítette: {{product.created_by}} <br>
+                    Készült: {{product.date_created | date}}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

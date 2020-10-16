@@ -1,0 +1,36 @@
+<section class="section">
+    <div class="container">
+        <div class="column is-6">
+            <h1 class="title">Új termék létrehozása</h1>
+            <form>
+                <div class="field">
+                    <label class="label">Termék neve</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Termék neve" name="name"
+                            [(ngModel)]="product.name" required appAutofocus>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Mennyiség</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Mennyiség" name="quantity"
+                            [(ngModel)]="product.quantity">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Mennyiségi egység</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Mennyiségi egység" name="unit"
+                            [(ngModel)]="product.unit">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <button-submit [name]="'Létrehozás'" [callback]="submit" [snackBarMessage]="'Vásárló létrehozva'"></button-submit>
+                        <!-- <button class="button" type="submit">Létrehozás</button> -->
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

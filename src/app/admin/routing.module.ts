@@ -34,6 +34,9 @@ import { PosLayoutComponent } from './layout/pos-layout/pos-layout.component';
 import { StockComponent } from './stock/stock.component';
 import { ProductComponent } from './product/product.component';
 import { HelloComponent } from './partial/hello/hello.component';
+import { ProductNew } from '../class/product';
+import { ProductNewComponent } from './product/new/product-new.component';
+import { ProductDetailsComponent } from './product/details/product-details.component';
 
 const routes: Routes = [
   {
@@ -43,7 +46,9 @@ const routes: Routes = [
   },
   {
     path: 'product', component: LayoutComponent, canActivateChild: [AuthGuard], children: [
-      { path: '', component: ProductComponent, data: { title: "Termékek" } }
+      { path: '', component: ProductComponent, data: { title: "Termékek" } },
+      { path: 'new', component: ProductNewComponent },
+      { path: ':sku', component: ProductDetailsComponent }
     ]
   },
   {

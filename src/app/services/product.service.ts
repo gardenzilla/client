@@ -1,21 +1,25 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Product, ProductNew } from '../class/product';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  // get_all(): Observable<P[]> {
-  //   return this.http.get<Profile[]>("/user/all");
-  // }
-  // get_by_id(id: string): Observable<Profile> {
-  //   return this.http.get<Profile>("/user/" + id);
-  // }
-  // new(customer: ProfileNew): Observable<Profile> {
-  //   return this.http.post<Profile>("/user/new", customer);
-  // }
+  get_all(): Observable<Product[]> {
+    return this.http.get<Product[]>("/product/all");
+  }
+  get_by_id(sku: string): Observable<Product> {
+    return this.http.get<Product>("/product/" + sku);
+  }
+  update_by_id(sku: string, product: Product): Observable<Product> {
+    return this.http.put<Product>(`/product/${sku}`, product);
+  }
+  new(customer: ProductNew): Observable<Product> {
+    return this.http.post<Product>("/product/new", customer);
+  }
 }

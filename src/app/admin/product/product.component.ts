@@ -6,6 +6,10 @@ import { Observable, from, interval, of, BehaviorSubject, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ModalComponent } from '../partial/modal/modal.component';
 import { ElementSchemaRegistry, NullTemplateVisitor } from '@angular/compiler';
+import { ProductService } from 'src/app/services/product.service';
+import { DataTable } from 'src/app/class/data-table';
+import { Product } from 'src/app/class/product';
+import { Data } from 'src/app/class/chart';
 
 @Component({
   selector: 'app-user',
@@ -14,7 +18,11 @@ import { ElementSchemaRegistry, NullTemplateVisitor } from '@angular/compiler';
 })
 export class ProductComponent implements OnInit {
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private title: Title) { }
-  ngOnInit() { }
+  products: DataTable<Product>;
+
+  constructor(private productService: ProductService) {}
+  ngOnInit() {
+    this.productService.get_all().subscribe(res => this.products = new DataTable(res));
+  }
 
 }
