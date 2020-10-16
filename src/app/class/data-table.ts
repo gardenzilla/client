@@ -6,8 +6,13 @@ export class DataTable<T> {
         private pageSize: number = 20,
         public display$: Subject<T[]> = new Subject(),
         public paginationObject$: Subject<PaginationObject> = new Subject()
-    ) { }
+    ) { this.filteredData = data; }
     private currentPage: number = 1;
+    private filteredData: T[];
+    applyFilter(f: (c: T) => boolean) {
+        this.filteredData = this.data.filter(f);
+        this.render();
+    }
     setPageSize(to: number) {
         this.pageSize = to > 0 ? to : 1;
         this.currentPage = 1;
@@ -15,6 +20,7 @@ export class DataTable<T> {
     }
     setData(data: T[]) {
         this.data = data;
+        this.filteredData = data;
         this.currentPage = 1;
         this.render();
     }
@@ -29,11 +35,11 @@ export class DataTable<T> {
     private getNextPage(): number { return this.currentPage < this.getPageCount() ? this.currentPage + 1 : this.currentPage; }
     private getPreviousPage(): number { return this.currentPage > 1 ? this.currentPage - 1 : this.currentPage; }
     private getPageCount(): number {
-        let calculatedValue = Math.ceil(this.data.length / this.pageSize);
+        let calculatedValue = Math.ceil(this.filteredData.length / this.pageSize);
         return calculatedValue == 0 ? 1 : calculatedValue;
     }
     private getDisplayData(): T[] {
-        return this.data.slice((this.currentPage - 1) * this.pageSize, this.currentPage * this.pageSize);
+        return this.filteredData.slice((this.currentPage - 1) * this.pageSize, this.currentPage * this.pageSize);
     }
     render() {
         this.display$.next(this.getDisplayData());
@@ -43,7 +49,7 @@ export class DataTable<T> {
             this.getPreviousPage(),
             this.getNextPage(),
             this.pageSize,
-            this.data.length)
+            this.filteredData.length)
         );
     }
 }

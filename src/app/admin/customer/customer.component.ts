@@ -13,24 +13,18 @@ import { ErrorService } from 'src/app/services/error/error.service';
 })
 export class CustomerComponent implements OnInit {
   customers: DataTable<Customer>;
-  filterString: string = '';
-  filter: (c: Customer) => boolean;
 
   constructor(private customer_service: CustomerService,
     private errorService: ErrorService) { }
 
-  applyFilter() {
-    this.filter = (c: Customer) => { return c.name.toLocaleLowerCase().includes(this.filterString); };
-  }
-
-  removeFilter() {
-    this.filter = null;
-    this.filterString = '';
+  applyFilter(name: string) {
+    let f = (c: Customer) => { return c.name.toLowerCase().includes(name); };
+    this.customers.applyFilter(f);
   }
 
   ngOnInit() {
     this.customer_service.get_all().subscribe(res => {
-      this.customers = new DataTable(res, 5);
+      this.customers = new DataTable(res, 20);
     });
   }
 }

@@ -20,10 +20,10 @@
         <p class="is-size-7">Összesen <strong>{{dataCount}} elem</strong>. {{pageCount}}/{{currentPage}}</p>
         <div class="buttons has-addons is-centered" *ngIf="(pageCount > 1)">
             <a class="button is-small" (click)="goto(previousPage)">Előző</a>
-            <ng-container *ngFor="let page of pages">
+            <!-- <ng-container *ngFor="let page of pages">
                 <a class="button is-small is-hidden-touch" (click)="goto(page)"
                     [class.is-info]="currentPage == page">{{page}}</a>
-            </ng-container>
+            </ng-container> -->
             <a class="button is-small" (click)="goto(nextPage)">Következő</a>
         </div>
     </div>
