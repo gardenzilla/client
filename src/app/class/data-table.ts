@@ -20,7 +20,12 @@ export class DataTable<T> {
     }
     goNext() { this.currentPage = this.getNextPage(); this.render(); }
     goBack() { this.currentPage = this.getPreviousPage(); this.render(); }
-    navigateTo(page: number) { if (page > 0 && page <= this.getPageCount()) { this.currentPage = page; this.render(); } }
+    navigateTo(page: number, size: number) {
+        this.pageSize = size;
+        if (page > 0 && page <= this.getPageCount()) {
+            this.currentPage = page; this.render();
+        }
+    }
     private getNextPage(): number { return this.currentPage < this.getPageCount() ? this.currentPage + 1 : this.currentPage; }
     private getPreviousPage(): number { return this.currentPage > 1 ? this.currentPage - 1 : this.currentPage; }
     private getPageCount(): number {
@@ -30,7 +35,7 @@ export class DataTable<T> {
     private getDisplayData(): T[] {
         return this.data.slice((this.currentPage - 1) * this.pageSize, this.currentPage * this.pageSize);
     }
-    private render() {
+    render() {
         this.display$.next(this.getDisplayData());
         this.paginationObject$.next(
             new PaginationObject(this.getPageCount(),

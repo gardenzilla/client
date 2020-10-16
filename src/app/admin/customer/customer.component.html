@@ -57,7 +57,7 @@
                     </tbody>
                 </app-table> -->
                 <ng-container *ngIf="customers; else loading">
-                    <table class="table">
+                    <table class="table is-fullwidth">
                         <thead>
                             <tr>
                                 <th>Név</th>
@@ -75,7 +75,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <pagination [data]="customers" [handleUrl]="true"></pagination>
+                    <pagination [data]="customers" [handleUrl]="false"></pagination>
                 </ng-container>
                 <ng-template #loading>Loading customers ...</ng-template>
             </div>
