@@ -4,6 +4,9 @@ import { Model } from 'src/app/class/model';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { HttpError } from 'src/app/class/http-error';
+import { Observable } from 'rxjs';
+import { UserService } from 'src/app/services/user.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-new',
@@ -12,7 +15,13 @@ import { HttpError } from 'src/app/class/http-error';
 })
 export class UserNewComponent implements OnInit {
 
-  user: Model<ProfileNew> = new Model<ProfileNew>(this.http, "/user/new", new ProfileNew());
+  user: ProfileNew = <ProfileNew>{};
+
+  submit = (): Observable<any> => {
+    return this.userService.new(this.user).pipe(
+      tap((newUser: ProfileNew) => this.router.navigateByUrl(`/user/${newUser.username}`))
+    );
+  }
 
   // submit() {
   //   this.http.post<ProfileNew>("/user/new", this.user.data).subscribe((user) => {
@@ -20,9 +29,13 @@ export class UserNewComponent implements OnInit {
   //   }, (err) => this.e.error = err)
   // }
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit() {
+    this.user.name = '';
+    this.user.email = '';
+    this.user.phone = '';
+    this.user.username = '';
   }
 
 }

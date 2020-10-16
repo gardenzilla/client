@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Profile } from 'src/app/class/profile';
 import { HttpClient } from '@angular/common/http';
+import { DataTable } from 'src/app/class/data-table';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-user',
@@ -8,13 +10,11 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-  users: Profile[] = [];
+  users: DataTable<Profile>;
 
-  constructor(private http: HttpClient) { }
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
-    this.http.get<Profile[]>("/user/all").subscribe((val) => {
-      this.users = val;
-    });
+    this.userService.get_all().subscribe((res) => this.users = new DataTable(res));
   }
 }

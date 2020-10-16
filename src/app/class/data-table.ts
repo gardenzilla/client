@@ -6,7 +6,7 @@ export class DataTable<T> {
         private pageSize: number = 20,
         public display$: Subject<T[]> = new Subject(),
         public paginationObject$: Subject<PaginationObject> = new Subject()
-    ) { this.filteredData = data; }
+    ) { this.filteredData = data; this.render(); }
     private currentPage: number = 1;
     private filteredData: T[];
     applyFilter(f: (c: T) => boolean) {

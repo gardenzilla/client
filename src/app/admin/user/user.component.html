@@ -31,28 +31,32 @@
 
         <hr>
 
-        <table class="table is-striped">
-            <thead>
-                <tr>
-                    <th class="is-narrow">ID</th>
-                    <th class="is-narrow-mobile">Név</th>
-                    <th class="is-narrow is-hidden-mobile">Email</th>
-                    <th class="is-narrow is-hidden-mobile">Telefon</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let user of users; index as i;">
-                    <td>
-                        <a [routerLink]="['./', user.username]" tabindex="0">{{user.username}}</a>
-                    </td>
-                    <td>
-                        {{user.name}}
-                    </td>
-                    <td class="is-hidden-mobile">{{user.email}}</td>
-                    <td class="is-hidden-mobile">{{user.phone}}</td>
-                </tr>
-            </tbody>
-        </table>
+        <ng-container *ngIf="users; else loading">
+            <table class="table is-striped">
+                <thead>
+                    <tr>
+                        <th class="is-narrow">ID</th>
+                        <th class="is-narrow-mobile">Név</th>
+                        <th class="is-narrow is-hidden-mobile">Email</th>
+                        <th class="is-narrow is-hidden-mobile">Telefon</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of users.display$ | async; index as i;">
+                        <td>
+                            <a [routerLink]="['./', user.username]" tabindex="0">{{user.username}}</a>
+                        </td>
+                        <td>
+                            {{user.name}}
+                        </td>
+                        <td class="is-hidden-mobile">{{user.email}}</td>
+                        <td class="is-hidden-mobile">{{user.phone}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <pagination [data]="users"></pagination>
+        </ng-container>
+        <ng-template #loading>Loading..</ng-template>
 
     </div>
 </section>
