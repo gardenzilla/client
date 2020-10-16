@@ -18,6 +18,7 @@ import { RouterParamService } from './services/router-param/router-param.service
 import { ModalService } from './services/modal/modal.service';
 import { CustomerService } from './services/customer/customer.service';
 import { UserService } from './services/user.service';
+import { ProductService } from './services/product.service';
 import { ProfileService } from './services/profile/profile.service';
 import { ErrorService } from './services/error/error.service';
 import { AutofocusDirective } from './autofocus.directive';
@@ -48,6 +49,7 @@ import { SnackBarService } from './services/snack-bar/snack-bar.service';
     ModalService,
     CustomerService,
     UserService,
+    ProductService,
     ProfileService,
     ErrorService,
     SnackBarService],
