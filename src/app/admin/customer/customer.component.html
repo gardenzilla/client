@@ -18,10 +18,10 @@
                             <div class="field has-addons">
                                 <div class="control">
                                     <input #filter class="input" type="text" placeholder="Vásárló keresése" name="filter"
-                                        (keydown.enter)="applyFilter(filter.value)" (document:keyup.esc)="filter.value=''; applyFilter(filter.value)">
+                                        (keydown.enter)="applyFilter(filter.value)" (keyup.esc)="filter.value=''; applyFilter(filter.value)">
                                 </div>
                                 <div class="control">
-                                    <a class="button is-info" (click)="applyFilter()">
+                                    <a class="button is-info" (click)="applyFilter(filter.value)">
                                     Keresés
                                     </a>
                                 </div>
