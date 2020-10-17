@@ -39,6 +39,7 @@ export class SnackBarComponent implements OnInit {
   // state: string = 'out';
   subscription: Subscription;
   displaySubscription: number;
+  sameCounter: number = 0;
 
   ngOnInit() {
     this.subscription = this.snackService.snackMessage$.subscribe(msg => this.displayMessage(msg));
@@ -48,11 +49,13 @@ export class SnackBarComponent implements OnInit {
   displayMessage(msg: string) {
     if (this.displaySubscription) {
       clearTimeout(this.displaySubscription);
+      this.sameCounter = this.sameCounter + 1;
     }
     this.text = msg;
     this.displaySubscription = setTimeout(() => {
       this.text = null;
-    }, 400);
+      this.sameCounter = 0;
+    }, 800);
   }
 
   ngOnDestroy() {

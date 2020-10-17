@@ -1,1 +1,4 @@
-<div *ngIf="text" class="notification is-success">{{text}}</div>
+<ng-container [ngSwitch]="sameCounter > 1" *ngIf="text">
+    <div class="notification is-success" *ngSwitchCase="false">{{text}}</div>
+    <div class="notification is-success" *ngSwitchCase="true">{{text}} ({{sameCounter}})</div>
+</ng-container>
