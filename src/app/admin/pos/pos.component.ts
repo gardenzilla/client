@@ -1,12 +1,8 @@
 import { Component, OnInit, HostListener, ViewChild, ElementRef, ComponentRef, ViewChildren, Host } from '@angular/core';
-import { Profile } from 'src/app/class/profile';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { Observable, from, interval, of, BehaviorSubject, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { ModalComponent } from '../partial/modal/modal.component';
-import { ElementSchemaRegistry, NullTemplateVisitor } from '@angular/compiler';
 
 @Component({
   selector: 'app-user',

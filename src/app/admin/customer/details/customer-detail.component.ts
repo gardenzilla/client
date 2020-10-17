@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Model } from 'src/app/class/model';
-import { Profile } from 'src/app/class/profile';
-import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Address, Customer, CustomerNew } from 'src/app/interface/customer';
-import { CustomerService } from 'src/app/services/customer/customer.service';
+import { Address, Customer, CustomerNew, CustomerService } from 'src/app/services/customer/customer.service';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 

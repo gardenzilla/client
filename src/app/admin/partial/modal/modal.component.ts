@@ -1,5 +1,4 @@
-import { Component, Input, OnInit, OnChanges, HostListener } from '@angular/core';
-import { Model } from 'src/app/class/model';
+import { Component, Input, OnChanges, HostListener } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 @Component({

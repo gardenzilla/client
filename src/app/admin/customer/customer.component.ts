@@ -1,9 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Data } from 'src/app/class/chart';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataTable } from 'src/app/class/data-table';
-import { Customer } from 'src/app/interface/customer';
-import { CustomerService } from 'src/app/services/customer/customer.service';
+import { Customer, CustomerService } from 'src/app/services/customer/customer.service';
 import { ErrorService } from 'src/app/services/error/error.service';
 
 @Component({

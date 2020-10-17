@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Product } from 'src/app/class/product';
-import { ProductService } from 'src/app/services/product.service';
+import { Product, ProductService } from 'src/app/services/product.service';
 
 @Component({
   selector: 'app-details',

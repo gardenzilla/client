@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Profile } from 'src/app/class/profile';
-import { HttpClient } from '@angular/common/http';
 import { DataTable } from 'src/app/class/data-table';
+import { Profile } from 'src/app/services/profile/profile.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({

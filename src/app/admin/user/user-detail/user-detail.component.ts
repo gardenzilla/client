@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Model } from 'src/app/class/model';
-import { Profile } from 'src/app/class/profile';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Profile } from 'src/app/services/profile/profile.service';
+import { UserService } from 'src/app/services/user.service';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-detail',
@@ -12,16 +14,19 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class UserDetailComponent implements OnInit {
 
   id: string = this.route.snapshot.paramMap.get("user_id");
-  user: Model<Profile> = new Model<Profile>(this.http, "/user/" + this.id, new Profile());
+  user: Profile = new Profile();
 
-  test: number = new Date().getTime();
-
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) {
+  constructor(private userService: UserService, private route: ActivatedRoute, private router: Router) {
   }
 
+  // submit = (): Observable<any> => {
+  //   return this.userService.update_by_id(this.id, this.user).pipe(
+  //     tap(res => this.user = res)
+  //   );
+  // }
+
   ngOnInit() {
-    new Model<Profile>(this.http, "/user/" + this.id, new Profile());
-    this.http.get<Profile>("/user/" + this.id).subscribe((val) => this.user.data = val);
+    this.userService.get_by_id(this.id).subscribe(res => this.user = res);
   }
 
 }

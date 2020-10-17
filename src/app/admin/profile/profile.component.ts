@@ -1,14 +1,8 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { ErrorResponse } from 'src/app/class/error-response';
-import { HttpClient } from '@angular/common/http';
-import { Profile } from 'src/app/class/profile';
 import { NewPassword } from 'src/app/class/new-password';
 import { LoginService } from 'src/app/services/login/login.service';
-import { Model } from 'src/app/class/model';
 import { Observable } from 'rxjs';
-import { ButtonSubmitComponent } from '../partial/button-submit/button-submit.component';
-import { ProfileService } from 'src/app/services/profile/profile.service';
-import { HttpError } from 'src/app/interface/error';
+import { Profile, ProfileService } from 'src/app/services/profile/profile.service';
 import { tap } from 'rxjs/operators';
 
 @Component({
@@ -18,8 +12,8 @@ import { tap } from 'rxjs/operators';
 })
 export class ProfileComponent implements OnInit {
 
-  profile: Profile = <Profile>{};
-  password: NewPassword = <NewPassword>{};
+  profile: Profile = new Profile();
+  password: NewPassword = new NewPassword();
 
   constructor(private profileService: ProfileService, private loginService: LoginService) {
     profileService.get().subscribe(res => this.profile = res);
@@ -33,7 +27,5 @@ export class ProfileComponent implements OnInit {
     return this.profileService.updatePassword(this.password);
   }
 
-  ngOnInit() {
-    // this.profile.status.subscribe((val) => this.loginService.setUserName(val.name));
-  }
+  ngOnInit() {}
 }
