@@ -7,6 +7,7 @@
 
 @import "../node_modules/bulma/sass/utilities/_all.sass";
 
+$body-font-size: 0.9em;
 $widescreen-enabled: true;
 $fullhd-enabled: true;
 
@@ -26,64 +27,64 @@ $modal-background-background-color: bulmaRgba($scheme-invert, 0.7);
 @import "../node_modules/bulma/bulma.sass";
 
 .modal-wide {
-    .modal-card {
-        // width: $modal-content-width;
-        @include desktop {
-            width: 1200px !important;
-        }
+  .modal-card {
+    // width: $modal-content-width;
+    @include desktop {
+      width: 1200px !important;
     }
+  }
 }
 
 .container.is-narrow {
-    width: $desktop !important;
+  width: $desktop !important;
 }
 
 .is-ok {
-    color: transparent !important;
-    animation-name: save-background;
-    animation-duration: 1.5s;
+  color: transparent !important;
+  animation-name: save-background;
+  animation-duration: 1.5s;
 }
 
 .is-ok:after {
-    color: $info;
-    font-family: "Font Awesome 5 Free";
-    content: "";
-    position: absolute;
-    font-weight: 100;
-    animation-name: save-text;
-    animation-duration: 1.5s;
+  color: $info;
+  font-family: "Font Awesome 5 Free";
+  content: "";
+  position: absolute;
+  font-weight: 100;
+  animation-name: save-text;
+  animation-duration: 1.5s;
 }
 
 .is-ok:hover:after {
-    color: $button-text-hover-color;
+  color: $button-text-hover-color;
 }
 
 .is-ok.is-outlined:after {
-    color: $info;
+  color: $info;
 }
 
 .is-ok.is-outlined:hover:after {
-    color: white;
+  color: white;
 }
 
 @keyframes save-background {
-    5% {
-        bacgkround-color: green;
-    }
-    90% {
-        background-color: $success;
-    }
+  5% {
+    bacgkround-color: green;
+  }
+  90% {
+    background-color: $success;
+  }
 }
 
 @keyframes save-text {
-    10% {
-        color: findColorInvert($info);
-    }
-    30% {
-        content: "\f164";
-    }
-    100% {
-        color: findColorInvert($info);
-        content: "\f164";
-    }
+  10% {
+    color: findColorInvert($info);
+  }
+  30% {
+    content: "\f164";
+  }
+  100% {
+    color: findColorInvert($info);
+    content: "\f164";
+  }
 }

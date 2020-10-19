@@ -31,6 +31,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { CashComponent } from './cash/cash.component';
 import { GzDatePipe } from '../pipes/gz-date.pipe';
 import { GzDateTimePipe } from '../pipes/gz-datetime.pipe';
+import { GzHufPipe } from '../pipes/gz-huf.pipe';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { GzDateTimePipe } from '../pipes/gz-datetime.pipe';
     DashboardComponent,
     CashComponent,
     GzDatePipe,
-    GzDateTimePipe
+    GzDateTimePipe,
+    GzHufPipe,
   ],
   imports: [
     ChartsModule,

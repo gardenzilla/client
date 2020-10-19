@@ -28,13 +28,13 @@
                 <!-- <a class="navbar-item is-hidden-mobile" routerLink="/pos">
                     <span class="tag is-warning">POS</span>
                 </a> -->
-                <a class="navbar-item" routerLink="/product">
+                <a class="navbar-item" routerLink="/product" routerLinkActive="active">
                     Termékek
                 </a>
-                <a class="navbar-item" routerLink="/customer">
+                <a class="navbar-item" routerLink="/customer" routerLinkActive="active">
                     Vásárlók
                 </a>
-                <a class="navbar-item" routerLink="/cash">
+                <a class="navbar-item" routerLink="/cash" routerLinkActive="active">
                     Pénztár
                 </a>
                 <!-- <a class="navbar-item" routerLink="/">
@@ -103,7 +103,7 @@
                         <div class="pix"></div>
                     </div>
                 </a> -->
-                <a class="navbar-item" routerLink='/profile'>{{username}}</a>
+                <a class="navbar-item" routerLink='/profile' routerLinkActive="active">{{username}}</a>
                 <div class="navbar-item">
                     <a (click)="logout()" class="has-text-grey">
                         <span class="icon">
