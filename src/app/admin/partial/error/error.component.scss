@@ -1,0 +1,13 @@
+@use "bulma/sass/utilities/_all" as *;
+
+.modal {
+  @include until($desktop) {
+    .modal-card {
+      height: 100%;
+      max-height: calc(100vh - 70px);
+    }
+    .modal-card-head {
+      border-radius: 0px;
+    }
+  }
+}
