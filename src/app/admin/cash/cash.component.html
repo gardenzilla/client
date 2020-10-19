@@ -1,0 +1,39 @@
+<section class="section">
+    <div class="container">
+        <p class="title">Pénztár</p>
+        <div class="columns">
+            <div class="column is-9">
+                <table class="table is-fullwidth is-bordered">
+                    <thead>
+                        <tr class="has-background-light">
+                            <th>Azonosító</th>
+                            <th>Dátum</th>
+                            <th>Összeg</th>
+                            <th>Típus</th>
+                            <th>Hivatkozás</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of log">
+                            <td>{{item.id}}</td>
+                            <td>{{item.date | gzDateTime}}</td>
+                            <td>{{item.amount | number}} HUF</td>
+                            <td>{{item.kind}}</td>
+                            <td>{{item.reference}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="column is-3">
+                <p class="title is-6 is-spaced">Összesítő</p>
+                <p class="subtitle is-6">Egyenleg: 197.000 HUF
+                    <br>Napi árbevétel: 75.000 HUF
+                </p>
+                <div class="buttons has-addons">
+                    <button class="button is-info is-outlined">Pénz betétel</button>
+                    <button class="button is-info is-outlined">Pénz kivétel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

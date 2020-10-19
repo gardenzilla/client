@@ -17,6 +17,7 @@ import { HelloComponent } from './partial/hello/hello.component';
 import { ProductNewComponent } from './product/new/product-new.component';
 import { ProductDetailsComponent } from './product/details/product-details.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { CashComponent } from './cash/cash.component';
 
 const routes: Routes = [
   {
@@ -35,6 +36,9 @@ const routes: Routes = [
     path: '', component: LayoutComponent, canActivateChild: [AuthGuard], children: [
       {
         path: '', component: DashboardComponent,
+      },
+      {
+        path: 'cash', component: CashComponent
       },
       {
         path: 'hello', component: HelloComponent

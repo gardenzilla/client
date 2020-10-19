@@ -28,6 +28,9 @@ import { FilterComponent } from './partial/filter/filter.component';
 import { ProductNewComponent } from './product/new/product-new.component';
 import { ProductDetailsComponent } from './product/details/product-details.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { CashComponent } from './cash/cash.component';
+import { GzDatePipe } from '../pipes/gz-date.pipe';
+import { GzDateTimePipe } from '../pipes/gz-datetime.pipe';
 
 @NgModule({
   declarations: [
@@ -54,6 +57,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     ProductNewComponent,
     ProductDetailsComponent,
     DashboardComponent,
+    CashComponent,
+    GzDatePipe,
+    GzDateTimePipe
   ],
   imports: [
     ChartsModule,
