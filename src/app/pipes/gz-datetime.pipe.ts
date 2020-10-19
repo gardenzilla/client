@@ -17,7 +17,6 @@ const monthNames = ["január", "február", "március", "április", "május", "j�
 export class GzDateTimePipe implements PipeTransform {
     transform(dt: any): string {
         let date = new Date(dt);
-        console.log(todayDistance(date));
         let d: string;
         switch(todayDistance(date)) {
             case 0: d = 'ma'; break;

@@ -15,7 +15,7 @@ export class CustomerComponent implements OnInit {
     private errorService: ErrorService) { }
 
   applyFilter(name: string) {
-    let f = (c: Customer) => { return c.name.toLowerCase().includes(name); };
+    let f = (c: Customer) => { return c.name.toLowerCase().includes(name.toLocaleLowerCase()); };
     this.customers.applyFilter(f);
   }
 
