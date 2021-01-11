@@ -25,6 +25,7 @@ export class ProfileService {
 
 export class Profile {
   constructor(
+      public uid: number = 0,
       public username: string = "",
       public name: string = "",
       public email: string = "",

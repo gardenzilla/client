@@ -18,10 +18,10 @@
                             <div class="field has-addons">
                                 <div class="control">
                                     <input #filter class="input" type="text" placeholder="Vásárló keresése" name="filter"
-                                        (keydown.enter)="applyFilter(filter.value)" (keyup.esc)="filter.value=''; applyFilter(filter.value)">
+                                        (keyup.esc)="query=''; find()" (keyup.enter)="find()" [(ngModel)]="query">
                                 </div>
                                 <div class="control">
-                                    <a class="button is-info" (click)="applyFilter(filter.value)">
+                                    <a class="button is-info" (click)="find()">
                                     Keresés
                                     </a>
                                 </div>
@@ -56,7 +56,7 @@
                         </tr>
                     </tbody>
                 </app-table> -->
-                <ng-container *ngIf="customers; else loading">
+                <ng-container *ngIf="source; else loading">
                     <table class="table is-fullwidth">
                         <thead>
                             <tr>
@@ -67,15 +67,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let customer of customers.display$ | async">
+                            <tr *ngFor="let customer of source">
                                 <td><a [routerLink]="['.', customer.id]">{{customer.name || "-"}}</a></td>
                                 <td>{{customer.email}}</td>
-                                <td>{{customer.address.zip}} {{customer.address.location}}, {{customer.address.address}}</td>
+                                <td>{{customer.address_zip}} {{customer.address_location}}, {{customer.address_street}}</td>
                                 <td>{{customer.tax_number || "-"}}</td>
                             </tr>
                         </tbody>
                     </table>
-                    <pagination [data]="customers" [handleUrl]="false"></pagination>
+                    <div class="columns">
+                        <div class="column has-text-centered" *ngIf="source_ids.length > source.length">
+                            <p class="is-size-7">{{source_ids.length}} / {{source.length}} elem</p>
+                            <a class="button is-info is-outlined is-small" (click)="load()">További {{source_ids.length - source.length > page_count ? page_count : source_ids.length - source.length}} elem betöltése</a>
+                        </div>
+                    </div>
+                    <!-- <pagination [data]="customers" [handleUrl]="false"></pagination> -->
                 </ng-container>
                 <ng-template #loading>Loading customers ...</ng-template>
             </div>

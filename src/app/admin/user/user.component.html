@@ -35,7 +35,6 @@
             <table class="table is-striped">
                 <thead>
                     <tr>
-                        <th class="is-narrow">ID</th>
                         <th class="is-narrow-mobile">Név</th>
                         <th class="is-narrow is-hidden-mobile">Email</th>
                         <th class="is-narrow is-hidden-mobile">Telefon</th>
@@ -44,10 +43,7 @@
                 <tbody>
                     <tr *ngFor="let user of users.display$ | async; index as i;">
                         <td>
-                            <a [routerLink]="['./', user.username]" tabindex="0">{{user.username}}</a>
-                        </td>
-                        <td>
-                            {{user.name}}
+                            <a [routerLink]="['./', user.uid]" tabindex="0">{{user.name}}</a>
                         </td>
                         <td class="is-hidden-mobile">{{user.email}}</td>
                         <td class="is-hidden-mobile">{{user.phone}}</td>

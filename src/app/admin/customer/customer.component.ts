@@ -9,19 +9,39 @@ import { ErrorService } from 'src/app/services/error/error.service';
   styleUrls: ['./customer.component.css'],
 })
 export class CustomerComponent implements OnInit {
-  customers: DataTable<Customer>;
+  source_ids: number[] = [];
+  source: Customer[] = [];
+  page_count: number = 15;
+  current_page: number = 0;
+  query: string = "";
 
-  constructor(private customer_service: CustomerService,
+  constructor(
+    private customer_service: CustomerService,
     private errorService: ErrorService) { }
-
-  applyFilter(name: string) {
-    let f = (c: Customer) => { return c.name.toLowerCase().includes(name.toLocaleLowerCase()); };
-    this.customers.applyFilter(f);
-  }
 
   ngOnInit() {
     this.customer_service.get_all().subscribe(res => {
-      this.customers = new DataTable(res, 20);
+      this.source_ids = res;
+      this.load();
     });
+  }
+
+  find() {
+    this.current_page = 0;
+    this.source = [];
+    this.customer_service.find(this.query).subscribe(res => {
+      this.source_ids = res;
+      this.load();
+    });
+  }
+
+  load() {
+    this.current_page++;
+    this.customer_service
+      .get_bulk(this.source_ids.slice(
+        (this.current_page - 1) * this.page_count, this.page_count * this.current_page))
+      .subscribe(res => {
+        this.source.push(...res);
+      });
   }
 }

@@ -17,7 +17,7 @@ export class ProductNewComponent implements OnInit {
 
   submit = (): Observable<any> => {
     return this.productService.new(this.product).pipe(
-      tap((res: Product) => this.router.navigateByUrl(`/product/${res.sku}`))
+      tap((res: Product) => this.router.navigateByUrl(`/product/${res.product_id}`))
     );
   };
 

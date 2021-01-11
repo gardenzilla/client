@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Product, ProductService } from 'src/app/services/product.service';
+import { Sku, SkuNew, SkuService } from 'src/app/services/sku.service';
+import { Price, PriceHistory, PriceService } from 'src/app/services/price.service';
 
 @Component({
   selector: 'app-details',
@@ -11,20 +13,100 @@ import { Product, ProductService } from 'src/app/services/product.service';
 })
 export class ProductDetailsComponent implements OnInit {
 
-  sku: string = this.route.snapshot.paramMap.get("sku");
-  product: Product = <Product>{};
+  sku: number = +this.route.snapshot.paramMap.get("sku");
+  product: Product = new Product();
+  skus: Sku[] = [];
+  prices: any = {};
+  sku_update: Sku = new Sku();
+  new_price_model: Price = new Price();
+  price_history: PriceHistory[] = [];
+  _new_sku: SkuNew = new SkuNew();
+  _selected_price_sku_name: string = '';
 
-  constructor(private productService: ProductService, private route: ActivatedRoute, private router: Router) {
+  constructor(
+    private productService: ProductService,
+    private skuService: SkuService,
+    private price_service: PriceService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
   }
 
   submit = (): Observable<any> => {
-    return this.productService.update_by_id(this.sku, this.product).pipe(
+    return this.productService.update(this.sku, this.product).pipe(
       tap(res => this.product = res)
     );
   };
 
+  setSkuUpdate(sku: Sku) {
+    this.sku_update = sku;
+  }
+
+  updateSku = (): Observable<any> => {
+    return this.skuService.update(this.sku_update.sku, this.sku_update).pipe(
+      tap(res => {
+        let i = this.skus.findIndex(item => item.sku == this.sku_update.sku);
+        this.skus.splice(i, 1, res);
+      })
+    );
+  }
+
+  createSku = (): Observable<any> => {
+    this._new_sku.product_id = this.product.product_id;
+    return this.skuService.new(this._new_sku).pipe(
+      tap(res => {
+        this.skus.push(res);
+      })
+    );
+  }
+
+  setNewPrice = (): Observable<any> => {
+    return this.price_service.new(this.new_price_model).pipe(
+      tap(res => {
+        this.prices[this.new_price_model.sku] = res
+        this.loadPriceHistory(this.new_price_model.sku);
+      })
+    );
+  }
+
+  loadPrice(sku: number) {
+    if (this.prices[sku]) {
+      this.new_price_model = this.prices[sku];
+    } else {
+      this.new_price_model = new Price(sku);
+    }
+  }
+
+  loadPriceHistory(sku: number) {
+    this.price_service.get_price_history(sku).subscribe(res => this.price_history = res.reverse());
+  }
+
+  helperSetPriceGross() {
+    if (this.new_price_model.vat == '27') {
+      this.new_price_model.price_gross_retail = Math.round(this.new_price_model.price_net_retail * 1.27);
+    }
+  }
+
+  helperSetPriceNet() {
+    if (this.new_price_model.vat == '27') {
+      this.new_price_model.price_net_retail = Math.round(this.new_price_model.price_gross_retail / 1.27);
+    }
+  }
+
   ngOnInit(): void {
-    this.productService.get_by_id(this.sku).subscribe(res => this.product = res);
+    this.productService.get_by_id(this.sku).subscribe(res => {
+      this.product = res;
+      this.skuService.get_bulk(this.product.skus).subscribe(res => {
+        this.skus = res.sort((a, b) => +a.quantity - +b.quantity);
+        this.price_service
+          .get_bulk(this.product.skus)
+          .subscribe(res => {
+            res.forEach(price => {
+              this.prices[price.sku] = price;
+            })
+          });
+      });
+    });
   }
 
 }

@@ -19,6 +19,8 @@ import { ModalService } from './services/modal/modal.service';
 import { CustomerService } from './services/customer/customer.service';
 import { UserService } from './services/user.service';
 import { ProductService } from './services/product.service';
+import { SkuService } from './services/sku.service';
+import { PriceService } from './services/price.service';
 import { ProfileService } from './services/profile/profile.service';
 import { ErrorService } from './services/error/error.service';
 import { AutofocusDirective } from './autofocus.directive';
@@ -50,6 +52,8 @@ import { SnackBarService } from './services/snack-bar/snack-bar.service';
     CustomerService,
     UserService,
     ProductService,
+    SkuService,
+    PriceService,
     ProfileService,
     ErrorService,
     SnackBarService],

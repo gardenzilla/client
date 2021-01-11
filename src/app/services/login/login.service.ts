@@ -3,6 +3,7 @@ import { Subject, Observable } from 'rxjs';
 import { DataService } from '../data/data.service';
 import { Ok, Err, Result } from 'ts-results';
 import { Token } from 'src/app/class/token';
+import { ProfileService } from '../profile/profile.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class LoginService {
 
   redirectUrl: string = '';
 
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService, private profileService: ProfileService) {
     // this.ping();
   }
 
@@ -40,7 +41,11 @@ export class LoginService {
   setToken(token: Token): Result<void, Error> {
     try {
       localStorage.setItem('token', token.token);
-      localStorage.setItem('username', token.username);
+      localStorage.setItem('uid', `${token.uid}`);
+      this.profileService.get().subscribe(res => {
+        localStorage.setItem('user_name', res.name);
+        this.getUserName();
+      });
       // Notify login subscribers
       // this.notifyLoginStatus(true);
       return Ok.EMPTY;
@@ -56,11 +61,7 @@ export class LoginService {
   }
 
   getUserName() {
-    if (localStorage.getItem('username') != null) {
-      this.userName.next(localStorage.getItem('username'));
-    } else {
-      this.userName.next('Error');
-    }
+    this.setUserName(localStorage.getItem('user_name') || "-");
   }
 
   getToken: () => Result<string, Error> = function (): Result<string, Error> {

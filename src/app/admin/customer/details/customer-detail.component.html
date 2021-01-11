@@ -2,8 +2,8 @@
     <div class="container">
         <div class="columns">
             <div class="column">
-                <h1 class="title">Vásárló adatai</h1>
-                <p class="subtitle">{{customer.name}}</p>
+                <h1 class="subtitle">Vásárló adatai</h1>
+                <p class="title">{{customer.name}}</p>
             </div>
         </div>
         <div class="columns">
@@ -42,21 +42,21 @@
                         <label class="label">Irányítószám</label>
                         <div class="control">
                             <input class="input" type="text" placeholder="Irányítószám" name="zip"
-                                [(ngModel)]="customer.address.zip" required>
+                                [(ngModel)]="customer.address_zip" required>
                         </div>
                     </div>
                     <div class="field">
                         <label class="label">Település</label>
                         <div class="control">
                             <input class="input" type="text" placeholder="Település neve" name="location"
-                                [(ngModel)]="customer.address.location" required>
+                                [(ngModel)]="customer.address_location" required>
                         </div>
                     </div>
                     <div class="field">
                         <label class="label">Utca, házszám</label>
                         <div class="control">
                             <input class="input" type="text" placeholder="Utca, házszám" name="address"
-                                [(ngModel)]="customer.address.address" required>
+                                [(ngModel)]="customer.address_street" required>
                         </div>
                     </div>
                     <div class="field">

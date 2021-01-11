@@ -11,46 +11,50 @@
                         <span>Új termék</span>
                     </a>
                 </div>
-                <!-- <div class="level-item">
+                <div class="level-item">
+                    <!-- <app-filter (filter)="applyFilter($event)"></app-filter> -->
                     <div class="field has-addons">
                         <div class="control">
-                            <input type="text" class="input" placeholder="Termék keresése">
+                            <input #filter class="input" type="text" placeholder="Termék keresése" name="filter"
+                                (keyup.esc)="query=''; find()" (keyup.enter)="find()" [(ngModel)]="query">
                         </div>
                         <div class="control">
-                            <a class="button">
-                                Keresés
+                            <a class="button is-info" (click)="find()">
+                            Keresés
                             </a>
                         </div>
                     </div>
-                </div> -->
+                </div>
             </div>
         </div>
-        <ng-container *ngIf="products; else loading">
+        <ng-container *ngIf="source; else loading">
             <table class="table is-fullwidth">
                 <thead>
                     <tr>
-                        <th>SKU</th>
+                        <th class="is-narrow">ID</th>
                         <th>Termék neve</th>
-                        <th>Kiszerelés</th>
-                        <!-- <th>Leírás</th> -->
-                        <!-- <th>Forgalmi kategória</th> -->
-                        <th>Nettó ára</th>
-                        <th>Bruttó ár</th>
+                        <!-- <th class="is-narrow">Termék ára</th> -->
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let product of products.display$ | async">
-                        <td>{{product.sku}}</td>
-                        <td><a [routerLink]="['.', product.sku]">{{product.name}}</a></td>
-                        <td>{{product.quantity}} {{product.unit}}</td>
-                        <!-- <td>..</td> -->
-                        <!-- <td>..</td> -->
-                        <td>..</td>
-                        <td>..</td>
+                    <tr *ngFor="let product of source">
+                        <td><p class="is-size-7 has-text-grey-light">#{{product.product_id}}</p></td>
+                        <td><a [routerLink]="['.', product.product_id]">{{product.name}} ({{product.skus.length}})</a></td>
+                        <!-- <td>
+                            <ng-template *ngIf="prices.product_id; else no_price">
+                                {{prices.product_id}} HUF
+                            </ng-template>
+                            <ng-template #no_price>nincs ár</ng-template>
+                        </td> -->
                     </tr>
                 </tbody>
             </table>
-            <pagination [data]="products"></pagination>
+            <div class="columns">
+                <div class="column has-text-centered" *ngIf="source_ids.length > source.length">
+                    <p class="is-size-7">{{source_ids.length}} / {{source.length}} elem</p>
+                    <a class="button is-info is-outlined is-small" (click)="load()">További {{source_ids.length - source.length > page_count ? page_count : source_ids.length - source.length}} elem betöltése</a>
+                </div>
+            </div>
         </ng-container>
         <ng-template #loading></ng-template>
     </div>

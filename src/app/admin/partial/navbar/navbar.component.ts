@@ -17,13 +17,6 @@ export class NavbarComponent implements OnInit {
   @Input() is_full?: boolean = false;
 
   notifications: Notification[] = [];
-  repository_id: String = null;
-
-  shortcutNewTransaction() {
-    if (this.repository_id) {
-      this.router.navigateByUrl("/repository/" + this.repository_id + "/transaction/new");
-    }
-  }
 
   constructor(
     private loginService: LoginService,
@@ -33,20 +26,6 @@ export class NavbarComponent implements OnInit {
   ) {
     // Register username observer
     this.loginService.userName.subscribe((val) => this.username = val);
-
-    this.routerObserver = router.events.subscribe((e: Event) => {
-      /**
-       * IF Router Event
-       */
-      if (e instanceof NavigationEnd) {
-        this.isActive = false;
-        /**
-         * Set repository id if exists
-         */
-        let params = this.params.routerParams();
-        this.repository_id = params["repository_id"] ? params["repository_id"] : null;
-      }
-    });
   }
 
   isActive: boolean = false;

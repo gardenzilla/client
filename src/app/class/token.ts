@@ -1,4 +1,4 @@
 export class Token {
-    username: string = "";
+    uid: number = 0;
     token: string = "";
 }

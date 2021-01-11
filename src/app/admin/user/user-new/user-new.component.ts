@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { tap } from 'rxjs/operators';
-import { ProfileNew } from 'src/app/services/profile/profile.service';
+import { ProfileNew, Profile } from 'src/app/services/profile/profile.service';
 
 @Component({
   selector: 'app-user-new',
@@ -16,12 +16,12 @@ export class UserNewComponent implements OnInit {
 
   submit = (): Observable<any> => {
     return this.userService.new(this.user).pipe(
-      tap((newUser: ProfileNew) => this.router.navigateByUrl(`/user/${newUser.username}`))
+      tap((newUser: Profile) => this.router.navigateByUrl(`/user/${newUser.uid}`))
     );
   }
 
   constructor(private userService: UserService, private router: Router) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
 }

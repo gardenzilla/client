@@ -1,4 +1,4 @@
-.PHONY: release, build, dev, serve, push
+.PHONY: release, build, run, serve, push
 
 release:
 	ng build --prod --outputPath=dist
@@ -6,7 +6,7 @@ release:
 build:
 	ng build --outputPath=dist
 
-dev:
+run:
 	ng serve --port 4700
 
 push:

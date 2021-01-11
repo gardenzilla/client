@@ -1,8 +1,6 @@
 import { LoginService } from '../services/login/login.service';
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler } from '@angular/common/http';
-import { Ok, Err, Result } from 'ts-results';
-import { environment } from '../../environments/environment';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -18,7 +16,7 @@ export class AuthInterceptor implements HttpInterceptor {
         const authReq = req.clone({
             // Set dev API url in DEV mode
             // TODO: remove condition
-            url: (environment.production ? '/api' : '/api') + req.url,
+            url: '/api' + req.url,
             headers: req.headers.set('Token', authToken.ok ? authToken.unwrap() : '')
         });
 

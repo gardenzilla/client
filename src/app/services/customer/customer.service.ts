@@ -9,41 +9,39 @@ export class CustomerService {
 
   constructor(private http: HttpClient) { }
 
-  get_all(): Observable<Customer[]> {
-    return this.http.get<Customer[]>("/customer/all");
+  get_all(): Observable<number[]> {
+    return this.http.get<number[]>("/customer/all");
   }
-  get_by_id(id: string): Observable<Customer> {
+  get_by_id(id: number): Observable<Customer> {
     return this.http.get<Customer>("/customer/" + id);
   }
-  update_by_id(id: string, customer: CustomerNew): Observable<Customer> {
-    return this.http.put<Customer>(`/customer/${id}`, customer);
+  get_bulk(ids: number[]): Observable<Customer[]> {
+    return this.http.post<Customer[]>("/customer/bulk", ids);
+  }
+  update_by_id(customer: Customer): Observable<Customer> {
+    return this.http.put<Customer>(`/customer/update`, customer);
   }
   new(customer: CustomerNew): Observable<Customer> {
     return this.http.post<Customer>("/customer/new", customer);
+  }
+  find(query: string): Observable<number[]> {
+    return this.http.post<number[]>("/customer/find", { query: query });
   }
 }
 
 export class Customer {
   constructor(
-    public id: string = '',
+    public id: number = 0,
     public name: string = '',
     public email: string = '',
     public phone: string = '',
     public tax_number: string = '',
-    public address: Address = new Address(),
+    public address_zip: string = '',
+    public address_location: string = '',
+    public address_street: string = '',
     public date_created: string = '',
-    public created_by: string = '',
-    public has_user: boolean = false,
-    public users: string[] = []
-  ) {}
-}
-
-export class Address {
-  constructor(
-    public zip: string = '',
-    public location: string = '',
-    public address: string = ''
-  ) {}
+    public created_by: number = 0,
+  ) { }
 }
 
 export class CustomerNew {
@@ -52,8 +50,8 @@ export class CustomerNew {
     public email: string = '',
     public phone: string = '',
     public tax_number: string = '',
-    public zip: string = '',
-    public location: string = '',
-    public address: string = ''
-  ) {}
+    public address_zip: string = '',
+    public address_location: string = '',
+    public address_street: string = '',
+  ) { }
 }

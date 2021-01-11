@@ -1,20 +1,10 @@
-<nav class="navbar" role="navigation" aria-label="main navigation" (document:keydown.alt.n)="shortcutNewTransaction();">
+<nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="container" [class.is-fluid]="is_full">
         <div class="navbar-brand">
             <a class="navbar-item" routerLink='/'>
                 <img src="favicon.ico">
                 <strong>Gardenzilla</strong>
-                <!-- <strong>Gardenzilla</strong> -->
             </a>
-            <a class="navbar-item is-hidden-desktop" [routerLink]="['/repository', repository_id, 'transaction', 'new']"
-                *ngIf="repository_id">
-                <span class="icon">
-                    <i class="fas fa-plus"></i>
-                </span>
-            </a>
-            <!-- <a class="navbar-item is-hidden-desktop" routerLink="/pos">
-                <span class="tag is-warning">POS</span>
-            </a> -->
             <a role="button" class="navbar-burger burger" [ngClass]="{'is-active': isActive}" aria-label="menu"
                 aria-expanded="false" data-target="navbarBasicExample" (click)="isActive = isActive ? false : true">
                 <span aria-hidden="true"></span>
@@ -84,25 +74,6 @@
             </div>
 
             <div class="navbar-end">
-                <a class="navbar-item is-hidden-touch"
-                    [routerLink]="['/repository', repository_id, 'transaction', 'new']" *ngIf="repository_id">
-                    <span class="icon">
-                        <i class="fas fa-plus"></i>
-                    </span>
-                </a>
-                <!-- <a class="navbar-item" routerLink="/">
-                    <div class="menu">
-                        <div class="pix"></div>
-                        <div class="pix"></div>
-                        <div class="pix"></div>
-                        <div class="pix"></div>
-                        <div class="pix"></div>
-                        <div class="pix"></div>
-                        <div class="pix"></div>
-                        <div class="pix"></div>
-                        <div class="pix"></div>
-                    </div>
-                </a> -->
                 <a class="navbar-item" routerLink='/profile' routerLinkActive="active">{{username}}</a>
                 <div class="navbar-item">
                     <a (click)="logout()" class="has-text-grey">

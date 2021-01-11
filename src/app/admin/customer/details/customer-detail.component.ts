@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Address, Customer, CustomerNew, CustomerService } from 'src/app/services/customer/customer.service';
+import { Customer, CustomerNew, CustomerService } from 'src/app/services/customer/customer.service';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -11,9 +11,8 @@ import { tap } from 'rxjs/operators';
 })
 export class CustomerDetailComponent implements OnInit {
 
-  id: string = this.route.snapshot.paramMap.get("customer_id");
+  id: number = +this.route.snapshot.paramMap.get("customer_id");
   customer: Customer = <Customer>{};
-  customerUpdate: CustomerNew = <CustomerNew>{};
 
   constructor(private customerService: CustomerService, private route: ActivatedRoute, private router: Router) {
   }
@@ -23,22 +22,13 @@ export class CustomerDetailComponent implements OnInit {
   }
 
   submitCallback = (): Observable<Customer> => {
-    this.customerUpdate.name = this.customer.name;
-    this.customerUpdate.phone = this.customer.phone;
-    this.customerUpdate.tax_number = this.customer.tax_number;
-    this.customerUpdate.email = this.customer.email;
-    this.customerUpdate.zip = this.customer.address.zip;
-    this.customerUpdate.location = this.customer.address.location;
-    this.customerUpdate.address = this.customer.address.address;
-
-    return this.customerService.update_by_id(this.id, this.customerUpdate)
+    return this.customerService.update_by_id(this.customer)
       .pipe(
         tap(res => this.customer = res)
       );
   }
 
   ngOnInit() {
-    this.customer.address = <Address>{};
     this.customerService.get_by_id(this.id).subscribe(customer => this.customer = customer);
   }
 
