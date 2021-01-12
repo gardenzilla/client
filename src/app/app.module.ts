@@ -20,6 +20,10 @@ import { CustomerService } from './services/customer/customer.service';
 import { UserService } from './services/user.service';
 import { ProductService } from './services/product.service';
 import { SkuService } from './services/sku.service';
+import { StockService } from './services/stock.service';
+import { SourceService } from './services/source.service';
+import { ProcurementService } from './services/procurement.service';
+import { UplService } from './services/upl.service';
 import { PriceService } from './services/price.service';
 import { ProfileService } from './services/profile/profile.service';
 import { ErrorService } from './services/error/error.service';
@@ -53,6 +57,10 @@ import { SnackBarService } from './services/snack-bar/snack-bar.service';
     UserService,
     ProductService,
     SkuService,
+    StockService,
+    SourceService,
+    ProcurementService,
+    UplService,
     PriceService,
     ProfileService,
     ErrorService,
