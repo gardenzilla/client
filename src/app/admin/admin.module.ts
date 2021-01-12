@@ -18,6 +18,7 @@ import { CustomerDetailComponent } from './customer/details/customer-detail.comp
 import { PosComponent } from './pos/pos.component';
 import { PaginationComponent } from './partial/pagination/pagination.component';
 import { StockComponent } from './stock/stock.component';
+import { SourceComponent } from './source/source.component';
 import { ModalComponent } from './partial/modal/modal.component';
 import { ProductComponent } from './product/product.component';
 import { HelloComponent } from './partial/hello/hello.component';
@@ -59,6 +60,7 @@ import { GzHufPipe } from '../pipes/gz-huf.pipe';
     ProductDetailsComponent,
     DashboardComponent,
     CashComponent,
+    SourceComponent,
     GzDatePipe,
     GzDateTimePipe,
     GzHufPipe,

@@ -12,6 +12,7 @@ import { CustomerNewComponent } from './customer/new/customer-new.component';
 import { CustomerDetailComponent } from './customer/details/customer-detail.component';
 import { PosComponent } from './pos/pos.component';
 import { StockComponent } from './stock/stock.component';
+import { SourceComponent } from './source/source.component';
 import { ProductComponent } from './product/product.component';
 import { HelloComponent } from './partial/hello/hello.component';
 import { ProductNewComponent } from './product/new/product-new.component';
@@ -44,6 +45,9 @@ const routes: Routes = [
         path: 'hello', component: HelloComponent
       },
       { path: 'stock', component: StockComponent, data: { title: 'Raktár', breadcrumb: 'Raktár' } },
+      {
+        path: 'source', component: SourceComponent
+      },
       {
         path: 'customer', children: [
           { path: '', component: CustomerComponent },

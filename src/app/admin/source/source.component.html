@@ -1,12 +1,12 @@
 <section class="section">
     <div class="container">
-        <p class="title">Raktárak</p>
+        <p class="title">Beszerzési források</p>
         <div class="buttons">
             <button
                 class="button is-rounded"
                 (click)="modal_new.open()"
             >
-                Új raktár
+                Új forrás
             </button>
         </div>
         <table class="table">
@@ -14,18 +14,18 @@
                 <tr>
                     <th>Azonosító</th>
                     <th>Név</th>
-                    <th>Leírás</th>
+                    <th>Cím</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let stock of stocks">
+                <tr *ngFor="let source of sources">
                     <td>
-                        <p class="has-text-grey-light">#{{stock.stock_id}}</p>
+                        <p class="has-text-grey-light">#{{source.source_id}}</p>
                     </td>
                     <td>
-                        <a (click)="setStockToUpdate(stock); modal_update.open()">{{stock.name}}</a>
+                        <a (click)="setSourceToUpdate(source); modal_update.open()">{{source.name}}</a>
                     </td>
-                    <td>{{stock.description}}</td>
+                    <td>{{source.address}}</td>
                 </tr>
             </tbody>
         </table>
@@ -34,35 +34,34 @@
 
 <modal
     #modal_new
-    title="Új raktár"
+    title="Új beszerzési forrás"
 >
     <div class="columns">
         <div class="column is-6">
             <form>
                 <div class="field">
-                    <label class="label">Raktár neve</label>
+                    <label class="label">Partner neve</label>
                     <div class="control">
                         <input
                             class="input"
                             type="text"
-                            placeholder="Raktár neve"
+                            placeholder="Partner neve"
                             name="name"
-                            [(ngModel)]="model_new_stock.name"
+                            [(ngModel)]="model_new_source.name"
                             required
                             autofocus
                         >
                     </div>
                 </div>
-                <p class="title is-6 mb-1">Leírás</p>
+                <p class="title is-6 mb-1">Címe</p>
                 <div class="field has-addons">
                     <div class="control">
                         <textarea
                             class="textarea"
-                            name="description"
+                            name="address"
                             placeholder="Partner címe"
-                            [(ngModel)]="model_new_stock.description"
+                            [(ngModel)]="model_new_source.address"
                         ></textarea>
-                        <input class="input">
                     </div>
                 </div>
                 <div class="field">
@@ -81,33 +80,33 @@
 
 <modal
     #modal_update
-    [title]="model_update_stock.name"
+    [title]="model_update_source.name"
 >
     <div class="columns">
         <div class="column is-6">
             <form>
                 <div class="field">
-                    <label class="label">Raktár neve</label>
+                    <label class="label">Partner neve</label>
                     <div class="control">
                         <input
                             class="input"
                             type="text"
-                            placeholder="Raktár neve"
+                            placeholder="Partner neve"
                             name="name"
-                            [(ngModel)]="model_update_stock.name"
+                            [(ngModel)]="model_update_source.name"
                             required
                             autofocus
                         >
                     </div>
                 </div>
-                <p class="title is-6 mb-1">Leírás</p>
+                <p class="title is-6 mb-1">Címe</p>
                 <div class="field has-addons">
                     <div class="control">
                         <textarea
                             class="textarea"
-                            name="description"
+                            name="address"
                             placeholder="Partner címe"
-                            [(ngModel)]="model_update_stock.description"
+                            [(ngModel)]="model_update_source.address"
                         ></textarea>
                     </div>
                 </div>

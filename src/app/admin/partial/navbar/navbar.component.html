@@ -1,27 +1,56 @@
-<nav class="navbar" role="navigation" aria-label="main navigation">
-    <div class="container" [class.is-fluid]="is_full">
+<nav
+    class="navbar"
+    role="navigation"
+    aria-label="main navigation"
+>
+    <div
+        class="container"
+        [class.is-fluid]="is_full"
+    >
         <div class="navbar-brand">
-            <a class="navbar-item" routerLink='/'>
+            <a
+                class="navbar-item"
+                routerLink='/'
+            >
                 <img src="favicon.ico">
                 <strong>Gardenzilla</strong>
             </a>
-            <a role="button" class="navbar-burger burger" [ngClass]="{'is-active': isActive}" aria-label="menu"
-                aria-expanded="false" data-target="navbarBasicExample" (click)="isActive = isActive ? false : true">
+            <a
+                role="button"
+                class="navbar-burger burger"
+                [ngClass]="{'is-active': isActive}"
+                aria-label="menu"
+                aria-expanded="false"
+                data-target="navbarBasicExample"
+                (click)="isActive = isActive ? false : true"
+            >
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
             </a>
         </div>
 
-        <div id="navbarBasicExample" class="navbar-menu" [ngClass]="{'is-active': isActive}">
+        <div
+            id="navbarBasicExample"
+            class="navbar-menu"
+            [ngClass]="{'is-active': isActive}"
+        >
             <div class="navbar-start">
                 <!-- <a class="navbar-item is-hidden-mobile" routerLink="/pos">
                     <span class="tag is-warning">POS</span>
                 </a> -->
-                <a class="navbar-item" routerLink="/product" routerLinkActive="active">
+                <a
+                    class="navbar-item"
+                    routerLink="/product"
+                    routerLinkActive="active"
+                >
                     Termékek
                 </a>
-                <a class="navbar-item" routerLink="/customer" routerLinkActive="active">
+                <a
+                    class="navbar-item"
+                    routerLink="/customer"
+                    routerLinkActive="active"
+                >
                     Vásárlók
                 </a>
                 <!-- <a class="navbar-item" routerLink="/cash" routerLinkActive="active">
@@ -31,25 +60,34 @@
                     ISSUE
                 </a> -->
 
-
                 <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        Egyéb
-                    </a>
+                    <a class="navbar-link">Egyéb</a>
 
                     <div class="navbar-dropdown">
-                        <!-- <a class="navbar-item" routerLink="/stock">
+                        <a
+                            class="navbar-item"
+                            routerLink="/user"
+                        >
+                            Felhasználók
+                        </a>
+                        <a
+                            class="navbar-item"
+                            routerLink="/stock"
+                        >
                             Raktárak
                         </a>
-                        <a class="navbar-item" routerLink="/">
+                        <a
+                            class="navbar-item"
+                            routerLink="/source"
+                        >
+                            Beszerzési források
+                        </a>
+                        <!-- <a class="navbar-item" routerLink="/">
                             Számlák
                         </a>
                         <a class="navbar-item" routerLink="/">
                             Eladások
                         </a> -->
-                        <a class="navbar-item" routerLink="/user">
-                            Felhasználók
-                        </a>
                         <!-- <a class="navbar-item" routerLink="/user">
                             Felhasználói dokumentáció
                         </a>
@@ -58,9 +96,6 @@
                         </a> -->
                         <!-- <a class="navbar-item" routerLink="/">
                             Bevételezés
-                        </a>
-                        <a class="navbar-item" routerLink="/">
-                            Beszerzési források
                         </a>
                         <a class="navbar-item" routerLink="/">
                             Kosarak
@@ -74,9 +109,18 @@
             </div>
 
             <div class="navbar-end">
-                <a class="navbar-item" routerLink='/profile' routerLinkActive="active">{{username}}</a>
+                <a
+                    class="navbar-item"
+                    routerLink='/profile'
+                    routerLinkActive="active"
+                >
+                    {{username}}
+                </a>
                 <div class="navbar-item">
-                    <a (click)="logout()" class="has-text-grey">
+                    <a
+                        (click)="logout()"
+                        class="has-text-grey"
+                    >
                         <span class="icon">
                             <i class="fas fa-power-off"></i>
                         </span>
