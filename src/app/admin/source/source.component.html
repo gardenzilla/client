@@ -84,42 +84,42 @@
 >
     <div class="columns">
         <div class="column is-6">
-            <form>
-                <div class="field">
-                    <label class="label">Partner neve</label>
-                    <div class="control">
-                        <input
-                            class="input"
-                            type="text"
-                            placeholder="Partner neve"
-                            name="name"
-                            [(ngModel)]="model_update_source.name"
-                            required
-                            autofocus
-                        >
-                    </div>
+
+            <div class="field">
+                <label class="label">Partner neve</label>
+                <div class="control">
+                    <input
+                        class="input"
+                        type="text"
+                        placeholder="Partner neve"
+                        name="name"
+                        [(ngModel)]="model_update_source.name"
+                        required
+                        autofocus
+                    >
                 </div>
-                <p class="title is-6 mb-1">Címe</p>
-                <div class="field has-addons">
-                    <div class="control">
-                        <textarea
-                            class="textarea"
-                            name="address"
-                            placeholder="Partner címe"
-                            [(ngModel)]="model_update_source.address"
-                        ></textarea>
-                    </div>
+            </div>
+            <p class="title is-6 mb-1">Címe</p>
+            <div class="field has-addons">
+                <div class="control">
+                    <textarea
+                        class="textarea"
+                        name="address"
+                        placeholder="Partner címe"
+                        [(ngModel)]="model_update_source.address"
+                    ></textarea>
                 </div>
-                <div class="field">
-                    <div class="control">
-                        <button-submit
-                            [callback]="callbackUpdate"
-                            [snackBarMessage]="'Sikeresen módosítva'"
-                            name="Módosítás"
-                        ></button-submit>
-                    </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <button-submit
+                        [callback]="callbackUpdate"
+                        [snackBarMessage]="'Sikeresen módosítva'"
+                        name="Módosítás"
+                    ></button-submit>
                 </div>
-            </form>
+            </div>
+
         </div>
     </div>
 </modal>

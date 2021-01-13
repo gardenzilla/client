@@ -1,0 +1,124 @@
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-6">
+                <div class="columns">
+                    <div class="column is-12">
+                        <div class="box">
+                            <h1 class="subtitle">Beszerzés adatai (#{{procurement.id}})</h1>
+                            <p class="title">
+                                {{sources[procurement.source_id] != undefined ? sources[procurement.source_id].name : procurement.source_id}}
+                            </p>
+                            <p>
+                                Bizonylat azonosító: {{procurement.reference}}
+                                <a (click)="model_reference = procurement.reference; modal_reference.open()">
+                                    <span class="icon">
+                                        <i class="fas fa-plus"></i>
+                                    </span>
+                                </a>
+                            </p>
+                            <p>
+                                Várható beérkezés: {{procurement.estimated_delivery_date ? (procurement.estimated_delivery_date | gzDate) : '-'}}
+                                <a (click)="setModelDeliveryDate(); modal_delivery_date.open()">
+                                    <span class="icon">
+                                        <i class="fas fa-plus"></i>
+                                    </span>
+                                </a>
+                            </p>
+                        </div>
+                        <p class="title is-5">SKU lista</p>
+                        <table class="table is-striped">
+                            <tbody>
+                                <tr *ngFor="let item of procurement.items">
+                                    <!-- <td class="has-text-grey-light">#{{sku.sku}}</td>
+                                    <td>
+                                        <a (click)="setSkuUpdate(sku); edit_sku.open()">{{sku.display_name}}</a>
+                                    </td>
+                                    <td>
+                                        {{prices[sku.sku] ? prices[sku.sku].price_gross_retail.toLocaleString() : "-"}} HUF
+                                    </td>
+                                    <td>
+                                        <a (click)="add_price.open(); loadPrice(sku.sku); loadPriceHistory(sku.sku); _selected_price_sku_name=sku.display_name">
+                                            <span class="icon">
+                                                <i class="fas fa-chart-line"></i>
+                                            </span>
+                                        </a>
+                                    </td> -->
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- <a
+                            class="button is-small"
+                            (click)="new_sku.open()"
+                        >
+                            Új SKU
+                        </a> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<modal
+    #modal_reference
+    title="Új bizonylat megadása"
+>
+    <div class="columns">
+        <div class="column is-6">
+            <div class="field">
+                <label class="label">Bizonylat neve</label>
+                <div class="control">
+                    <input
+                        class="input"
+                        type="text"
+                        placeholder="Bizonylat neve"
+                        name="name"
+                        [(ngModel)]="model_reference"
+                        required
+                        autofocus
+                    >
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <button-submit
+                        [callback]="callbackSetReference"
+                        [snackBarMessage]="'Sikeresen módosítva'"
+                        name="Módosítás"
+                    ></button-submit>
+                </div>
+            </div>
+        </div>
+    </div>
+</modal>
+
+<modal
+    #modal_delivery_date
+    title="Új beérkezési dátum"
+>
+    <div class="columns">
+        <div class="column is-6">
+            <div class="field">
+                <label class="label">Dátum</label>
+                <div class="control">
+                    <input
+                        type="date"
+                        class="input"
+                        name="trip-start"
+                        [(ngModel)]="model_delivery_date"
+                    >
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <button-submit
+                        [callback]="callbackDeliveryDate"
+                        [snackBarMessage]="'Sikeresen módosítva'"
+                        name="Módosítás"
+                    ></button-submit>
+                </div>
+            </div>
+        </div>
+    </div>
+</modal>

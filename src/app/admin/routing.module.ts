@@ -20,6 +20,7 @@ import { ProductDetailsComponent } from './product/details/product-details.compo
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CashComponent } from './cash/cash.component';
 import { ProcurementComponent } from './procurement/procurement.component';
+import { ProcurementDetailsComponent } from './procurement/details/procurement-details.component';
 
 const routes: Routes = [
   {
@@ -50,7 +51,10 @@ const routes: Routes = [
         path: 'source', component: SourceComponent
       },
       {
-        path: 'procurement', component: ProcurementComponent
+        path: 'procurement', children: [
+          { path: '', component: ProcurementComponent },
+          { path: ':procurement_id', component: ProcurementDetailsComponent }
+        ]
       },
       {
         path: 'customer', children: [

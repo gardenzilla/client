@@ -22,7 +22,9 @@
             <tbody>
                 <tr *ngFor="let procurement of procurements">
                     <td>
-                        <p class="has-text-grey-light">#{{procurement.id}}</p>
+                        <p class="has-text-grey-light">
+                            <a [routerLink]="['.', procurement.id]">#{{procurement.id}}</a>
+                        </p>
                     </td>
                     <td>
                         <p>

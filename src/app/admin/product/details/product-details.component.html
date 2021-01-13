@@ -61,54 +61,54 @@
 >
     <div class="columns">
         <div class="column is-6">
-            <form>
-                <div class="field">
-                    <label class="label">Név</label>
-                    <div class="control">
-                        <input
-                            class="input"
-                            type="text"
-                            placeholder="Termék neve"
-                            name="name"
-                            [(ngModel)]="product.name"
-                            required
-                            autofocus
-                        >
-                    </div>
+            <!-- <form> -->
+            <div class="field">
+                <label class="label">Név</label>
+                <div class="control">
+                    <input
+                        class="input"
+                        type="text"
+                        placeholder="Termék neve"
+                        name="name"
+                        [(ngModel)]="product.name"
+                        required
+                        autofocus
+                    >
                 </div>
-                <div class="field">
-                    <label class="label">Termékleírás</label>
-                    <div class="control">
-                        <textarea
-                            name="description"
-                            class="textarea"
-                            [(ngModel)]="product.description"
-                        ></textarea>
-                    </div>
+            </div>
+            <div class="field">
+                <label class="label">Termékleírás</label>
+                <div class="control">
+                    <textarea
+                        name="description"
+                        class="textarea"
+                        [(ngModel)]="product.description"
+                    ></textarea>
                 </div>
-                <div class="field">
-                    <label class="label">Mennyiségi egység</label>
-                    <div class="control">
-                        <input
-                            class="input"
-                            type="text"
-                            placeholder="Mennyiségi egység"
-                            name="unit"
-                            [(ngModel)]="product.unit"
-                            required
-                        >
-                    </div>
+            </div>
+            <div class="field">
+                <label class="label">Mennyiségi egység</label>
+                <div class="control">
+                    <input
+                        class="input"
+                        type="text"
+                        placeholder="Mennyiségi egység"
+                        name="unit"
+                        [(ngModel)]="product.unit"
+                        required
+                    >
                 </div>
-                <div class="field">
-                    <div class="control">
-                        <button-submit
-                            [callback]="submit"
-                            [snackBarMessage]="'Sikeresen mentve'"
-                            name="Mentés"
-                        ></button-submit>
-                    </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <button-submit
+                        [callback]="submit"
+                        [snackBarMessage]="'Sikeresen mentve'"
+                        name="Mentés"
+                    ></button-submit>
                 </div>
-            </form>
+            </div>
+            <!-- </form> -->
         </div>
         <div class="column is-3">
             <div class="notification">
@@ -128,44 +128,44 @@
     <div class="columns">
         <div class="column is-6">
             <p class="subtitle">{{sku_update.display_name}}</p>
-            <form>
-                <div class="field">
-                    <label class="label">Alnév</label>
-                    <div class="control">
-                        <input
-                            class="input"
-                            type="text"
-                            placeholder="SKU al neve"
-                            name="name"
-                            [(ngModel)]="sku_update.subname"
-                            required
-                            autofocus
-                        >
-                    </div>
+            <!-- <form> -->
+            <div class="field">
+                <label class="label">Alnév</label>
+                <div class="control">
+                    <input
+                        class="input"
+                        type="text"
+                        placeholder="SKU al neve"
+                        name="name"
+                        [(ngModel)]="sku_update.subname"
+                        required
+                        autofocus
+                    >
                 </div>
-                <p class="title is-6 mb-1">Mennyiség</p>
-                <div class="field has-addons">
-                    <div class="control">
-                        <input
-                            name="description"
-                            class="input"
-                            [(ngModel)]="sku_update.quantity"
-                        >
-                    </div>
-                    <div class="control">
-                        <a class="button is-static">{{sku_update.unit}}</a>
-                    </div>
+            </div>
+            <p class="title is-6 mb-1">Mennyiség</p>
+            <div class="field has-addons">
+                <div class="control">
+                    <input
+                        name="description"
+                        class="input"
+                        [(ngModel)]="sku_update.quantity"
+                    >
                 </div>
-                <div class="field">
-                    <div class="control">
-                        <button-submit
-                            [callback]="updateSku"
-                            [snackBarMessage]="'Sikeresen mentve'"
-                            name="Mentés"
-                        ></button-submit>
-                    </div>
+                <div class="control">
+                    <a class="button is-static">{{sku_update.unit}}</a>
                 </div>
-            </form>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <button-submit
+                        [callback]="updateSku"
+                        [snackBarMessage]="'Sikeresen mentve'"
+                        name="Mentés"
+                    ></button-submit>
+                </div>
+            </div>
+            <!-- </form> -->
         </div>
     </div>
 </modal>
@@ -176,60 +176,60 @@
 >
     <div class="columns">
         <div class="column is-4">
-            <form>
-                <div class="field">
-                    <label class="label">Nettó ár</label>
-                    <div class="control">
-                        <input
-                            class="input"
-                            type="number"
-                            placeholder="nettó ár"
-                            name="net_price"
-                            [(ngModel)]="new_price_model.price_net_retail"
-                            required
-                            autofocus
-                            (keyup)="helperSetPriceGross()"
-                            autocomplete="off"
-                        >
-                    </div>
+            <!-- <form> -->
+            <div class="field">
+                <label class="label">Nettó ár</label>
+                <div class="control">
+                    <input
+                        class="input"
+                        type="number"
+                        placeholder="nettó ár"
+                        name="net_price"
+                        [(ngModel)]="new_price_model.price_net_retail"
+                        required
+                        autofocus
+                        (keyup)="helperSetPriceGross()"
+                        autocomplete="off"
+                    >
                 </div>
-                <div class="field">
-                    <label class="label">ÁFA</label>
-                    <div class="control">
-                        <input
-                            type="text"
-                            name="vat"
-                            placeholder="ÁFA"
-                            class="input"
-                            [(ngModel)]="new_price_model.vat"
-                            autocomplete="off"
-                        >
-                    </div>
+            </div>
+            <div class="field">
+                <label class="label">ÁFA</label>
+                <div class="control">
+                    <input
+                        type="text"
+                        name="vat"
+                        placeholder="ÁFA"
+                        class="input"
+                        [(ngModel)]="new_price_model.vat"
+                        autocomplete="off"
+                    >
                 </div>
-                <div class="field">
-                    <label class="label">Bruttó ár</label>
-                    <div class="control">
-                        <input
-                            type="number"
-                            name="gross_price"
-                            placeholder="Bruttó ár"
-                            class="input"
-                            [(ngModel)]="new_price_model.price_gross_retail"
-                            autocomplete="off"
-                        >
-                    </div>
+            </div>
+            <div class="field">
+                <label class="label">Bruttó ár</label>
+                <div class="control">
+                    <input
+                        type="number"
+                        name="gross_price"
+                        placeholder="Bruttó ár"
+                        class="input"
+                        [(ngModel)]="new_price_model.price_gross_retail"
+                        autocomplete="off"
+                    >
                 </div>
-                <div class="field">
-                    <div class="control">
-                        <button-submit
-                            [callback]="setNewPrice"
-                            [snackBarMessage]="'Sikeresen mentve'"
-                            name="Új ár beállítása"
-                            verify="true"
-                        ></button-submit>
-                    </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <button-submit
+                        [callback]="setNewPrice"
+                        [snackBarMessage]="'Sikeresen mentve'"
+                        name="Új ár beállítása"
+                        verify="true"
+                    ></button-submit>
                 </div>
-            </form>
+            </div>
+            <!-- </form> -->
         </div>
         <div class="column is-8">
             <div class="notification">
@@ -242,7 +242,10 @@
                             <th>Bruttó</th>
                             <th>Időpont</th>
                         </tr>
-                        <tr *ngFor="let phi of price_history">
+                        <tr
+                            *ngFor="let phi of price_history; first as isFirst"
+                            [ngClass]="{'is-selected' : isFirst}"
+                        >
                             <td>{{phi.price_net_retail | gzHuf}}</td>
                             <td>{{phi.vat}}</td>
                             <td>{{phi.price_gross_retail | gzHuf}}</td>
@@ -262,46 +265,46 @@
     <div class="columns">
         <div class="column is-6">
             <p class="subtitle">{{product.name}}</p>
-            <form>
-                <div class="field">
-                    <label class="label">Alnév</label>
-                    <div class="control">
-                        <input
-                            class="input"
-                            type="text"
-                            placeholder="SKU al neve"
-                            name="name"
-                            [(ngModel)]="_new_sku.sub_name"
-                            required
-                            autofocus
-                            autocomplete="off"
-                        >
-                    </div>
+            <!-- <form> -->
+            <div class="field">
+                <label class="label">Alnév</label>
+                <div class="control">
+                    <input
+                        class="input"
+                        type="text"
+                        placeholder="SKU al neve"
+                        name="name"
+                        [(ngModel)]="_new_sku.sub_name"
+                        required
+                        autofocus
+                        autocomplete="off"
+                    >
                 </div>
-                <p class="title is-6 mb-1">Mennyiség</p>
-                <div class="field has-addons">
-                    <div class="control">
-                        <input
-                            name="description"
-                            class="input"
-                            [(ngModel)]="_new_sku.quantity"
-                            autocomplete="off"
-                        >
-                    </div>
-                    <div class="control">
-                        <a class="button is-static">{{product.unit}}</a>
-                    </div>
+            </div>
+            <p class="title is-6 mb-1">Mennyiség</p>
+            <div class="field has-addons">
+                <div class="control">
+                    <input
+                        name="description"
+                        class="input"
+                        [(ngModel)]="_new_sku.quantity"
+                        autocomplete="off"
+                    >
                 </div>
-                <div class="field">
-                    <div class="control">
-                        <button-submit
-                            [callback]="createSku"
-                            [snackBarMessage]="'Sikeresen létrehozva'"
-                            name="Létrehozás"
-                        ></button-submit>
-                    </div>
+                <div class="control">
+                    <a class="button is-static">{{product.unit}}</a>
                 </div>
-            </form>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <button-submit
+                        [callback]="createSku"
+                        [snackBarMessage]="'Sikeresen létrehozva'"
+                        name="Létrehozás"
+                    ></button-submit>
+                </div>
+            </div>
+            <!-- </form> -->
         </div>
     </div>
 </modal>
