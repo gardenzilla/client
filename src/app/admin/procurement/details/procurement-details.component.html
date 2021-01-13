@@ -1,7 +1,7 @@
 <section class="section">
     <div class="container">
         <div class="columns">
-            <div class="column is-6">
+            <div class="column is-12">
                 <div class="columns">
                     <div class="column is-12">
                         <div class="box">
@@ -27,9 +27,23 @@
                             </p>
                         </div>
                         <p class="title is-5">SKU lista</p>
-                        <table class="table is-striped">
+                        <table class="table is-striped is-fullwidth">
+                            <thead>
+                                <tr>
+                                    <th class="is-narrow">Sorszám</th>
+                                    <th>SKU</th>
+                                    <th class="is-narrow">Rendelt darabszám</th>
+                                    <th class="is-narrow">Várható besz. ár (nettó)</th>
+                                </tr>
+                            </thead>
                             <tbody>
-                                <tr *ngFor="let item of procurement.items">
+                                <tr *ngFor="let item of procurement.items; index as Index">
+                                    <td>{{Index + 1}}</td>
+                                    <td>
+                                        {{skus[item.sku] != undefined ? skus[item.sku].display_name : item.sku}}
+                                    </td>
+                                    <td>{{item.ordered_amount}}</td>
+                                    <td>{{item.expected_net_price | gzHuf}}</td>
                                     <!-- <td class="has-text-grey-light">#{{sku.sku}}</td>
                                     <td>
                                         <a (click)="setSkuUpdate(sku); edit_sku.open()">{{sku.display_name}}</a>

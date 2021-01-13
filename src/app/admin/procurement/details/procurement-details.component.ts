@@ -18,6 +18,7 @@ export class ProcurementDetailsComponent implements OnInit {
   procurement_id: number = +this.route.snapshot.paramMap.get("procurement_id");
   procurement: Procurement = new Procurement();
   sources: any = {};
+  skus: any = {};
   model_reference: string = "";
   model_delivery_date: string = "";
 
@@ -45,6 +46,14 @@ export class ProcurementDetailsComponent implements OnInit {
     });
   }
 
+  loadSkus(ids: number[]) {
+    this.skuService.get_bulk(ids).subscribe(res => {
+      res.forEach(res => {
+        this.skus[res.sku] = res;
+      })
+    });
+  }
+
   callbackSetReference = (): Observable<any> => {
     return this.procurementService.set_reference(this.procurement_id, this.model_reference).
       pipe(
@@ -65,7 +74,12 @@ export class ProcurementDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadSource();
-    this.procurementService.get_by_id(this.procurement_id).subscribe(res => this.procurement = res);
+    this.procurementService.get_by_id(this.procurement_id).subscribe(res => {
+      this.procurement = res;
+      let sku_ids: number[] = [];
+      this.procurement.items.forEach(item => sku_ids.push(item.sku));
+      this.loadSkus(sku_ids);
+    });
   }
 
 }
