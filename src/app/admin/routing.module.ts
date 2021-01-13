@@ -19,6 +19,7 @@ import { ProductNewComponent } from './product/new/product-new.component';
 import { ProductDetailsComponent } from './product/details/product-details.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CashComponent } from './cash/cash.component';
+import { ProcurementComponent } from './procurement/procurement.component';
 
 const routes: Routes = [
   {
@@ -47,6 +48,9 @@ const routes: Routes = [
       { path: 'stock', component: StockComponent, data: { title: 'Raktár', breadcrumb: 'Raktár' } },
       {
         path: 'source', component: SourceComponent
+      },
+      {
+        path: 'procurement', component: ProcurementComponent
       },
       {
         path: 'customer', children: [

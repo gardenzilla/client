@@ -14,11 +14,13 @@ export class ModalComponent implements OnChanges {
   @Input() hasCancel?: boolean = false;
   @Input() callbackSubmit?: [string, Function];
   @Input() isWide?: boolean = false;
+  // @Input() verify?: boolean = false;
+  // @Input() autoClose?: boolean = true;
 
   isActive: boolean = false;
   subscription: Subscription;
 
-  @HostListener('document:keydown.esc')
+  // @HostListener('document:keydown.esc')
   close() {
     this.isActive = false;
   }

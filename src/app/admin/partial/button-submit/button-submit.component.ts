@@ -53,6 +53,7 @@ export class ButtonSubmitComponent implements OnInit {
   @Input() callback: () => Observable<any>;
   @Input() name: string = "Mentés";
   @Input() snackBarMessage?: string;
+  @Input() verify?: boolean = false;
 
   subscription: Subscription;
   state: string = "idle";
@@ -60,14 +61,20 @@ export class ButtonSubmitComponent implements OnInit {
   constructor(private snackService: SnackBarService) { }
 
   load() {
-    this.state = 'loading';
-    this.subscription = this.callback().subscribe(
-      () => { },
-      () => { this.state = 'error' },
-      () => { this.state = 'done'; if (this.snackBarMessage) { this.snackService.displaySnack(this.snackBarMessage) } });
-    setTimeout(() => {
-      this.state = 'idle';
-    }, 1200);
+    let is_ok = true;
+    if (this.verify) {
+      is_ok = confirm("Biztos vagy benne?");
+    }
+    if (is_ok) {
+      this.state = 'loading';
+      this.subscription = this.callback().subscribe(
+        () => { },
+        () => { this.state = 'error' },
+        () => { this.state = 'done'; if (this.snackBarMessage) { this.snackService.displaySnack(this.snackBarMessage) } });
+      setTimeout(() => {
+        this.state = 'idle';
+      }, 1200);
+    }
   }
 
   ngOnInit() { }

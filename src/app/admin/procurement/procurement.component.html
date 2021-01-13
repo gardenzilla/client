@@ -1,0 +1,89 @@
+<section class="section">
+    <div class="container">
+        <p class="title">Termék beszerzések</p>
+        <div class="buttons">
+            <button
+                class="button is-rounded"
+                (click)="modal_new.open()"
+            >
+                Új beszerzés
+            </button>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Azonosító</th>
+                    <th>Beszerzési forrás</th>
+                    <th>Várható érkezés</th>
+                    <th>SKU darabszám</th>
+                    <th>UPL darabszám</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let procurement of procurements">
+                    <td>
+                        <p class="has-text-grey-light">#{{procurement.id}}</p>
+                    </td>
+                    <td>
+                        <p>
+                            {{sources[procurement.source_id] != undefined ? sources[procurement.source_id].name : procurement.source_id}}
+                        </p>
+                    </td>
+                    <td>
+                        <p>
+                            {{procurement.estimated_delivery_date ? (procurement.estimated_delivery_date | gzDate) : "-"}}
+                        </p>
+                    </td>
+                    <td>
+                        <p>{{procurement.sku_count}}</p>
+                    </td>
+                    <td>
+                        <p>{{procurement.upl_count}}</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<modal
+    #modal_new
+    title="Új beszerzés létrehozása"
+>
+    <div class="columns">
+        <div class="column is-6">
+            <form>
+                <div class="field">
+                    <label class="label">
+                        Beszerzési forrás {{model_new_procurement.source_id || "-"}}
+                    </label>
+                    <div class="control">
+                        <div class="select">
+                            <select
+                                [(ngModel)]="model_new_procurement.source_id"
+                                name="sources"
+                            >
+                                <option
+                                    *ngFor="let source of sources | keyvalue"
+                                    [ngValue]="source.key"
+                                >
+                                    {{$any(source.value).name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <button-submit
+                            [callback]="callbackCreate"
+                            [snackBarMessage]="'Sikeresen létrehozva'"
+                            name="Létrehozás"
+                            [verify]="'true'"
+                        ></button-submit>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</modal>

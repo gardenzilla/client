@@ -38,42 +38,42 @@
 >
     <div class="columns">
         <div class="column is-6">
-            <form>
-                <div class="field">
-                    <label class="label">Partner neve</label>
-                    <div class="control">
-                        <input
-                            class="input"
-                            type="text"
-                            placeholder="Partner neve"
-                            name="name"
-                            [(ngModel)]="model_new_source.name"
-                            required
-                            autofocus
-                        >
-                    </div>
+            <!-- <form onsubmit="return false;"> -->
+            <div class="field">
+                <label class="label">Partner neve</label>
+                <div class="control">
+                    <input
+                        class="input"
+                        type="text"
+                        placeholder="Partner neve"
+                        name="name"
+                        [(ngModel)]="model_new_source.name"
+                        required
+                        autofocus
+                    >
                 </div>
-                <p class="title is-6 mb-1">Címe</p>
-                <div class="field has-addons">
-                    <div class="control">
-                        <textarea
-                            class="textarea"
-                            name="address"
-                            placeholder="Partner címe"
-                            [(ngModel)]="model_new_source.address"
-                        ></textarea>
-                    </div>
+            </div>
+            <p class="title is-6 mb-1">Címe</p>
+            <div class="field has-addons">
+                <div class="control">
+                    <textarea
+                        class="textarea"
+                        name="address"
+                        placeholder="Partner címe"
+                        [(ngModel)]="model_new_source.address"
+                    ></textarea>
                 </div>
-                <div class="field">
-                    <div class="control">
-                        <button-submit
-                            [callback]="callbackCreate"
-                            [snackBarMessage]="'Sikeresen létrehozva'"
-                            name="Létrehozás"
-                        ></button-submit>
-                    </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <button-submit
+                        [callback]="callbackCreate"
+                        [snackBarMessage]="'Sikeresen létrehozva'"
+                        name="Létrehozás"
+                    ></button-submit>
                 </div>
-            </form>
+            </div>
+            <!-- </form> -->
         </div>
     </div>
 </modal>
