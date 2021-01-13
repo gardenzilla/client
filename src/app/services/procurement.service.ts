@@ -80,10 +80,10 @@ export class ProcurementItem {
 
 export class UplCandidate {
   constructor(
-    upl_id: number = 0,
-    sku: number = 0,
-    upl_piece: number = 0,
-    best_before: string = ""
+    public upl_id: string = "",
+    public sku: number = 0,
+    public upl_piece: number = 0,
+    public best_before: string = ""
   ) { }
 }
 

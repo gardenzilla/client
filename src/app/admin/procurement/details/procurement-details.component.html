@@ -33,17 +33,34 @@
                                     <th class="is-narrow">Sorszám</th>
                                     <th>SKU</th>
                                     <th class="is-narrow">Rendelt darabszám</th>
+                                    <th class="is-narrow">UPL darabszám</th>
                                     <th class="is-narrow">Várható besz. ár (nettó)</th>
+                                    <th class="is-narrow"></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let item of procurement.items; index as Index">
+                                <tr
+                                    *ngFor="let item of procurement.items; index as Index"
+                                    [ngClass]="{'has-background-warning': item.ordered_amount != countUpls(item.sku)}"
+                                >
                                     <td>{{Index + 1}}</td>
                                     <td>
-                                        {{skus[item.sku] != undefined ? skus[item.sku].display_name : item.sku}}
+                                        <a (click)="setModelEditSku(item) ;modal_edit_sku.open()">
+                                            {{skus[item.sku] != undefined ? skus[item.sku].display_name : item.sku}}
+                                        </a>
                                     </td>
                                     <td>{{item.ordered_amount}}</td>
+                                    <td>{{countUpls(item.sku)}}</td>
                                     <td>{{item.expected_net_price | gzHuf}}</td>
+                                    <td>
+                                        <button
+                                            class="button is-small"
+                                            *ngIf="countUpls(item.sku) == 0"
+                                            (click)="removeSku(item.sku)"
+                                        >
+                                            Töröl
+                                        </button>
+                                    </td>
                                     <!-- <td class="has-text-grey-light">#{{sku.sku}}</td>
                                     <td>
                                         <a (click)="setSkuUpdate(sku); edit_sku.open()">{{sku.display_name}}</a>
@@ -61,12 +78,12 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <!-- <a
+                        <a
                             class="button is-small"
-                            (click)="new_sku.open()"
+                            (click)="setModelNewSku(); modal_add_sku.open()"
                         >
                             Új SKU
-                        </a> -->
+                        </a>
                     </div>
                 </div>
             </div>
@@ -132,6 +149,250 @@
                         name="Módosítás"
                     ></button-submit>
                 </div>
+            </div>
+        </div>
+    </div>
+</modal>
+
+<modal
+    #modal_edit_sku
+    title="Amalgerol Prémium 1 L"
+>
+    <div class="columns">
+        <div class="column has-text-centered">
+            <div class="tabs is-toggle is-toggle-rounded is-centered is-small">
+                <ul>
+                    <li class="is-active">
+                        <a>
+                            <span class="icon is-small">
+                                <i class="fas fa-box"></i>
+                            </span>
+                            <span>UPL lista</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <span class="icon is-small">
+                                <i class="fas fa-info"></i>
+                            </span>
+                            <span>SKU adatok</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="columns">
+        <div class="column">
+            <table class="table is-fullwidth is-hoverable">
+                <thead>
+                    <tr>
+                        <th>Sorszám</th>
+                        <th>UPL ID</th>
+                        <th class="is-narrow">Darabszám</th>
+                        <th>Lejárati idő</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="model_edit_sku">
+                    <tr *ngFor="let upl of model_edit_sku.upls; index as Index">
+                        <td>{{Index + 1}}</td>
+                        <td>{{upl.upl_id}}</td>
+                        <td>{{upl.upl_piece}}</td>
+                        <td>{{upl.best_before}}</td>
+                        <td>
+                            <button
+                                class="button is-small"
+                                title="UPL módosítása"
+                            >
+                                Módosít
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input
+                                #new_upl_id
+                                type="text"
+                                class="input is-small"
+                                placeholder="UPL ID"
+                            >
+                        </td>
+                        <td>
+                            <input
+                                #new_upl_piece
+                                type="number"
+                                class="input is-small"
+                                value="1"
+                            >
+                        </td>
+                        <td>
+                            <input
+                                #new_upl_best_before
+                                type="text"
+                                class="input is-small"
+                            >
+                        </td>
+                        <td>
+                            <button
+                                class="button is-small is-success"
+                                title="Új UPL hozzáadása"
+                                (click)="addUpl(model_edit_sku.sku_details, new_upl_id.value, new_upl_piece.value, new_upl_best_before.value); new_upl_id.value=''; new_upl_piece.value = 1"
+                            >
+                                Hozzáadás
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+                <!-- <tr>
+                        <td>2</td>
+                        <td>23ff</td>
+                        <td>1</td>
+                        <td>-</td>
+                        <td>
+                            <button class="button is-small">Módosít</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>
+                            <input
+                                type="text"
+                                class="input is-small"
+                                placeholder="UPL ID"
+                                value="234fg"
+                            >
+                        </td>
+                        <td>
+                            <input
+                                type="number"
+                                class="input is-small"
+                                value="1"
+                            >
+                        </td>
+                        <td>
+                            <input
+                                type="text"
+                                class="input is-small"
+                                value="2022-10-22"
+                            >
+                        </td>
+                        <td>
+                            <div class="buttons has-addons is-rounded">
+                                <button
+                                    class="button is-small is-success"
+                                    title="UPL módosítás mentése"
+                                >
+                                    Mentés
+                                </button>
+                                <button
+                                    class="button is-small is-warning"
+                                    title="UPL törlése"
+                                >
+                                    Töröl
+                                </button>
+                            </div>
+                        </td>
+                    </tr> -->
+            </table>
+        </div>
+    </div>
+</modal>
+
+<modal
+    #modal_add_sku
+    title="Új SKU hozzáadása"
+>
+    <div
+        class="columns"
+        *ngIf="!model_new_sku.is_sku_selected"
+    >
+        <div class="column">
+            <div class="field">
+                <label class="label">SKU kiválasztása</label>
+                <div class="control">
+                    <input
+                        #sku_search
+                        class="input"
+                        type="text"
+                        placeholder="SKU keresése"
+                        name="sku_search"
+                        (keyup.esc)="model_new_sku.searchSku('')"
+                        (keyup.enter)="model_new_sku.searchSku(sku_search.value)"
+                    >
+                </div>
+            </div>
+            <table
+                class="table is-hoverable is-fullwidth"
+                *ngIf="model_new_sku.sku_search_results.length > 0"
+            >
+                <thead>
+                    <tr>
+                        <th class="is-narrow"></th>
+                        <th>SKU neve</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let found_sku of model_new_sku.sku_search_results">
+                        <td>
+                            <button
+                                class="button is-small"
+                                (click)="model_new_sku.selectSku(found_sku.sku, found_sku.name)"
+                            >
+                                Kiválasztás
+                            </button>
+                        </td>
+                        <td>{{found_sku.name}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div
+        class="columns"
+        *ngIf="model_new_sku.is_sku_selected"
+    >
+        <div class="column">
+            <p class="title is-5">{{model_new_sku.selected_sku_name}}</p>
+            <div class="field">
+                <label class="label">Rendelendő darabszám</label>
+                <div class="control">
+                    <input
+                        class="input"
+                        type="number"
+                        placeholder="Darabszám"
+                        name="name"
+                        value="1"
+                        required
+                        autocomplete="off"
+                        [(ngModel)]="model_new_sku.sku_item.ordered_amount"
+                    >
+                </div>
+            </div>
+            <p class="title is-6 mb-2">Beszerzési egység ár (nettó)</p>
+            <div class="field has-addons">
+                <p class="control">
+                    <input
+                        class="input"
+                        type="number"
+                        placeholder="1000"
+                        [(ngModel)]="model_new_sku.sku_item.expected_net_price"
+                    >
+                </p>
+                <p class="control">
+                    <a class="button is-static">HUF</a>
+                </p>
+            </div>
+            <div class="field">
+                <p class="control">
+                    <button-submit
+                        [callback]="callbackAddSku"
+                        [snackBarMessage]="'Sikeresen hozzáadva'"
+                        name="Hozzáad"
+                    ></button-submit>
+                </p>
+
             </div>
         </div>
     </div>
