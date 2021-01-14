@@ -5,21 +5,23 @@
                 <div class="columns">
                     <div class="column is-12">
                         <div class="box">
-                            <h1 class="subtitle">Beszerzés adatai (#{{procurement.id}})</h1>
+                            <h1 class="subtitle">
+                                Beszerzés adatai (#{{procurement.procurement_id}})
+                            </h1>
                             <p class="title">
-                                {{sources[procurement.source_id] != undefined ? sources[procurement.source_id].name : procurement.source_id}}
+                                {{procurement.sources[procurement.procurement.source_id] != undefined ? procurement.sources[procurement.procurement.source_id].name : procurement.procurement.source_id}}
                             </p>
                             <p>
-                                Bizonylat azonosító: {{procurement.reference}}
-                                <a (click)="model_reference = procurement.reference; modal_reference.open()">
+                                Bizonylat azonosító: {{procurement.getReference()}}
+                                <a (click)="procurement.setUmReference(); modal_reference.open()">
                                     <span class="icon">
                                         <i class="fas fa-plus"></i>
                                     </span>
                                 </a>
                             </p>
                             <p>
-                                Várható beérkezés: {{procurement.estimated_delivery_date ? (procurement.estimated_delivery_date | gzDate) : ''}}
-                                <a (click)="setModelDeliveryDate(); modal_delivery_date.open()">
+                                Várható beérkezés: {{procurement.getDeliveryDate() ? (procurement.getDeliveryDate() | gzDate) : ''}}
+                                <a (click)="procurement.setUmDeliveryDate(); modal_delivery_date.open()">
                                     <span class="icon">
                                         <i class="fas fa-plus"></i>
                                     </span>
@@ -40,23 +42,23 @@
                             </thead>
                             <tbody>
                                 <tr
-                                    *ngFor="let item of procurement.items; index as Index"
-                                    [ngClass]="{'has-background-warning': item.ordered_amount != countUpls(item.sku)}"
+                                    *ngFor="let item of procurement.getItems(); index as Index"
+                                    [ngClass]="{'has-background-warning': item.ordered_amount != procurement.uplCount(item.sku)}"
                                 >
                                     <td>{{Index + 1}}</td>
                                     <td>
                                         <a (click)="setModelEditSku(item) ;modal_edit_sku.open()">
-                                            {{skus[item.sku] != undefined ? skus[item.sku].display_name : item.sku}}
+                                            {{procurement.skus[item.sku] != undefined ? procurement.skus[item.sku].display_name : item.sku}}
                                         </a>
                                     </td>
                                     <td>{{item.ordered_amount}}</td>
-                                    <td>{{countUpls(item.sku)}}</td>
+                                    <td>{{procurement.uplCount(item.sku)}}</td>
                                     <td>{{item.expected_net_price | gzHuf}}</td>
                                     <td>
                                         <button
                                             class="button is-small"
-                                            *ngIf="countUpls(item.sku) == 0"
-                                            (click)="removeSku(item.sku)"
+                                            *ngIf="procurement.uplCount(item.sku) == 0"
+                                            (click)="procurement.removeSku(item.sku)"
                                         >
                                             Töröl
                                         </button>
@@ -80,7 +82,7 @@
                         </table>
                         <a
                             class="button is-small"
-                            (click)="setModelNewSku(); modal_add_sku.open()"
+                            (click)="procurement.setModelNewSku(); modal_add_sku.open()"
                         >
                             Új SKU
                         </a>
@@ -105,7 +107,7 @@
                         type="text"
                         placeholder="Bizonylat neve"
                         name="name"
-                        [(ngModel)]="model_reference"
+                        [(ngModel)]="procurement.um_reference"
                         required
                         autofocus
                     >
@@ -114,7 +116,7 @@
             <div class="field">
                 <div class="control">
                     <button-submit
-                        [callback]="callbackSetReference"
+                        [callback]="procurement.callbackSetReference"
                         [snackBarMessage]="'Sikeresen módosítva'"
                         name="Módosítás"
                     ></button-submit>
@@ -137,14 +139,14 @@
                         type="date"
                         class="input"
                         name="trip-start"
-                        [(ngModel)]="model_delivery_date"
+                        [(ngModel)]="procurement.um_delivery_date"
                     >
                 </div>
             </div>
             <div class="field">
                 <div class="control">
                     <button-submit
-                        [callback]="callbackDeliveryDate"
+                        [callback]="procurement.callbackSetDeliveryDate"
                         [snackBarMessage]="'Sikeresen módosítva'"
                         name="Módosítás"
                     ></button-submit>
@@ -157,6 +159,7 @@
 <modal
     #modal_edit_sku
     title="Amalgerol Prémium 1 L"
+    [callbackClose]="unsetModelEditSku"
 >
     <div class="columns">
         <div class="column has-text-centered">
@@ -195,7 +198,45 @@
                     </tr>
                 </thead>
                 <tbody *ngIf="model_edit_sku">
-                    <tr *ngFor="let upl of model_edit_sku.upls; index as Index">
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input
+                                name="nupl_id"
+                                type="text"
+                                class="input is-small"
+                                placeholder="UPL ID"
+                                [(ngModel)]="model_edit_sku.new_upl.upl_id"
+                            >
+                        </td>
+                        <td>
+                            <input
+                                name="nupl_piece"
+                                type="number"
+                                class="input is-small"
+                                value="1"
+                                [(ngModel)]="model_edit_sku.new_upl.upl_piece"
+                            >
+                        </td>
+                        <td>
+                            <input
+                                name="nupl_bbefore"
+                                type="text"
+                                class="input is-small"
+                                [(ngModel)]="model_edit_sku.new_upl.best_before"
+                            >
+                        </td>
+                        <td>
+                            <button
+                                class="button is-small is-success"
+                                title="Új UPL hozzáadása"
+                                (click)="model_edit_sku.addNewUpl()"
+                            >
+                                Hozzáadás
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngFor="let upl of model_edit_sku.getUpls(); index as Index">
                         <td>{{Index + 1}}</td>
                         <td>{{upl.upl_id}}</td>
                         <td>{{upl.upl_piece}}</td>
@@ -206,41 +247,6 @@
                                 title="UPL módosítása"
                             >
                                 Módosít
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>
-                            <input
-                                #new_upl_id
-                                type="text"
-                                class="input is-small"
-                                placeholder="UPL ID"
-                            >
-                        </td>
-                        <td>
-                            <input
-                                #new_upl_piece
-                                type="number"
-                                class="input is-small"
-                                value="1"
-                            >
-                        </td>
-                        <td>
-                            <input
-                                #new_upl_best_before
-                                type="text"
-                                class="input is-small"
-                            >
-                        </td>
-                        <td>
-                            <button
-                                class="button is-small is-success"
-                                title="Új UPL hozzáadása"
-                                (click)="addUpl(model_edit_sku.sku_details, new_upl_id.value, new_upl_piece.value, new_upl_best_before.value); new_upl_id.value=''; new_upl_piece.value = 1"
-                            >
-                                Hozzáadás
                             </button>
                         </td>
                     </tr>
@@ -306,7 +312,7 @@
 >
     <div
         class="columns"
-        *ngIf="!model_new_sku.is_sku_selected"
+        *ngIf="!procurement.model_new_sku.is_sku_selected"
     >
         <div class="column">
             <div class="field">
@@ -318,14 +324,14 @@
                         type="text"
                         placeholder="SKU keresése"
                         name="sku_search"
-                        (keyup.esc)="model_new_sku.searchSku('')"
-                        (keyup.enter)="model_new_sku.searchSku(sku_search.value)"
+                        (keyup.esc)="procurement.model_new_sku.searchSku('')"
+                        (keyup.enter)="procurement.model_new_sku.searchSku(sku_search.value)"
                     >
                 </div>
             </div>
             <table
                 class="table is-hoverable is-fullwidth"
-                *ngIf="model_new_sku.sku_search_results.length > 0"
+                *ngIf="procurement.model_new_sku.sku_search_results.length > 0"
             >
                 <thead>
                     <tr>
@@ -334,11 +340,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let found_sku of model_new_sku.sku_search_results">
+                    <tr *ngFor="let found_sku of procurement.model_new_sku.sku_search_results">
                         <td>
                             <button
                                 class="button is-small"
-                                (click)="model_new_sku.selectSku(found_sku.sku, found_sku.name)"
+                                (click)="procurement.model_new_sku.selectSku(found_sku.sku, found_sku.name)"
                             >
                                 Kiválasztás
                             </button>
@@ -351,10 +357,12 @@
     </div>
     <div
         class="columns"
-        *ngIf="model_new_sku.is_sku_selected"
+        *ngIf="procurement.model_new_sku.is_sku_selected"
     >
         <div class="column">
-            <p class="title is-5">{{model_new_sku.selected_sku_name}}</p>
+            <p class="title is-5">
+                {{procurement.model_new_sku.selected_sku_name}}
+            </p>
             <div class="field">
                 <label class="label">Rendelendő darabszám</label>
                 <div class="control">
@@ -366,7 +374,7 @@
                         value="1"
                         required
                         autocomplete="off"
-                        [(ngModel)]="model_new_sku.sku_item.ordered_amount"
+                        [(ngModel)]="procurement.model_new_sku.sku_item.ordered_amount"
                     >
                 </div>
             </div>
@@ -377,7 +385,7 @@
                         class="input"
                         type="number"
                         placeholder="1000"
-                        [(ngModel)]="model_new_sku.sku_item.expected_net_price"
+                        [(ngModel)]="procurement.model_new_sku.sku_item.expected_net_price"
                     >
                 </p>
                 <p class="control">
@@ -387,7 +395,7 @@
             <div class="field">
                 <p class="control">
                     <button-submit
-                        [callback]="callbackAddSku"
+                        [callback]="procurement.callbackAddSku"
                         [snackBarMessage]="'Sikeresen hozzáadva'"
                         name="Hozzáad"
                     ></button-submit>
