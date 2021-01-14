@@ -22,8 +22,9 @@ export class ProcurementService {
   remove(procurement_id: number): Observable<any> {
     return this.http.delete<any>("/procurement/" + procurement_id);
   }
-  set_delivery_date(procurement_id: number, delivery_date: Date): Observable<Procurement> {
-    return this.http.put<Procurement>(`/procurement/set_delivery_date`, new SetDeliveryDate(procurement_id, delivery_date));
+  set_delivery_date(procurement_id: number, delivery_date: string): Observable<Procurement> {
+    let date = delivery_date.length > 0 ? new Date(delivery_date).toISOString() : "";
+    return this.http.put<Procurement>(`/procurement/set_delivery_date`, new SetDeliveryDate(procurement_id, date));
   }
   set_reference(procurement_id: number, reference: string): Observable<Procurement> {
     return this.http.put<Procurement>(`/procurement/set_reference`, new SetReference(procurement_id, reference));
@@ -80,9 +81,9 @@ export class ProcurementItem {
 
 export class UplCandidate {
   constructor(
+    public sku: number,
     public upl_id: string = "",
-    public sku: number = 0,
-    public upl_piece: number = 0,
+    public upl_piece: number = 1,
     public best_before: string = ""
   ) { }
 }
@@ -163,7 +164,7 @@ export class SetReference {
 export class SetDeliveryDate {
   constructor(
     public procurement_id: number,
-    public delivery_date: Date
+    public delivery_date: string
   ) { }
 }
 

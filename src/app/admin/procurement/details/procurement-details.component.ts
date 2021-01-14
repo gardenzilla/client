@@ -5,7 +5,7 @@ import { tap } from 'rxjs/operators';
 import { Product, ProductService } from 'src/app/services/product.service';
 import { Sku, SkuNew, SkuService } from 'src/app/services/sku.service';
 import { Price, PriceHistory, PriceService } from 'src/app/services/price.service';
-import { AddSku, AddUpl, Procurement, ProcurementItem, ProcurementService, RemoveSku, UplCandidate } from 'src/app/services/procurement.service';
+import { AddSku, AddUpl, Procurement, ProcurementItem, ProcurementService, RemoveSku, RemoveUpl, SetSkuPiece, SetSkuPrice, UpdateUpl, UplCandidate } from 'src/app/services/procurement.service';
 import { Source, SourceService } from 'src/app/services/source.service';
 import { ScannerBridgeService } from 'src/app/services/scanner-bridge.service';
 
@@ -147,7 +147,7 @@ export class ProcurementObject {
     let result: number = 0;
     this.procurement.upls.forEach(upl => {
       if (upl.sku == sku) {
-        result++;
+        result = result + upl.upl_piece;
       }
     });
     return result;
@@ -180,11 +180,7 @@ export class ProcurementObject {
   }
   // Callback to set new delivery date
   callbackSetDeliveryDate = (): Observable<any> => {
-    if (this.um_delivery_date == null) {
-      console.log("delivery date is null");
-      this.um_delivery_date = "";
-    }
-    return this.procurementService.set_delivery_date(this.procurement_id, new Date(this.um_delivery_date)).
+    return this.procurementService.set_delivery_date(this.procurement_id, this.um_delivery_date).
       pipe(
         tap(res => {
           this.procurement = res;
@@ -205,6 +201,13 @@ export class ProcurementObject {
   // Remove SKU
   removeSku(sku: number) {
     this.procurementService.remove_sku(new RemoveSku(this.procurement_id, sku)).subscribe(res => this.reloadWithData(res));
+  }
+  // Remove UPL
+  removeUpl(upl_id: string) {
+    let sure = confirm("Biztosan törlöd?");
+    if (sure) {
+      this.procurementService.remove_upl(new RemoveUpl(this.procurement_id, upl_id)).subscribe(res => this.reloadWithData(res));
+    }
   }
 }
 
@@ -255,9 +258,12 @@ export class SkuEditObject {
     this.sku_details = Object.assign({}, sku);
     // Set a new UPL candidate as an empty object
     // when this new edit model constructed
-    this.new_upl = new UplCandidate();
-    this.new_upl.sku = sku.sku;
+    this.new_upl = new UplCandidate(sku.sku);
   }
+  // 0 => UPL view
+  // 1 => details form view
+  // todo: refact using enum
+  public view: number = 0;
   // Reference to the original
   private procurement_ref: ProcurementObject;
   // Here we have the related ProcurementItem
@@ -265,13 +271,22 @@ export class SkuEditObject {
   public sku_details: ProcurementItem;
   // New UPL object
   public new_upl: UplCandidate;
+  getView(): number {
+    return this.view;
+  }
+  setViewUpl() {
+    this.view = 0;
+  }
+  setViewInfo() {
+    this.view = 1;
+  }
   // Get UPLs filtered from the ProcurementObject
   // UPLs (only array of refs to the parent object items)
   getUpls(): UplCandidate[] {
     let res: UplCandidate[] = [];
     this.procurement_ref.procurement.upls.forEach(upl => {
       if (upl.sku == this.sku.sku) {
-        res.push(upl);
+        res.unshift(upl);
       }
     });
     return res;
@@ -288,10 +303,18 @@ export class SkuEditObject {
     // the procurement service
     this.procurementService.add_upl(
       new AddUpl(this.procurement_ref.procurement_id,
-        new UplCandidate(this.new_upl.upl_id, this.new_upl.sku, +this.new_upl.upl_piece, bdate))).
+        new UplCandidate(this.new_upl.sku, this.new_upl.upl_id, +this.new_upl.upl_piece, bdate))).
       subscribe(res => {
         // Update parent object
         this.procurement_ref.reloadWithData(res);
+      });
+  }
+  updateSku(piece: number, price: number) {
+    this.procurementService.set_sku_piece(
+      new SetSkuPiece(this.procurement.procurement_id, this.sku.sku, +piece)).subscribe(res => {
+        this.procurementService.set_sku_price(new SetSkuPrice(this.procurement.procurement_id, this.sku.sku, +price)).subscribe(
+          res => this.procurement_ref.reloadWithData(res)
+        );
       });
   }
   // Set up new UPL model

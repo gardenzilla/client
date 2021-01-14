@@ -161,20 +161,23 @@
     title="Amalgerol Prémium 1 L"
     [callbackClose]="unsetModelEditSku"
 >
-    <div class="columns">
+    <div
+        class="columns"
+        *ngIf="model_edit_sku"
+    >
         <div class="column has-text-centered">
             <div class="tabs is-toggle is-toggle-rounded is-centered is-small">
                 <ul>
-                    <li class="is-active">
-                        <a>
+                    <li [ngClass]="{'is-active' : model_edit_sku.getView() == 0}">
+                        <a (click)="model_edit_sku.setViewUpl()">
                             <span class="icon is-small">
                                 <i class="fas fa-box"></i>
                             </span>
                             <span>UPL lista</span>
                         </a>
                     </li>
-                    <li>
-                        <a>
+                    <li [ngClass]="{'is-active' : model_edit_sku.getView() == 1}">
+                        <a (click)="model_edit_sku.setViewInfo()">
                             <span class="icon is-small">
                                 <i class="fas fa-info"></i>
                             </span>
@@ -185,7 +188,51 @@
             </div>
         </div>
     </div>
-    <div class="columns">
+    <div
+        class="columns"
+        *ngIf="model_edit_sku && model_edit_sku.getView() == 1"
+    >
+        <div class="column is-6">
+            <div class="field">
+                <label class="label">SKU darabszám</label>
+                <div class="control">
+                    <input
+                        #se_piece
+                        class="input"
+                        type="number"
+                        placeholder="1"
+                        name="sku_piece"
+                        [ngModel]="model_edit_sku.sku_details.ordered_amount"
+                    >
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Beszerzési ár</label>
+                <div class="control">
+                    <input
+                        #se_price
+                        class="input"
+                        type="number"
+                        placeholder="1"
+                        name="sku_price"
+                        [ngModel]="model_edit_sku.sku_details.expected_net_price"
+                    >
+                </div>
+            </div>
+            <div class="field">
+                <button
+                    class="button"
+                    (click)="model_edit_sku.updateSku(se_piece.value, se_price.value)"
+                >
+                    Mentés
+                </button>
+            </div>
+        </div>
+    </div>
+    <div
+        class="columns"
+        *ngIf="model_edit_sku && model_edit_sku.getView() == 0"
+    >
         <div class="column">
             <table class="table is-fullwidth is-hoverable">
                 <thead>
@@ -240,13 +287,16 @@
                         <td>{{Index + 1}}</td>
                         <td>{{upl.upl_id}}</td>
                         <td>{{upl.upl_piece}}</td>
-                        <td>{{upl.best_before}}</td>
+                        <td>
+                            {{upl.best_before ? (upl.best_before | gzDate) : "-"}}
+                        </td>
                         <td>
                             <button
                                 class="button is-small"
                                 title="UPL módosítása"
+                                (click)="procurement.removeUpl(upl.upl_id)"
                             >
-                                Módosít
+                                Törlés
                             </button>
                         </td>
                     </tr>
