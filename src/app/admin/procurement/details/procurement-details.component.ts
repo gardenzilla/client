@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
-import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Product, ProductService } from 'src/app/services/product.service';
 import { Sku, SkuNew, SkuService } from 'src/app/services/sku.service';
 import { Price, PriceHistory, PriceService } from 'src/app/services/price.service';
 import { AddSku, AddUpl, Procurement, ProcurementItem, ProcurementService, RemoveSku, UplCandidate } from 'src/app/services/procurement.service';
-import { SourceService } from 'src/app/services/source.service';
+import { Source, SourceService } from 'src/app/services/source.service';
+import { ScannerBridgeService } from 'src/app/services/scanner-bridge.service';
 
 @Component({
   selector: 'procurement-details',
@@ -16,16 +16,25 @@ import { SourceService } from 'src/app/services/source.service';
 })
 export class ProcurementDetailsComponent implements OnInit {
 
+  // Procurement ID provided by URL parameter
   procurement_id: number = +this.route.snapshot.paramMap.get("procurement_id");
+  // Loaded Procurement object
   procurement: Procurement = new Procurement();
-  sources: any = {};
-  skus: any = {};
+  // Sources required to display procurement source
+  sources: Map<number, Source> = new Map();
+  // SKUs required to display procurement SKUs
+  skus: Map<number, Sku> = new Map();
+  // Model to update procurement
+  // reference
   model_reference: string = "";
+  // Model to update delivery date
   model_delivery_date: string = "";
+  // Model to add new SKU
   model_new_sku: NewProcurementObject = new NewProcurementObject(this.skuService);
+  // Model to edit SKU
   model_edit_sku: SkuEditObject | null = null;
-
-  scanner_bridge: WebSocketSubject<any>;
+  // ScannerBridge subscription
+  scannerSubscription: Subscription;
 
   constructor(
     private productService: ProductService,
@@ -33,6 +42,7 @@ export class ProcurementDetailsComponent implements OnInit {
     private priceService: PriceService,
     private procurementService: ProcurementService,
     private sourceService: SourceService,
+    private scannerService: ScannerBridgeService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -57,7 +67,7 @@ export class ProcurementDetailsComponent implements OnInit {
   }
 
   setModelDeliveryDate() {
-    let date = new Date(this.procurement.estimated_delivery_date);
+    let date = this.procurement.estimated_delivery_date.length > 0 ? new Date(this.procurement.estimated_delivery_date) : new Date();
     this.model_delivery_date = date.toISOString().slice(0, 10);
   }
 
@@ -109,16 +119,7 @@ export class ProcurementDetailsComponent implements OnInit {
       );
   }
 
-  processUpl(query: string): string {
-    let parts: string[] = query.split('/');
-    if (parts[parts.length - 2] == 'uinfo') {
-      return parts[parts.length - 1];
-    }
-    return null;
-  }
-
   addUpl(sku: ProcurementItem, upl_id: string, piece: number, best_before: string) {
-    upl_id = this.processUpl(upl_id);
     let bdate = best_before.length > 0 ? new Date(best_before).toISOString() : "";
     this.procurementService.add_upl(new AddUpl(this.procurement_id, new UplCandidate(upl_id, sku.sku, +piece, bdate))).
       subscribe(res => {
@@ -149,16 +150,13 @@ export class ProcurementDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.reloadProcurement();
+    this.scannerSubscription = this.scannerService.scanner_event.subscribe(res => console.log(res));
+  }
 
-    // WebScoket demo
-    this.scanner_bridge = webSocket({
-      url: 'ws://127.0.0.1:2794',
-      protocol: 'scannerbridge'
-    });
-    this.scanner_bridge.asObservable().subscribe(res => {
-      console.log(res);
-    });
-    this.scanner_bridge.next("error");
+  ngOnDestroy() {
+    if (this.scannerSubscription) {
+      this.scannerSubscription.unsubscribe();
+    }
   }
 
 }

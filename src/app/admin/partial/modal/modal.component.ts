@@ -15,6 +15,7 @@ export class ModalComponent implements OnChanges {
   @Input() callbackSubmit?: [string, Function];
   @Input() isWide?: boolean = false;
   @Input() isActive?: boolean = false;
+  @Input() callbackClose?: [string, Function];
   // @Input() verify?: boolean = false;
   // @Input() autoClose?: boolean = true;
 
@@ -23,6 +24,11 @@ export class ModalComponent implements OnChanges {
   // @HostListener('document:keydown.esc')
   close() {
     this.isActive = false;
+    if (this.callbackClose) {
+      if (this.callbackClose[1]) {
+        this.callbackClose[1]();
+      }
+    }
   }
 
   open(data?: any) {

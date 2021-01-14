@@ -18,7 +18,7 @@
                                 </a>
                             </p>
                             <p>
-                                Várható beérkezés: {{procurement.estimated_delivery_date ? (procurement.estimated_delivery_date | gzDate) : '-'}}
+                                Várható beérkezés: {{procurement.estimated_delivery_date ? (procurement.estimated_delivery_date | gzDate) : ''}}
                                 <a (click)="setModelDeliveryDate(); modal_delivery_date.open()">
                                     <span class="icon">
                                         <i class="fas fa-plus"></i>

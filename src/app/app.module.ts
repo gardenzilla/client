@@ -20,6 +20,7 @@ import { CustomerService } from './services/customer/customer.service';
 import { UserService } from './services/user.service';
 import { ProductService } from './services/product.service';
 import { SkuService } from './services/sku.service';
+import { ScannerBridgeService } from './services/scanner-bridge.service';
 import { StockService } from './services/stock.service';
 import { SourceService } from './services/source.service';
 import { ProcurementService } from './services/procurement.service';
@@ -64,7 +65,9 @@ import { SnackBarService } from './services/snack-bar/snack-bar.service';
     PriceService,
     ProfileService,
     ErrorService,
-    SnackBarService],
+    SnackBarService,
+    ScannerBridgeService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
