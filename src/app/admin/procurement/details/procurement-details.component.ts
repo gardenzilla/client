@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { tap } from 'rxjs/operators';
 import { Product, ProductService } from 'src/app/services/product.service';
 import { Sku, SkuNew, SkuService } from 'src/app/services/sku.service';
@@ -23,6 +24,8 @@ export class ProcurementDetailsComponent implements OnInit {
   model_delivery_date: string = "";
   model_new_sku: NewProcurementObject = new NewProcurementObject(this.skuService);
   model_edit_sku: SkuEditObject | null = null;
+
+  scanner_bridge: WebSocketSubject<any>;
 
   constructor(
     private productService: ProductService,
@@ -146,8 +149,22 @@ export class ProcurementDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.reloadProcurement();
+
+    // WebScoket demo
+    this.scanner_bridge = webSocket({
+      url: 'ws://127.0.0.1:2794',
+      protocol: 'scannerbridge'
+    });
+    this.scanner_bridge.asObservable().subscribe(res => {
+      console.log(res);
+    });
+    this.scanner_bridge.next("error");
   }
 
+}
+
+interface ScannerResponse {
+  code: string
 }
 
 export class NewProcurementObject {
