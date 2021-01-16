@@ -158,7 +158,7 @@
 
 <modal
     #modal_edit_sku
-    title="Amalgerol Prémium 1 L"
+    title="{{model_edit_sku ? procurement.getSkuName(model_edit_sku.sku_details.sku) : ''}}"
     [callbackClose]="unsetModelEditSku"
 >
     <div
@@ -173,7 +173,9 @@
                             <span class="icon is-small">
                                 <i class="fas fa-box"></i>
                             </span>
-                            <span>UPL lista</span>
+                            <span>
+                                UPL lista ({{model_edit_sku.sku_details.ordered_amount}}/{{model_edit_sku.getUpls().length}})
+                            </span>
                         </a>
                     </li>
                     <li [ngClass]="{'is-active' : model_edit_sku.getView() == 1}">
@@ -284,7 +286,9 @@
                         </td>
                     </tr>
                     <tr *ngFor="let upl of model_edit_sku.getUpls(); index as Index">
-                        <td>{{Index + 1}}</td>
+                        <td>
+                            {{model_edit_sku.getUpls().length - Index}}
+                        </td>
                         <td>{{upl.upl_id}}</td>
                         <td>{{upl.upl_piece}}</td>
                         <td>

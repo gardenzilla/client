@@ -42,7 +42,7 @@ export class ProcurementDetailsComponent implements OnInit {
   }
 
   setModelEditSku(sku: ProcurementItem) {
-    this.model_edit_sku = new SkuEditObject(this.procurementService, this.procurement, sku);
+    this.model_edit_sku = new SkuEditObject(this.procurementService, this.procurement, sku, this.scannerService);
   }
 
   unsetModelEditSku() {
@@ -133,6 +133,9 @@ export class ProcurementObject {
         this.skus[res.sku] = res;
       })
     });
+  }
+  getSkuName(sku: number): string {
+    return this.skus[sku] ? this.skus[sku].display_name : ""
   }
   // Load source info
   private loadSource() {
@@ -251,6 +254,7 @@ export class SkuEditObject {
     private procurementService: ProcurementService,
     private procurement: ProcurementObject,
     private sku: ProcurementItem,
+    private scanner: ScannerBridgeService,
   ) {
     // Set procurement_ref
     this.procurement_ref = procurement;
@@ -307,7 +311,10 @@ export class SkuEditObject {
       subscribe(res => {
         // Update parent object
         this.procurement_ref.reloadWithData(res);
-      });
+      },
+        // Send error if error
+        // err => this.scanner.sendError()
+      );
   }
   updateSku(piece: number, price: number) {
     this.procurementService.set_sku_piece(
@@ -327,7 +334,7 @@ export class SkuEditObject {
     if (this.new_upl.upl_id != "") {
       this.addNewUpl();
     }
-    this.resetNewUpl();
+    // Set new_upl ID to the given one
     this.new_upl.upl_id = upl_id;
   }
   private resetNewUpl() {

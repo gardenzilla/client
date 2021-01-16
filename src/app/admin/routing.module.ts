@@ -21,6 +21,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { CashComponent } from './cash/cash.component';
 import { ProcurementComponent } from './procurement/procurement.component';
 import { ProcurementDetailsComponent } from './procurement/details/procurement-details.component';
+import { CustomerListResolverService } from './customer/customer-resolver.service';
 
 const routes: Routes = [
   {
@@ -58,7 +59,7 @@ const routes: Routes = [
       },
       {
         path: 'customer', children: [
-          { path: '', component: CustomerComponent },
+          { path: '', component: CustomerComponent, resolve: { data: CustomerListResolverService } },
           { path: 'new', component: CustomerNewComponent },
           { path: ':customer_id', component: CustomerDetailComponent }
         ]
