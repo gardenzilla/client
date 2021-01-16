@@ -5,4 +5,11 @@
     <li><a routerLink="/a/page1">AdminPage1</a></li>
     <li><a routerLink="/a/page2">AdminPage2</a></li>
 </ul> -->
+<progress
+    class="gzloader progress is-small is-primary"
+    max="100"
+    *ngIf="loading"
+>
+    0%
+</progress>
 <router-outlet></router-outlet>
