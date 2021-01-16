@@ -13,4 +13,7 @@ export class SnackBarService {
   displaySnack(text: string) {
     this.snackMessage$.next(text);
   }
+  message(text: string) {
+    this.displaySnack(text);
+  }
 }
