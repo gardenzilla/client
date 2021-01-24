@@ -19,10 +19,26 @@
                                 <i>Nincs leírás</i>
                             </p>
                             <p class="content">Mértékegység: {{product.unit}}</p>
+                            <p class="content">
+                                Romlandó termék: {{product.perishable ? 'igen' : 'nem'}}
+                                <br>
+                                Kifutó termék: {{product.discontinued ? 'igen' : 'nem'}}
+                            </p>
                             <a (click)="edit_product.open()">Szerkesztés</a>
                         </div>
                         <p class="title is-5">SKU lista</p>
                         <table class="table is-striped">
+                            <thead>
+                                <tr>
+                                    <th>SKU</th>
+                                    <th>Név</th>
+                                    <th>Bruttó ár</th>
+                                    <th>Kimérhető</th>
+                                    <th>Kifutó</th>
+                                    <th>Romlandó</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
                             <tbody>
                                 <tr *ngFor="let sku of skus">
                                     <td class="has-text-grey-light">#{{sku.sku}}</td>
@@ -32,6 +48,9 @@
                                     <td>
                                         {{prices[sku.sku] ? prices[sku.sku].price_gross_retail.toLocaleString() : "-"}} HUF
                                     </td>
+                                    <td>{{sku.can_divide ? 'kimérhető' : ''}}</td>
+                                    <td>{{sku.discontinued ? 'kifutó' : ''}}</td>
+                                    <td>{{sku.perishable ? 'romlandó' : ''}}</td>
                                     <td>
                                         <a (click)="add_price.open(); loadPrice(sku.sku); loadPriceHistory(sku.sku); _selected_price_sku_name=sku.display_name">
                                             <span class="icon">
@@ -117,6 +136,24 @@
                 <br>
                 Készült: {{product.created_at | gzDateTime}}
             </div>
+            <label class="checkbox">
+                <input
+                    type="checkbox"
+                    name="perishable"
+                    [(ngModel)]="product.perishable"
+                    (change)="setPerishable()"
+                >
+                romlandó termék
+            </label>
+            <label class="checkbox">
+                <input
+                    type="checkbox"
+                    name="discontinued"
+                    [(ngModel)]="product.discontinued"
+                    (change)="setProductDiscontinued()"
+                >
+                kifutó termék
+            </label>
         </div>
     </div>
 </modal>
@@ -166,6 +203,27 @@
                 </div>
             </div>
             <!-- </form> -->
+        </div>
+        <div class="column is-6">
+            <label class="checkbox">
+                <input
+                    type="checkbox"
+                    name="divisible"
+                    [(ngModel)]="sku_update.can_divide"
+                    (change)="setSkuDivisible()"
+                >
+                kimérhető termék
+            </label>
+            <br>
+            <label class="checkbox">
+                <input
+                    type="checkbox"
+                    name="discontinued"
+                    [(ngModel)]="sku_update.discontinued"
+                    (change)="setSkuDiscontinued()"
+                >
+                kifutó termék
+            </label>
         </div>
     </div>
 </modal>

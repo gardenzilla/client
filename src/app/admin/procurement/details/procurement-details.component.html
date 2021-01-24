@@ -27,6 +27,40 @@
                                     </span>
                                 </a>
                             </p>
+                            <p>
+                                Státusz: {{procurement.getStatusString()}} ->
+                                <span [ngSwitch]="procurement.procurement.status">
+                                    <button
+                                        class="button is-small"
+                                        *ngSwitchCase="'New'"
+                                        (click)="procurement.setNewStatus('ordered')"
+                                    >
+                                        Megrendelés
+                                    </button>
+                                    <button
+                                        class="button is-small"
+                                        *ngSwitchCase="'Ordered'"
+                                        (click)="procurement.setNewStatus('arrived')"
+                                    >
+                                        Beérkezett
+                                    </button>
+                                    <button
+                                        class="button is-small"
+                                        *ngSwitchCase="'Arrived'"
+                                        (click)="procurement.setNewStatus('processing')"
+                                    >
+                                        Feldolgozás alatt
+                                    </button>
+                                    <button
+                                        class="button is-small"
+                                        *ngSwitchCase="'Processing'"
+                                        (click)="procurement.setNewStatus('closed')"
+                                    >
+                                        Lezárás
+                                    </button>
+                                    <div *ngSwitchDefault></div>
+                                </span>
+                            </p>
                         </div>
                         <p class="title is-5">SKU lista</p>
                         <table class="table is-striped is-fullwidth">
@@ -240,6 +274,7 @@
                 <thead>
                     <tr>
                         <th>Sorszám</th>
+                        <th>Bontott</th>
                         <th>UPL ID</th>
                         <th class="is-narrow">Darabszám</th>
                         <th>Lejárati idő</th>
@@ -249,6 +284,13 @@
                 <tbody *ngIf="model_edit_sku">
                     <tr>
                         <td></td>
+                        <td>
+                            <input
+                                type="checkbox"
+                                name="perishable"
+                                [(ngModel)]="model_edit_sku.new_upl.opened_sku"
+                            >
+                        </td>
                         <td>
                             <input
                                 name="nupl_id"
@@ -289,8 +331,18 @@
                         <td>
                             {{model_edit_sku.getUpls().length - Index}}
                         </td>
+                        <td>
+                            <input
+                                type="checkbox"
+                                name="perishable"
+                                [ngModel]="upl.opened_sku"
+                                disabled
+                            >
+                        </td>
                         <td>{{upl.upl_id}}</td>
-                        <td>{{upl.upl_piece}}</td>
+                        <td>
+                            {{upl.upl_piece}} {{upl.opened_sku ? procurement.getSku(model_edit_sku.sku_details.sku).unit || '?' : 'db'}}
+                        </td>
                         <td>
                             {{upl.best_before ? (upl.best_before | gzDate) : "-"}}
                         </td>

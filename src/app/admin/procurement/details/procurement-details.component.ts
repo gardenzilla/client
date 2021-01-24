@@ -134,8 +134,27 @@ export class ProcurementObject {
       })
     });
   }
+  getSku(sku: number): Sku | null {
+    return this.skus[sku] ? this.skus[sku] : null;
+  }
   getSkuName(sku: number): string {
     return this.skus[sku] ? this.skus[sku].display_name : ""
+  }
+  getStatusString(): string {
+    switch (this.procurement.status) {
+      case 'New':
+        return "Új";
+      case 'Ordered':
+        return "Megrendelve";
+      case 'Arrived':
+        return "Beérkezett";
+      case 'Processing':
+        return "Feldolgozás alatt";
+      case 'Closed':
+        return "Feldolgozva";
+      default:
+        return "?";
+    }
   }
   // Load source info
   private loadSource() {
@@ -150,7 +169,7 @@ export class ProcurementObject {
     let result: number = 0;
     this.procurement.upls.forEach(upl => {
       if (upl.sku == sku) {
-        result = result + upl.upl_piece;
+        result = result + (upl.opened_sku ? 1 : upl.upl_piece);
       }
     });
     return result;
@@ -171,6 +190,27 @@ export class ProcurementObject {
   // Set model to create new Sku procurement item object
   setModelNewSku() {
     this.model_new_sku = new NewSkuObject(this.skuService);
+  }
+  setNewStatus(to: string) {
+    let h: Observable<Procurement>;
+    switch (to) {
+      case 'ordered':
+        h = this.procurementService.set_status_ordered(this.procurement_id);
+        break;
+      case 'arrived':
+        h = this.procurementService.set_status_arrived(this.procurement_id);
+        break;
+      case 'processing':
+        h = this.procurementService.set_status_processing(this.procurement_id);
+        break;
+      case 'closed':
+        if (!confirm('Biztosan lezárod? Utána már nem szerkeszthető!')) {
+          return;
+        }
+        h = this.procurementService.set_status_closed(this.procurement_id);
+        break;
+    }
+    h.subscribe(res => this.procurement = res);
   }
   // Callback to set new reference
   callbackSetReference = (): Observable<any> => {
@@ -307,7 +347,7 @@ export class SkuEditObject {
     // the procurement service
     this.procurementService.add_upl(
       new AddUpl(this.procurement_ref.procurement_id,
-        new UplCandidate(this.new_upl.sku, this.new_upl.upl_id, +this.new_upl.upl_piece, bdate))).
+        new UplCandidate(this.new_upl.sku, this.new_upl.upl_id, +this.new_upl.upl_piece, bdate, this.new_upl.opened_sku))).
       subscribe(res => {
         // Update parent object
         this.procurement_ref.reloadWithData(res);

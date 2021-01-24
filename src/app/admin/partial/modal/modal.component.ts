@@ -21,7 +21,7 @@ export class ModalComponent implements OnChanges {
 
   subscription: Subscription;
 
-  // @HostListener('document:keydown.esc')
+  @HostListener('document:keydown.esc')
   close() {
     this.isActive = false;
     if (this.callbackClose) {

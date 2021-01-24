@@ -51,6 +51,42 @@ export class ProductDetailsComponent implements OnInit {
     );
   }
 
+  setPerishable() {
+    this.productService.set_perishable(this.product.product_id, this.product.perishable).subscribe(
+      res => this.product = res
+    );
+  }
+
+  setProductDiscontinued() {
+    this.productService.set_discontinued(this.product.product_id, this.product.discontinued).subscribe(
+      res => this.product = res
+    );
+  }
+
+  setSkuDiscontinued() {
+    this.skuService.set_discontinued(this.sku_update.sku, this.sku_update.discontinued).subscribe(
+      res => {
+        let i = this.skus.findIndex(item => item.sku == this.sku_update.sku);
+        this.skus.splice(i, 1, res);
+      },
+      err => {
+        this.sku_update.discontinued = !this.sku_update.discontinued;
+      }
+    );
+  }
+
+  setSkuDivisible() {
+    this.skuService.set_divide(this.sku_update.sku, this.sku_update.can_divide).subscribe(
+      res => {
+        let i = this.skus.findIndex(item => item.sku == this.sku_update.sku);
+        this.skus.splice(i, 1, res);
+      },
+      err => {
+        this.sku_update.can_divide = !this.sku_update.can_divide;
+      }
+    );
+  }
+
   createSku = (): Observable<any> => {
     this._new_sku.product_id = this.product.product_id;
     return this.skuService.new(this._new_sku).pipe(
@@ -93,7 +129,7 @@ export class ProductDetailsComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
+  load() {
     this.productService.get_by_id(this.sku).subscribe(res => {
       this.product = res;
       this.skuService.get_bulk(this.product.skus).subscribe(res => {
@@ -107,6 +143,10 @@ export class ProductDetailsComponent implements OnInit {
           });
       });
     });
+  }
+
+  ngOnInit(): void {
+    this.load();
   }
 
 }

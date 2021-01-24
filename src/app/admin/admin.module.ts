@@ -23,6 +23,7 @@ import { ProcurementDetailsComponent } from './procurement/details/procurement-d
 import { SourceComponent } from './source/source.component';
 import { ModalComponent } from './partial/modal/modal.component';
 import { ProductComponent } from './product/product.component';
+import { UplComponent } from './upl/upl.component';
 import { HelloComponent } from './partial/hello/hello.component';
 import { ErrorComponent } from './partial/error/error.component';
 import { SnackBarComponent } from './partial/snack-bar/snack-bar.component';
@@ -65,6 +66,7 @@ import { GzHufPipe } from '../pipes/gz-huf.pipe';
     DashboardComponent,
     CashComponent,
     SourceComponent,
+    UplComponent,
     GzDatePipe,
     GzDateTimePipe,
     GzHufPipe,

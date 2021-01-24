@@ -22,6 +22,7 @@ import { CashComponent } from './cash/cash.component';
 import { ProcurementComponent } from './procurement/procurement.component';
 import { ProcurementDetailsComponent } from './procurement/details/procurement-details.component';
 import { CustomerListResolverService } from './customer/customer-resolver.service';
+import { UplComponent } from './upl/upl.component';
 
 const routes: Routes = [
   {
@@ -50,6 +51,9 @@ const routes: Routes = [
       { path: 'stock', component: StockComponent, data: { title: 'Raktár', breadcrumb: 'Raktár' } },
       {
         path: 'source', component: SourceComponent
+      },
+      {
+        path: 'upl', component: UplComponent
       },
       {
         path: 'procurement', children: [

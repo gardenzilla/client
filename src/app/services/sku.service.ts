@@ -26,7 +26,10 @@ export class SkuService {
     return this.http.post<number[]>('/sku/find', { query: query });
   }
   set_divide(sku: number, can_divide: boolean): Observable<Sku> {
-    return this.http.put<Sku>('/product/can_divide', { sku: sku, can_divide: can_divide });
+    return this.http.post<Sku>('/sku/set_divide', { sku: sku, can_divide: can_divide });
+  }
+  set_discontinued(sku: number, discontinued: boolean): Observable<Sku> {
+    return this.http.put<Sku>("/sku/set_discontinued", { sku: sku, discontinued: discontinued });
   }
 }
 
@@ -48,6 +51,8 @@ export class Sku {
     public quantity: string = "",
     public unit: string = "",
     public can_divide: boolean = false,
+    public discontinued: boolean = false,
+    public perishable: boolean = false,
     public created_at: string = "",
     public created_by: number = 0,
   ) { }

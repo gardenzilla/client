@@ -16,11 +16,16 @@
                     <th>Beszerzési forrás</th>
                     <th>Várható érkezés</th>
                     <th>SKU darabszám</th>
-                    <th>UPL darabszám</th>
+                    <th>SKU összesen (db)</th>
+                    <th>UPL összesen (db)</th>
+                    <th>Státusz</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let procurement of procurements">
+                <tr
+                    *ngFor="let procurement of procurements"
+                    [ngClass]="{'has-background-primary-light': procurement.status == 'Closed'}"
+                >
                     <td>
                         <p class="has-text-grey-light">
                             <a [routerLink]="['.', procurement.id]">#{{procurement.id}}</a>
@@ -40,7 +45,13 @@
                         <p>{{procurement.sku_count}}</p>
                     </td>
                     <td>
+                        <p>{{procurement.sku_piece_count}}</p>
+                    </td>
+                    <td>
                         <p>{{procurement.upl_count}}</p>
+                    </td>
+                    <td>
+                        <p>{{getStatusString(procurement.status)}}</p>
                     </td>
                 </tr>
             </tbody>

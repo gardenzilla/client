@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { NewProcurement, Procurement, ProcurementInfo, ProcurementService } from 'src/app/services/procurement.service';
+import { NewProcurement, ProcurementInfo, ProcurementService } from 'src/app/services/procurement.service';
 import { SourceService } from 'src/app/services/source.service';
 
 @Component({
@@ -21,6 +21,23 @@ export class ProcurementComponent implements OnInit {
 
   resetModelNewProcurement() {
     this.model_new_procurement = new NewProcurement();
+  }
+
+  getStatusString(status: string): string {
+    switch (status) {
+      case 'New':
+        return "Új";
+      case 'Ordered':
+        return "Megrendelve";
+      case 'Arrived':
+        return "Beérkezett";
+      case 'Processing':
+        return "Feldolgozás alatt";
+      case 'Closed':
+        return "Feldolgozva";
+      default:
+        return "?";
+    }
   }
 
   callbackCreate = (): Observable<any> => {

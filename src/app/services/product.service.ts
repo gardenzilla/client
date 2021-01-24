@@ -25,6 +25,12 @@ export class ProductService {
   find(query: string): Observable<number[]> {
     return this.http.post<number[]>('/product/find', { query: query });
   }
+  set_perishable(product_id: number, perishable: boolean): Observable<Product> {
+    return this.http.put<Product>("/product/set_perishable", { product_id: product_id, perishable: perishable });
+  }
+  set_discontinued(product_id: number, discontinued: boolean): Observable<Product> {
+    return this.http.put<Product>("/product/set_discontinued", { product_id: product_id, discontinued: discontinued });
+  }
 }
 
 export class Product {
@@ -34,6 +40,8 @@ export class Product {
     public description: string = "",
     public unit: string = "",
     public skus: number[] = [],
+    public discontinued: boolean = false,
+    public perishable: boolean = false,
     public created_at: string = "",
     public created_by: number = 0,
   ) { }

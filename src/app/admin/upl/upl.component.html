@@ -1,0 +1,140 @@
+<section class="section">
+    <div class="container">
+        <p class="title">UPL lekérés</p>
+        <div class="level">
+            <div class="level-left">
+                <div class="level-item">
+                    <div class="field has-addons">
+                        <div class="control">
+                            <input
+                                #filter
+                                class="input"
+                                type="text"
+                                placeholder="UPL keresése"
+                                name="upl_lookup"
+                                (keyup.esc)="upl=null"
+                                (keyup.enter)="loadUpl()"
+                                [(ngModel)]="upl_id"
+                            >
+                        </div>
+                        <div class="control">
+                            <a
+                                class="button is-info"
+                                (click)="loadUpl()"
+                            >
+                                Keresés
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <p
+            class="content"
+            *ngIf="not_found"
+        >
+            A megadott UPL nem található
+        </p>
+        <table
+            class="table is-striped"
+            *ngIf="upl"
+        >
+            <tbody>
+                <tr>
+                    <td>UPL ID</td>
+                    <td>{{upl.upl_id}}</td>
+                </tr>
+                <tr>
+                    <td>Termék ID</td>
+                    <td>{{upl.product_id}}</td>
+                </tr>
+                <tr>
+                    <td>Termék neve</td>
+                    <td>{{product ? product.name : '-'}}</td>
+                </tr>
+                <tr>
+                    <td>SKU ID</td>
+                    <td>{{getSku()}}</td>
+                </tr>
+                <tr>
+                    <td>SKU neve</td>
+                    <td>{{sku ? sku.display_name : '-'}}</td>
+                </tr>
+                <tr>
+                    <td>SKU Mennyiség</td>
+                    <td>{{sku ? sku.quantity : '-'}}</td>
+                </tr>
+                <tr>
+                    <td>Mennyiségi egység</td>
+                    <td>{{product ? product.unit : '-'}}</td>
+                </tr>
+                <tr>
+                    <td>SKU Kimérhető?</td>
+                    <td>
+                        {{sku ? sku.can_divide ? 'igen' : 'nem' : '-'}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Kimérhető mennyiség</td>
+                    <td>{{upl.divisible_amount}}</td>
+                </tr>
+                <tr>
+                    <td>Kisker ár (bruttó)</td>
+                    <td>
+                        {{price ? (price.price_gross_retail | gzHuf) : '-'}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Kisker ár (nettó)</td>
+                    <td>
+                        {{price ? (price.price_net_retail | gzHuf) : '-'}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Haszon (nettó)</td>
+                    <td>
+                        {{price ? ((price.price_net_retail - upl.procurement_net_price) | gzHuf) : '-'}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Állapot</td>
+                    <td>
+                        {{upl.is_healthy ? 'Hibátlan termék' : 'Prolémás termék'}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Típus</td>
+                    <td>{{getKind()}}</td>
+                </tr>
+                <tr>
+                    <td>Selejtezett termék?</td>
+                    <td>{{upl.depreciation ? 'igen' : 'nem'}}</td>
+                </tr>
+                <tr>
+                    <td>Beszerzés azonosító</td>
+                    <td>{{upl.procurement_id}}</td>
+                </tr>
+                <tr>
+                    <td>Beszerzés ideje</td>
+                    <td>{{upl.created_at | gzDate}}</td>
+                </tr>
+                <tr>
+                    <td>Beszerzési nettó ár</td>
+                    <td>{{upl.procurement_net_price | gzHuf}}</td>
+                </tr>
+                <tr>
+                    <td>Lejárati idő</td>
+                    <td>
+                        {{upl.best_before ? (upl.best_before | gzDate) : 'nincs'}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Archivált?</td>
+                    <td>{{upl.is_archived ? 'igen' : 'nem'}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>

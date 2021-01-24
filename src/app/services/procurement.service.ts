@@ -50,6 +50,18 @@ export class ProcurementService {
   remove_upl(data: RemoveUpl): Observable<Procurement> {
     return this.http.put<Procurement>(`/procurement/remove_upl`, data);
   }
+  set_status_ordered(procurement_id: number): Observable<Procurement> {
+    return this.http.put<Procurement>(`/procurement/set_status_ordered/${procurement_id}`, {});
+  }
+  set_status_arrived(procurement_id: number): Observable<Procurement> {
+    return this.http.put<Procurement>(`/procurement/set_status_arrived/${procurement_id}`, {});
+  }
+  set_status_processing(procurement_id: number): Observable<Procurement> {
+    return this.http.put<Procurement>(`/procurement/set_status_processing/${procurement_id}`, {});
+  }
+  set_status_closed(procurement_id: number): Observable<Procurement> {
+    return this.http.put<Procurement>(`/procurement/set_status_closed/${procurement_id}`, {});
+  }
 }
 
 export class NewProcurement {
@@ -66,6 +78,7 @@ export class Procurement {
     public estimated_delivery_date: string = "",
     public items: ProcurementItem[] = [],
     public upls: UplCandidate[] = [],
+    public status: string = "",
     public created_at: string = "",
     public created_by: number = 0
   ) { }
@@ -84,7 +97,8 @@ export class UplCandidate {
     public sku: number,
     public upl_id: string = "",
     public upl_piece: number = 1,
-    public best_before: string = ""
+    public best_before: string = "",
+    public opened_sku: boolean = false,
   ) { }
 }
 
@@ -93,8 +107,10 @@ export class ProcurementInfo {
     public id: number = 0,
     public source_id: number = 0,
     public sku_count: number = 0,
+    public sku_piece_count: number = 0,
     public upl_count: number = 0,
     public estimated_delivery_date: string = "",
+    public status: string = "",
     public created_at: string = "",
     public created_by: number = 0
   ) { }
