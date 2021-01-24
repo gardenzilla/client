@@ -68,6 +68,8 @@
                                 <tr>
                                     <th class="is-narrow">Sorszám</th>
                                     <th>SKU</th>
+                                    <th></th>
+                                    <th class="is-narrow">Kisker ár (nettó)</th>
                                     <th class="is-narrow">Rendelt darabszám</th>
                                     <th class="is-narrow">UPL darabszám</th>
                                     <th class="is-narrow">Várható besz. ár (nettó)</th>
@@ -84,6 +86,28 @@
                                         <a (click)="setModelEditSku(item) ;modal_edit_sku.open()">
                                             {{procurement.skus[item.sku] != undefined ? procurement.skus[item.sku].display_name : item.sku}}
                                         </a>
+                                    </td>
+                                    <td>
+                                        <a
+                                            *ngIf="procurement.skus[item.sku] != undefined"
+                                            href="/product/{{procurement.getSku(item.sku).product_id}}"
+                                            [attr.target]="'_blank'"
+                                        >
+                                            <span class="icon">
+                                                <i class="fas fa-external-link-alt"></i>
+                                            </span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="procurement.getPrice(item.sku)">
+                                            {{procurement.getPrice(item.sku).price_net_retail |gzHuf}}
+                                        </span>
+                                        <span
+                                            class="icon has-text-danger"
+                                            *ngIf="!procurement.getPrice(item.sku)"
+                                        >
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                        </span>
                                     </td>
                                     <td>{{item.ordered_amount}}</td>
                                     <td>{{procurement.uplCount(item.sku)}}</td>

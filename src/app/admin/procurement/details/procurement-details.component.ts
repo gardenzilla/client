@@ -23,7 +23,8 @@ export class ProcurementDetailsComponent implements OnInit {
     this.procurement_id,
     this.skuService,
     this.procurementService,
-    this.sourceService);
+    this.sourceService,
+    this.priceService);
   // Model to edit SKU
   model_edit_sku: SkuEditObject | null = null;
   // ScannerBridge subscription
@@ -75,6 +76,7 @@ export class ProcurementObject {
     private skuService: SkuService,
     private procurementService: ProcurementService,
     private sourceService: SourceService,
+    private priceService: PriceService
   ) {
     this.init();
   }
@@ -82,6 +84,8 @@ export class ProcurementObject {
   public procurement: Procurement = new Procurement();
   // SKUs required to display procurement SKUs
   public skus: Map<number, Sku> = new Map();
+  // Prices
+  public prices: Map<number, Price> = new Map();
   // Sources required to display procurement source
   public sources: Map<number, Source> = new Map();
   // Update model to reference
@@ -100,6 +104,8 @@ export class ProcurementObject {
       this.procurement = res;
       // Load related sku info
       this.loadSkus();
+      // Load related prices
+      this.loadPrices();
     });
   }
   // When we have a new version of the procurement object
@@ -134,11 +140,27 @@ export class ProcurementObject {
       })
     });
   }
+  // Load price info
+  private loadPrices() {
+    // Init an empty sku array
+    let sku_ids: number[] = [];
+    // Fill it with the procurement contained skus
+    this.procurement.items.forEach(item => sku_ids.push(item.sku));
+    // Load SKU info in bulk
+    this.priceService.get_bulk(sku_ids).subscribe(res => {
+      res.forEach(res => {
+        this.prices[res.sku] = res;
+      })
+    });
+  }
   getSku(sku: number): Sku | null {
     return this.skus[sku] ? this.skus[sku] : null;
   }
   getSkuName(sku: number): string {
     return this.skus[sku] ? this.skus[sku].display_name : ""
+  }
+  getPrice(sku: number): Price | null {
+    return this.prices[sku] ? this.prices[sku] : null;
   }
   getStatusString(): string {
     switch (this.procurement.status) {
