@@ -66,7 +66,7 @@ export class UplComponent implements OnInit {
     this.not_found = false;
     this.uplService.get_by_id(this.upl_id).subscribe(
       res => {
-        this.upl = res
+        this.upl = new Upl(res);
         console.log(res);
         this.productService.get_by_id(res.product_id).subscribe(
           res => {
