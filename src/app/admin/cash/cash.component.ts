@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { map } from 'rxjs/operators';
-import { CashService, Transaction } from 'src/app/services/cash.service';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { CashService, NewTransaction, Transaction } from 'src/app/services/cash.service';
 import { Profile } from 'src/app/services/profile/profile.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -24,6 +25,7 @@ export class CashComponent implements OnInit {
   today_transactions: Transaction[] = [];
   display_transactions: Transaction[] = [];
   users: Map<number, Profile> = new Map();
+  model_new_transaction: NewTransaction = new NewTransaction(0, "", "");
 
   constructor(
     private cashService: CashService,
@@ -74,6 +76,17 @@ export class CashComponent implements OnInit {
 
   getUser(uid: number): Profile | null {
     return this.users[uid] ? this.users[uid] : null;
+  }
+
+  submitNewTransaction = (): Observable<any> => {
+    return this.cashService.new(this.model_new_transaction).pipe(
+      tap(
+        res => {
+          this.display_transactions.push(res);
+          this.loadBalance();
+        }
+      )
+    );
   }
 
   ngOnInit(): void {
