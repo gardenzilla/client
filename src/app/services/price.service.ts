@@ -19,7 +19,7 @@ export class PriceService {
   get_price_history(sku: number): Observable<PriceHistory[]> {
     return this.http.get<PriceHistory[]>(`/price/history/${sku}`);
   }
-  get_price_changes(date_from: string, date_till): Observable<number[]> {
+  get_price_changes(date_from: string, date_till: string): Observable<number[]> {
     return this.http.post<number[]>('/price/changes', { from: date_from, till: date_till });
   }
 }

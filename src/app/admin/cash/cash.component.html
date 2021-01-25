@@ -10,24 +10,32 @@
                             <th>Dátum</th>
                             <th>Összeg</th>
                             <th>Típus</th>
+                            <th>Vásárlás azonosító</th>
                             <th>Hivatkozás</th>
+                            <th>Készítette</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of log">
-                            <td>{{item.id}}</td>
-                            <td>{{item.date | gzDateTime}}</td>
+                        <tr *ngFor="let item of display_transactions">
+                            <td>{{item.transaction_id}}</td>
+                            <td>{{item.created_at | gzDateTime}}</td>
                             <td>{{item.amount | gzHuf}}</td>
-                            <td>{{item.kind}}</td>
+                            <td>
+                                {{item.cart_id ? 'vásárlás' : item.amount > 0 ? 'bevételezés' : 'kiadás'}}
+                            </td>
+                            <td>{{item.cart_id || '-'}}</td>
                             <td>{{item.reference}}</td>
+                            <td>{{getUser(item.created_by) || '?'}}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <div class="column is-3">
                 <p class="title is-6 is-spaced">Összesítő</p>
-                <p class="subtitle is-6">Egyenleg: {{197000 | gzHuf}}
-                    <br>Napi árbevétel: {{75000 | gzHuf}}
+                <p class="subtitle is-6">
+                    Egyenleg: {{balance | gzHuf}}
+                    <br>
+                    Napi árbevétel: {{todayPayIn() | gzHuf}}
                 </p>
                 <div class="buttons has-addons">
                     <button class="button is-info is-outlined">Pénz betétel</button>
