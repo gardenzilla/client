@@ -28,6 +28,7 @@ export class Transaction {
   constructor(
     public transaction_id: string,
     public cart_id: number | null,
+    public kind: string,
     public amount: number,
     public reference: string,
     public comment: string,
@@ -40,6 +41,7 @@ export class NewTransaction {
   constructor(
     public amount: number = 0,
     public reference: string = "",
-    public comment: string = ""
+    public comment: string = "",
+    public kind: string = "Cash",
   ) { }
 }

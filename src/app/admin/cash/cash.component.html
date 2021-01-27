@@ -2,14 +2,15 @@
     <div class="container">
         <p class="title">Pénztár</p>
         <div class="columns">
-            <div class="column is-9">
+            <div class="column is-8">
                 <table class="table is-fullwidth is-bordered">
                     <thead>
                         <tr class="has-background-light">
-                            <th>Azonosító</th>
+                            <!-- <th>Azonosító</th> -->
                             <th>Dátum</th>
                             <th>Összeg</th>
                             <th>Típus</th>
+                            <th>Iránya</th>
                             <th>Vásárlás azonosító</th>
                             <th>Hivatkozás</th>
                             <th>Készítette</th>
@@ -20,9 +21,14 @@
                             *ngFor="let item of display_transactions"
                             [ngClass]="{'has-background-danger-light':item.amount < 0}"
                         >
-                            <td>{{item.transaction_id}}</td>
+                            <!-- <td>{{item.transaction_id}}</td> -->
                             <td>{{item.created_at | gzDateTime}}</td>
                             <td>{{item.amount | gzHuf}}</td>
+                            <td [ngSwitch]="item.kind">
+                                <span *ngSwitchCase="'Cash'">készpénz</span>
+                                <span *ngSwitchCase="'Card'">bankkártya</span>
+                                <span *ngSwitchCase="'Transfer'">utalás</span>
+                            </td>
                             <td>
                                 {{item.cart_id ? 'vásárlás' : item.amount > 0 ? 'bevételezés' : 'kiadás'}}
                             </td>
@@ -35,12 +41,14 @@
                     </tbody>
                 </table>
             </div>
-            <div class="column is-3">
+            <div class="column is-4">
                 <p class="title is-6 is-spaced">Összesítő</p>
                 <p class="subtitle is-6">
                     Egyenleg: {{balance | gzHuf}}
                     <br>
-                    Napi árbevétel: {{todayPayIn() | gzHuf}}
+                    Napi forgalom (készpénz): {{todayTurnoverCash() | gzHuf}}
+                    <br>
+                    Napi forgalom (bankkártya): {{todayTurnoverCard() | gzHuf}}
                 </p>
                 <div class="buttons has-addons">
                     <button
@@ -74,6 +82,24 @@
                         [(ngModel)]="model_new_transaction.amount"
                         autofocus
                     >
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Tranzakció típusa</label>
+                <div class="control">
+                    <div class="select">
+                        <select
+                            name="trkind"
+                            [(ngModel)]="model_new_transaction.kind"
+                        >
+                            <option
+                                *ngFor="let option of transaction_kinds"
+                                [ngValue]="option.code"
+                            >
+                                {{option.display}}
+                            </option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="field">

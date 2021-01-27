@@ -12,14 +12,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class CashComponent implements OnInit {
 
-  log: CashLogItem[] = [
-    new CashLogItem('asd2', '2020-10-19 20:12:41', 1000, 'purchase', '23dr'),
-    new CashLogItem('asd2', '2020-10-18 20:33:41', 1000, 'purchase', '23dr'),
-    new CashLogItem('ass9', '2020-10-16 07:43:41', 400, 'purchase', '22dr'),
-    new CashLogItem('add1', '2020-10-11 20:12:41', 15600, 'purchase', '23dr'),
-    new CashLogItem('fsd7', '2020-10-11 20:12:41', 43090, 'purchase', '23dr'),
-    new CashLogItem('asr4', '2020-10-11 20:12:41', 1350, 'purchase', '23dr'),
-  ];
+  transaction_kinds = [{ code: 'Cash', display: 'Készpénz' }, { code: 'Card', display: 'Bankkártya' }];
 
   balance: number = 0;
   today_transactions: Transaction[] = [];
@@ -33,11 +26,25 @@ export class CashComponent implements OnInit {
   ) {
   }
 
-  todayPayIn(): number {
+  todayTurnoverCash(): number {
     let res: number = 0;
     this.today_transactions.forEach(
       tr => {
-        res = res + tr.amount;
+        if (tr.kind == 'Cash') { // TODO: use class method
+          res = res + tr.amount;
+        }
+      }
+    );
+    return res;
+  }
+
+  todayTurnoverCard(): number {
+    let res: number = 0;
+    this.today_transactions.forEach(
+      tr => {
+        if (tr.kind == 'Card') { // TODO: use class method
+          res = res + tr.amount;
+        }
       }
     );
     return res;
@@ -84,6 +91,7 @@ export class CashComponent implements OnInit {
         res => {
           this.display_transactions.push(res);
           this.loadBalance();
+          this.loadTodayTransactions();
         }
       )
     );
