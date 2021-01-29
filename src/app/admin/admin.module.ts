@@ -16,6 +16,7 @@ import { CustomerComponent } from './customer/customer.component';
 import { CustomerNewComponent } from './customer/new/customer-new.component';
 import { CustomerDetailComponent } from './customer/details/customer-detail.component';
 import { PosComponent } from './pos/pos.component';
+import { PosDetailsComponent } from './pos/pos-details.component';
 import { PaginationComponent } from './partial/pagination/pagination.component';
 import { StockComponent } from './stock/stock.component';
 import { ProcurementComponent } from './procurement/procurement.component';
@@ -33,6 +34,7 @@ import { ProductNewComponent } from './product/new/product-new.component';
 import { ProductDetailsComponent } from './product/details/product-details.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CashComponent } from './cash/cash.component';
+import { PurchaseComponent } from './purchase/purchase.component';
 import { GzDatePipe } from '../pipes/gz-date.pipe';
 import { GzDateTimePipe } from '../pipes/gz-datetime.pipe';
 import { GzHufPipe } from '../pipes/gz-huf.pipe';
@@ -51,6 +53,7 @@ import { GzHufPipe } from '../pipes/gz-huf.pipe';
     ProductComponent,
     CustomerComponent,
     PosComponent,
+    PosDetailsComponent,
     StockComponent,
     ProcurementComponent,
     ProcurementDetailsComponent,
@@ -65,6 +68,7 @@ import { GzHufPipe } from '../pipes/gz-huf.pipe';
     ProductDetailsComponent,
     DashboardComponent,
     CashComponent,
+    PurchaseComponent,
     SourceComponent,
     UplComponent,
     GzDatePipe,

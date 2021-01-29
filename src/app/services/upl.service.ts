@@ -25,14 +25,14 @@ export class Upl {
   public is_divisible: boolean;
   public divisible_amount: number;
   public lock: {
-    CartLock: number,
+    CartLock: string,
     DeliveryLock: number,
     InventoryLock: number
   } | string;
   public location: {
     Stock: number,
     Delivery: number,
-    Cart: number,
+    Cart: string,
     Discard: number
   };
   public is_archived: boolean;

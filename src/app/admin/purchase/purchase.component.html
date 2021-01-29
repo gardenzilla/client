@@ -1,0 +1,35 @@
+<section class="section">
+    <div class="container">
+        <p class="title">Eladások</p>
+        <div class="columns">
+            <div class="column is-8">
+                <table class="table is-fullwidth is-bordered">
+                    <thead>
+                        <tr class="has-background-light">
+                            <!-- <th>Azonosító</th> -->
+                            <th>Dátum</th>
+                            <th>Vásárló</th>
+                            <th>Nettó</th>
+                            <th>Áfa</th>
+                            <th>Bruttó</th>
+                            <th>Készítette</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of purchases">
+                            <!-- <td>{{item.transaction_id}}</td> -->
+                            <td>{{item.created_at | gzDateTime}}</td>
+                            <td>
+                                {{item.customer ? item.customer.name : "-"}}
+                            </td>
+                            <td>{{item.total_net_price || 0 | gzHuf}}</td>
+                            <td>{{item.total_vat || 0 | gzHuf}}</td>
+                            <td>{{item.total_gross_price || 0 | gzHuf}}</td>
+                            <td>{{item.created_by}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>

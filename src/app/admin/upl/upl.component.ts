@@ -62,6 +62,20 @@ export class UplComponent implements OnInit {
     return null;
   }
 
+  getLocation(): [string, string | number] {
+    if (this.upl.location.Cart) {
+      return ["kosár", this.upl.location.Cart]
+    } else if (this.upl.location.Stock) {
+      return ["raktár", this.upl.location.Stock]
+    } else if (this.upl.location.Delivery) {
+      return ["szállítás", this.upl.location.Delivery];
+    } else if (this.upl.location.Discard) {
+      return ["selejtezett", this.upl.location.Discard];
+    } else {
+      return ["ismeretlen", "ismeretlen"];
+    }
+  }
+
   loadUpl() {
     this.not_found = false;
     this.uplService.get_by_id(this.upl_id).subscribe(

@@ -1,0 +1,616 @@
+<section class="section">
+    <div class="container is-fluid is-overlay">
+        <div
+            class="columns"
+            *ngIf="cart; else loading"
+        >
+            <div class="column is-9">
+                <p class="title is-4 is-inline-block">Kosár</p>
+                <!-- <p class="subtitle is-inline-block ml-4">
+                    <a title="Nyitott kosarak">
+                        <span class="icon has-text-grey">
+                            <span class="fa-stack">
+                                <i class="fas fa-shopping-bag"></i>
+                                <i class="fas fa-circle circle"></i>
+                            </span>
+                        </span>
+
+                    </a>
+                </p>
+                <p class="subtitle is-inline-block ml-4">
+                    <a>
+                        <span class="icon has-text-grey">
+                            <i
+                                class="fas fa-percentage"
+                                aria-hidden="true"
+                            ></i>
+                        </span>
+                    </a>
+                </p>
+                <p class="subtitle is-inline-block ml-4">
+                    <a>
+                        <span class="icon has-text-grey">
+                            <i
+                                class="fas fa-history"
+                                aria-hidden="true"
+                            ></i>
+                        </span>
+                    </a>
+                </p>
+                <p class="subtitle is-inline-block ml-4">
+                    <a>
+                        <span class="icon has-text-grey">
+                            <i
+                                class="fas fa-eraser"
+                                aria-hidden="true"
+                            ></i>
+                        </span>
+                    </a>
+                </p> -->
+                <p class="subtitle is-inline-block ml-4">
+                    <a
+                        title="Új kosár"
+                        (click)="displaySearch()"
+                    >
+                        <span class="icon has-text-grey">
+                            <i
+                                class="fas fa-plus"
+                                aria-hidden="true"
+                            ></i>
+                        </span>
+                    </a>
+                </p>
+                <p class="subtitle is-inline-block is-pulled-right">
+                    <span
+                        class="mr-4 is-size-6 has-text-danger"
+                        *ngIf="upl_mode_out"
+                    >
+                        Termék
+                        eltávolítása
+                    </span>
+                    <a
+                        (click)="upl_mode_out = !upl_mode_out"
+                        title="Termékek betétele, vagy eltávolítása"
+                    >
+                        <span class="icon has-text-grey">
+                            <i
+                                class="fas"
+                                [class.fa-toggle-off]="!upl_mode_out"
+                                [class.has-text-grey]="!upl_mode_out"
+                                [class.fa-toggle-on]="upl_mode_out"
+                                [class.has-text-success]="upl_mode_out"
+                                aria-hidden="true"
+                            ></i>
+                        </span>
+                    </a>
+                </p>
+                <table class="table is-fullwidth cart">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Név</th>
+                            <th></th>
+                            <th>Mennyiség</th>
+                            <th>Ár</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Normal SKUs from shopping list -->
+                        <tr *ngFor="let item of cart.shopping_list">
+                            <td class="is-narrow"></td>
+                            <td>{{item.name}}</td>
+                            <td class="is-narrow">
+                                <a>
+                                    <span
+                                        class="icon has-text-success"
+                                        *ngIf="item.piece == getUplcountBySku(item.sku)"
+                                    >
+                                        <i class="fas fa-check-circle"></i>
+                                    </span>
+                                    <span
+                                        class="icon has-text-warning"
+                                        *ngIf="item.piece != getUplcountBySku(item.sku)"
+                                    >
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </span>
+                                </a>
+                            </td>
+                            <td class="is-narrow">
+                                <a (click)="setEditSku(item.sku); modalEditSku.open()">
+                                    {{item.piece}}/{{getUplcountBySku(item.sku)}}
+                                </a>
+                            </td>
+                            <td class="is-narrow">
+                                {{item.total_retail_price_gross | gzHuf}}
+                            </td>
+                            <td class="is-narrow">
+                                <button
+                                    class="button is-warning is-small"
+                                    (click)="removeSku(item.sku)"
+                                >
+                                    Törlés
+                                </button>
+                            </td>
+                        </tr>
+                        <!-- Unique UPLs -->
+                        <tr *ngFor="let item of cart.upls_unique">
+                            <td class="is-narrow"></td>
+                            <td>{{item.name}}</td>
+                            <td class="is-narrow"></td>
+                            <td class="is-narrow">
+                                <a>1/1</a>
+                            </td>
+                            <td class="is-narrow">{{item.retail_price_gross | gzHuf}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="column is-3 has-background-danger-light">
+                <p class="title">{{cart.total_gross | gzHuf}}</p>
+                <p class="subtitle is-spaced">
+                    {{cart.total_net | gzHuf}}
+                    <span
+                        class="icon has-text-grey"
+                        (click)="void()"
+                    >
+                        <i class="fas fa-info-circle"></i>
+                    </span>
+                </p>
+                <p class="title is-5">Vásárló</p>
+                <p
+                    class="subtitle is-5 is-spaced"
+                    *ngIf="cart.customer"
+                >
+                    {{cart.customer.name}}
+                    <a title="Vásárló törlése">
+                        <span
+                            class="icon has-text-grey is-size-6"
+                            (click)="removeCustomer()"
+                        >
+                            <i
+                                class="fas fa-times"
+                                aria-hidden="true"
+                            ></i>
+                        </span>
+                    </a>
+                </p>
+                <p class="title is-5">Kedvezmény</p>
+                <p class="subtitle is-5 is-spaced">{{cart.discount_percentage}} %</p>
+                <!-- <p class="title is-5">Számla</p> -->
+                <!-- <p
+                    class="subtitle is-5 is-spaced"
+                    *ngIf="cart.customer"
+                >
+                    {{cart.customer.zip}} {{cart.customer.location}}, {{cart.customer.street}}
+                </p> -->
+                <!-- <p class="title is-5" *ngIf="cart.customer">Adószám</p>
+                <p class="subtitle is-5 is-spaced">-</p> -->
+                <div class="buttons are-medium">
+                    <button
+                        class="button is-success is-fullwidth"
+                        (click)="closeForm.open()"
+                    >
+                        Lezárás
+                    </button>
+                    <!-- <button class="button is-danger is-fullwidth is-outlined">Törlés</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<ng-template #loading>
+    <section>
+        <div class="container">
+            <p class="has-text-centered">Kosár betöltése..</p>
+        </div>
+    </section>
+</ng-template>
+
+<!-- <button (click)="demo1.open()">Demo1</button>
+<button (click)="demo2.open()">Demo2</button>
+<button (click)="demo3.open()">Demo3</button> -->
+
+<modal
+    title="Kereső"
+    #searchModal
+    [isWide]="'true'"
+>
+    <div class="columns">
+        <div class="column is-2"></div>
+        <div class="column is-8">
+            <div class="field has-addons">
+                <div class="control is-expanded has-icons-left">
+                    <input
+                        #searchInput
+                        type="text"
+                        class="input"
+                        placeholder="Keresés..."
+                        [(ngModel)]="search_query"
+                        (keydown.enter)="manageSearch()"
+                        (keydown.esc)="search_query = ''; search_result_sku = []"
+                    >
+                    <span class="icon is-small is-left">
+                        <!-- <i class="fas fa-box fa-xs" *ngIf="!isSearchUser"></i>
+                    <i class="fas fa-user fa-xs" *ngIf="isSearchUser"></i> -->
+                    </span>
+                </div>
+                <div class="control">
+                    <a
+                        class="button"
+                        (click)="manageSearch()"
+                    >
+                        Keresés
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="column is-2"></div>
+    </div>
+    <table
+        class="table is-hoverable is-fullwidth"
+        *ngIf="search_mode=='sku'"
+    >
+        <thead>
+            <tr>
+                <th>Megnevezés</th>
+                <th>Ár</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let sku of search_result_sku">
+                <td>{{sku.display_name}}</td>
+                <td>
+                    {{search_result_prices[sku.sku] ?  (search_result_prices[sku.sku] | gzHuf) : "-"}}
+                </td>
+                <td>
+                    <span
+                        class="icon has-text-grey-light"
+                        *ngIf="skuInCart(sku.sku)"
+                    >
+                        <i class="fas fa-check-circle"></i>
+                    </span>
+                </td>
+                <td>
+                    <button
+                        class="button is-small"
+                        (click)="addSku(sku.sku)"
+                    >
+                        Kosárba
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table
+        class="table is-hoverable is-fullwidth"
+        *ngIf="search_mode=='customer'"
+    >
+        <thead>
+            <tr>
+                <th>Név</th>
+                <th>Lakcím</th>
+                <th>Adószám</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let customer of search_result_customer">
+                <td>{{customer.name}}</td>
+                <td>
+                    {{customer.address_zip}} {{customer.address_location}}, {{customer.address_street}}
+                </td>
+                <td>{{customer.tax_number || "-"}}</td>
+                <td>
+                    <button
+                        class="button is-small"
+                        (click)="addCustomer(customer.id)"
+                    >
+                        Hozzáadás
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</modal>
+
+<modal
+    title="Vásárlás befejezése"
+    #closeForm
+>
+    <div
+        class="columns"
+        *ngIf="cart"
+    >
+        <div class="column is-5">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td>Kosár összege</td>
+                        <td>{{cart.total_gross | gzHuf}}</td>
+                    </tr>
+                    <tr class="has-background-success">
+                        <td>Még fizetendő</td>
+                        <td>{{cart.payment_balance | gzHuf}}</td>
+                    </tr>
+                    <tr>
+                        <td>Számla</td>
+                        <td>{{cart.need_invoice ? 'igen': 'nem'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="subtitle is-6">Befizetések</p>
+            <table class="table">
+                <tbody>
+                    <tr *ngFor="let p of cart.payments">
+                        <td>{{p.amount | gzHuf}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div
+            class="column is-5"
+            *ngIf="cart.payment_balance == 0"
+        >
+            <button
+                class="button is-success is-large"
+                (click)="closeCart()"
+            >
+                Kosár lezárása
+            </button>
+        </div>
+        <div
+            class="column is-5"
+            *ngIf="cart.payment_balance != 0"
+        >
+            <div class="field">
+                <label class="label">Fizetési mód</label>
+                <div class="control">
+                    <div class="select">
+                        <select
+                            #payment_method
+                            name="pmethod"
+                            [(ngModel)]="payment_method_model"
+                        >
+                            <option
+                                value="Cash"
+                                selected
+                            >
+                                Készpénz
+                            </option>
+                            <option value="Card">Bankkártya</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Összeg</label>
+                <div class="control">
+                    <input
+                        class="input"
+                        type="number"
+                        placeholder="Fizetendő összeg.."
+                        #payment_amount
+                        [(ngModel)]="payment_modal"
+                    >
+                </div>
+            </div>
+            <p *ngIf="payment_method.value == 'Cash'">
+                Visszajár {{payment_modal != 0 ? ((payment_modal - cart.payment_balance) | gzHuf) : ""}}
+            </p>
+            <div class="field">
+                <button
+                    class="button is-success is-large"
+                    (click)="addPayment(payment_method.value, payment_amount.value)"
+                >
+                    Fizetés
+                </button>
+            </div>
+        </div>
+    </div>
+</modal>
+
+<modal
+    title="SKU nézet"
+    #modalEditSku
+>
+    <div
+        class="columns"
+        *ngIf="cart && model_sku_edit"
+    >
+        <div class="column is-4">
+            <p class="subtitle">{{model_sku_edit.name}}</p>
+            <div class="field">
+                <div class="control">
+                    <input
+                        class="input"
+                        type="number"
+                        placeholder="SKU darabszám"
+                        [(ngModel)]="model_sku_edit.piece"
+                        (keydown.enter)="resetSkuPiece()"
+                    >
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <button
+                        class="button is-small"
+                        (click)="resetSkuPiece()"
+                    >
+                        Darabszám beállítása
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="column is-8">
+            <table
+                class="table"
+                *ngIf="model_sku_edit"
+            >
+                <thead>
+                    <tr>
+                        <th>UPL ID</th>
+                        <th>Név</th>
+                        <th>Darabszám</th>
+                        <th>Lejárati dátum</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let upl of getSkuRelatedUpls(model_sku_edit.sku)">
+                        <td>{{upl.upl_id}}</td>
+                        <td>{{upl.name}}</td>
+                        <td *ngIf="upl.kind.Sku">{{upl.kind.Sku.piece}} db</td>
+                        <td>
+                            {{upl.best_before ? (upl.best_before | gzDate) : "-"}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</modal>
+
+<modal
+    #uplDetails
+    [title]="'Raktári adatok'"
+>
+    <div class="columns is-mobile">
+        <div class="column">
+            <p class="subtitle is-pulled-left is-text-5">
+                Helyben
+                <span class="has-text-weight-bold">13 db</span>
+            </p>
+        </div>
+        <div class="column">
+            <div class="tabs is-centered is-toggle is-toggle-rounded is-small">
+                <ul>
+                    <li class="is-active">
+                        <a>
+                            <span>Helyi raktár (13)</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <span>Máshol (2)</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="column"></div>
+    </div>
+    <table class="table is-fullwidth mt-5">
+        <thead class="is-size-7">
+            <tr>
+                <th>#</th>
+                <th>UPL ID</th>
+                <th>Név</th>
+                <th>Kiszerelés</th>
+                <th>Szavatosság</th>
+                <th>Bontott</th>
+                <th>Bruttó ár</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="is-size-7">
+            <tr *ngFor="let item of [0,1,2,3,4,5,6,7,8,9,10,11,12]; index as i">
+                <td class="is-narrow">{{i+1}}</td>
+                <td class="is-narrow">
+                    <a>{{234234234 + i}}</a>
+                </td>
+                <td>Bordóilé neo SC, 250 ml</td>
+                <td class="is-narrow">250 ml</td>
+                <td class="is-narrow">2021-08-12</td>
+                <td class="is-narrow">
+                    <span
+                        class="icon has-text-grey"
+                        *ngIf="i % 2 != 0"
+                    >
+                        <i class="fas fa-cut"></i>
+                    </span>
+                </td>
+                <td class="is-narrow">{{1750 | number}} HUF</td>
+                <td>
+                    <div class="buttons">
+                        <!-- <a title="Kosárba" class="button is-small">Kosárba</a> -->
+                        <a
+                            title="Megbont"
+                            class="button is-small"
+                            *ngIf="i % 2 != 0"
+                        >
+                            Megbont
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table is-size-7">
+        <thead>
+            <tr>
+                <th>Raktár neve</th>
+                <th>Hibátlan</th>
+                <th>Bontott</th>
+                <th>Lejárt</th>
+                <th>Selejt</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr
+                *ngFor="let item of [0,1,2,3,4,5]; index as i"
+                [class.has-background-primary]="i % 2 == 0"
+            >
+                <td>Nyírtass bolt - {{i}}</td>
+                <td>{{4 * (i % 3)}}</td>
+                <td>{{0}}</td>
+                <td>{{0}}</td>
+                <td>{{0}}</td>
+            </tr>
+        </tbody>
+    </table>
+</modal>
+
+<modal
+    #uplsPerSku
+    title="SKU részletek"
+>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>UPL ID</th>
+                <th>Név</th>
+                <th>Kiszerelés</th>
+                <th>Szavatosság</th>
+                <th>Bruttó ár</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</modal>
+
+<modal
+    #cartItemPieceSetter
+    [title]="'Darabszám'"
+>
+    <p class="subtitle">Kerti lobseprű</p>
+    <div class="field has-addons">
+        <div class="control">
+            <input
+                type="text"
+                class="input"
+                value="9"
+            >
+        </div>
+        <div class="control">
+            <button class="button">+</button>
+        </div>
+        <div class="control">
+            <button class="button">-</button>
+        </div>
+    </div>
+</modal>

@@ -1,0 +1,26 @@
+.cart {
+    .input {
+        width: 100px;
+    }
+}
+
+.egg {
+    color: grey;
+}
+
+.badgetext { 
+    margin-top: .3em;
+    position: relative;
+    margin-left: -1.2em;
+    font-size: 9px;;
+    color: white;
+ }
+
+ .circle {
+     position: absolute;
+     font-size: 0.45em;
+     color: red;
+     left: 11px;
+     bottom: 6px;
+     text-shadow: -1px -1px 1px white;
+ }

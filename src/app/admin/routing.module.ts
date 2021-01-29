@@ -23,11 +23,14 @@ import { ProcurementComponent } from './procurement/procurement.component';
 import { ProcurementDetailsComponent } from './procurement/details/procurement-details.component';
 import { CustomerListResolverService } from './customer/customer-resolver.service';
 import { UplComponent } from './upl/upl.component';
+import { PurchaseComponent } from './purchase/purchase.component';
+import { PosDetailsComponent } from './pos/pos-details.component';
 
 const routes: Routes = [
   {
     path: 'pos', component: LayoutComponent, canActivateChild: [AuthGuard], children: [
-      { path: '', component: PosComponent, data: { title: "POS" } }
+      { path: '', component: PosComponent, data: { title: "POS" } },
+      { path: ':cart_id', component: PosDetailsComponent }
     ],
   },
   {
@@ -44,6 +47,9 @@ const routes: Routes = [
       },
       {
         path: 'cash', component: CashComponent
+      },
+      {
+        path: 'purchase', component: PurchaseComponent
       },
       {
         path: 'hello', component: HelloComponent

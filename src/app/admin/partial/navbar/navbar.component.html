@@ -36,9 +36,12 @@
             [ngClass]="{'is-active': isActive}"
         >
             <div class="navbar-start">
-                <!-- <a class="navbar-item is-hidden-mobile" routerLink="/pos">
-                    <span class="tag is-warning">POS</span>
-                </a> -->
+                <a
+                    class="navbar-item"
+                    routerLink="/pos"
+                >
+                    <span class="tag is-warning">Értékesítés</span>
+                </a>
                 <a
                     class="navbar-item"
                     routerLink="/product"
@@ -64,6 +67,12 @@
                     <a class="navbar-link">Egyéb</a>
 
                     <div class="navbar-dropdown">
+                        <a
+                            class="navbar-item"
+                            routerLink="/purchase"
+                        >
+                            Eladások
+                        </a>
                         <a
                             class="navbar-item"
                             routerLink="/cash"

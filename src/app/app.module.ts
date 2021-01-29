@@ -22,6 +22,8 @@ import { ProductService } from './services/product.service';
 import { SkuService } from './services/sku.service';
 import { ScannerBridgeService } from './services/scanner-bridge.service';
 import { StockService } from './services/stock.service';
+import { CartService } from './services/cart.service';
+import { PurchaseService } from './services/purchase.service';
 import { SourceService } from './services/source.service';
 import { ProcurementService } from './services/procurement.service';
 import { UplService } from './services/upl.service';
@@ -64,6 +66,8 @@ import { SnackBarService } from './services/snack-bar/snack-bar.service';
     ProcurementService,
     UplService,
     CashService,
+    CartService,
+    PurchaseService,
     PriceService,
     ProfileService,
     ErrorService,
