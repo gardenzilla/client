@@ -39,6 +39,8 @@ export class PosDetailsComponent implements OnInit {
 
   edit_sku: number | null = null;
 
+  payment_mode_quick: boolean = true;
+
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
@@ -51,6 +53,7 @@ export class PosDetailsComponent implements OnInit {
     private customerService: CustomerService
   ) { }
 
+  @ViewChild('searchInput') searchInput: ElementRef;
   @ViewChild('searchModal') searchModal: ModalComponent;
   @HostListener('document:keydown.f2', ['$event'])
   displaySearch(event?: Event) {
@@ -58,11 +61,35 @@ export class PosDetailsComponent implements OnInit {
       event.preventDefault();
     }
     this.searchModal.open();
+    setTimeout(() => {
+      this.searchInput.nativeElement.select();
+      this.searchInput.nativeElement.focus();
+    });
   }
 
   setEditSku(sku: number) {
     this.edit_sku = sku;
     this.loadEditSku();
+  }
+
+  @ViewChild('payment_amount') payment_amount: ElementRef;
+  @ViewChild('modalClose') modalClose: ModalComponent;
+  @HostListener('document:keydown.f5', ['$event'])
+  OpenCloseForm() {
+    if (event) {
+      event.preventDefault();
+    }
+    this.modalClose.open();
+    setTimeout(() => {
+      this.payment_amount.nativeElement.select();
+      this.payment_amount.nativeElement.focus();
+    }, 0);
+  }
+
+  cartSetPayment(to: string) {
+    this.cartService.set_payment(this.cart_id, to).subscribe(
+      res => this.cart = res
+    );
   }
 
   resetSkuPiece() {

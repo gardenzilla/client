@@ -40,6 +40,9 @@ export class CartService {
   remove_upl(cart_id: string, upl_id: string): Observable<CartObj> {
     return this.http.put<CartObj>('/cart/remove_upl', { cart_id: cart_id, upl_id: upl_id });
   }
+  set_payment(cart_id: string, kind: string): Observable<CartObj> {
+    return this.http.put<CartObj>('/cart/set_payment', { cart_id: cart_id, payment_kind: kind });
+  }
   add_payment(cart_id: string, kind: string, amount: number): Observable<CartObj> {
     return this.http.put<CartObj>('/cart/add_payment', { cart_id: cart_id, kind: kind, amount: amount });
   }
@@ -76,6 +79,7 @@ export class CartObj {
     public payment_kind: string,
     public payments: PaymentObj[],
     public payment_balance: number,
+    public payable: number,
     public profit_net: number,
     public owner_uid: number,
     public store_id: number,

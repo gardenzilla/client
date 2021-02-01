@@ -24,6 +24,7 @@ export class PurchaseInfoObj {
     public total_vat: number,
     public total_gross_price: number,
     public balance: number,
+    public payable: number,
     public document_invoice: boolean,
     public date_completion: String,
     public payment_duedate: String,

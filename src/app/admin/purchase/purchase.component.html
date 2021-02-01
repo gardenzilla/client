@@ -12,6 +12,7 @@
                             <th>Nettó</th>
                             <th>Áfa</th>
                             <th>Bruttó</th>
+                            <th>Fizetendő</th>
                             <th>Készítette</th>
                         </tr>
                     </thead>
@@ -25,6 +26,7 @@
                             <td>{{item.total_net_price || 0 | gzHuf}}</td>
                             <td>{{item.total_vat || 0 | gzHuf}}</td>
                             <td>{{item.total_gross_price || 0 | gzHuf}}</td>
+                            <td>{{item.payable || 0 | gzHuf}}</td>
                             <td>{{item.created_by}}</td>
                         </tr>
                     </tbody>
