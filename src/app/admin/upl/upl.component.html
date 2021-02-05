@@ -106,11 +106,13 @@
                 </tr>
                 <tr>
                     <td>Típus</td>
-                    <td>{{upl.getKind()}}</td>
+                    <td>
+                        {{upl.upl_kind == 'Sku' ? "normál UPL" : upl.upl_kind == 'BulkSku' ? "gyüjtő UPL" : upl.upl_kind == 'OpenedSku' ? "bontott termék" : upl.upl_kind == 'DerivedProduct' ? "kimért termék" : "?"}}
+                    </td>
                 </tr>
                 <tr>
                     <td>Selejtezett termék?</td>
-                    <td>{{upl.depreciation ? 'igen' : 'nem'}}</td>
+                    <td>{{upl.is_depreciated ? 'igen' : 'nem'}}</td>
                 </tr>
                 <tr>
                     <td>Beszerzés azonosító</td>
@@ -139,6 +141,32 @@
                 <tr>
                     <td>Archivált?</td>
                     <td>{{upl.is_archived ? 'igen' : 'nem'}}</td>
+                </tr>
+                <tr>
+                    <td>Nettó ár</td>
+                    <td>{{upl.price_net | gzHuf}}</td>
+                </tr>
+                <tr>
+                    <td>Bruttó ár</td>
+                    <td>{{upl.price_gross | gzHuf}}</td>
+                </tr>
+                <tr>
+                    <td>ÁFA</td>
+                    <td>{{upl.vat}}</td>
+                </tr>
+                <tr>
+                    <td>Beszerzési ár</td>
+                    <td>{{upl.procurement_net_price | gzHuf}}</td>
+                </tr>
+                <tr>
+                    <td>Beszerzési ár SKU</td>
+                    <td>
+                        {{upl.procurement_net_price_sku | gzHuf}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Haszon</td>
+                    <td>{{upl.margin_net | gzHuf}}</td>
                 </tr>
             </tbody>
         </table>

@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener, Input } from '@angular/core';
 import { LoginService } from 'src/app/services/login/login.service';
-import { Router, Event, NavigationEnd, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { ErrorResponse } from 'src/app/class/error-response';
@@ -32,6 +32,22 @@ export class NavbarComponent implements OnInit {
   quick$: Observable<ErrorResponse>;
   routerObserver: Subscription;
   username: string;
+
+  @HostListener('document:keydown.f10', ['$event'])
+  navigateToUpl(event?: Event) {
+    if (event) {
+      event.preventDefault();
+    }
+    this.router.navigateByUrl('/upl');
+  }
+
+  @HostListener('document:keydown.f1', ['$event'])
+  navigateToPos(event?: Event) {
+    if (event) {
+      event.preventDefault();
+    }
+    this.router.navigateByUrl('/pos');
+  }
 
   ngOnInit() {
     this.loginService.getUserName();

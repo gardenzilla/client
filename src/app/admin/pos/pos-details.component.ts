@@ -9,6 +9,8 @@ import { Customer, CustomerService } from 'src/app/services/customer/customer.se
 import { ScannerBridgeService } from 'src/app/services/scanner-bridge.service';
 import { Subscription } from 'rxjs';
 import { Price, PriceService } from 'src/app/services/price.service';
+import { Upl, UplService } from 'src/app/services/upl.service';
+import { Product, ProductService } from 'src/app/services/product.service';
 
 @Component({
   selector: 'app-user',
@@ -34,10 +36,14 @@ export class PosDetailsComponent implements OnInit {
   search_modal_active: boolean = false;
 
   scannerSubscription: Subscription;
+  scannerSubscription2: Subscription;
 
   model_sku_edit: ItemObj | null = null;
 
   edit_sku: number | null = null;
+
+  upl_id_to_divide: string = "";
+  upl_to_divide: Upl | null = null;
 
   payment_mode_quick: boolean = true;
 
@@ -48,9 +54,11 @@ export class PosDetailsComponent implements OnInit {
     private title: Title,
     private cartService: CartService,
     private skuService: SkuService,
+    private productService: ProductService,
     private scannerService: ScannerBridgeService,
     private priceService: PriceService,
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private uplService: UplService,
   ) { }
 
   @ViewChild('searchInput') searchInput: ElementRef;
@@ -246,13 +254,25 @@ export class PosDetailsComponent implements OnInit {
 
   manageScannerUpl(code: string) {
     if (!this.upl_mode_out) {
-      this.cartService.add_upl(this.cart_id, code).subscribe(res => {
-        this.cart = res;
-      },
-        err => {
-          console.log(err);
-          this.scannerService.sendError();
-        });
+      // First load UPL and check if its a single UPL or Derived Product
+      this.uplService.get_by_id(code).subscribe(
+        upl => {
+          if (upl.upl_kind["Sku"] || upl.upl_kind["DerivedProduct"]) {
+            this.cartService.add_upl(this.cart_id, code).subscribe(
+              res => {
+                this.cart = res;
+              },
+              err => {
+                console.log(err);
+                this.scannerService.sendError();
+              }
+            );
+          } else {
+            // Set UPL to divide or split
+            this.upl_to_divide = upl;
+          }
+        }
+      );
     } else {
       this.cartService.remove_upl(this.cart_id, code).subscribe(res => {
         this.cart = res;
@@ -264,20 +284,56 @@ export class PosDetailsComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
-    this.loadCart();
+  loadUplToDivide() {
+    this.uplService.get_by_id(this.upl_id_to_divide).subscribe(
+      res => this.upl_to_divide = res,
+      err => this.scannerService.sendError()
+    );
+  }
+
+  @ViewChild('modalDivide') modalDivide: ModalComponent;
+  openDivide() {
+    // Reset UPL model
+    this.upl_to_divide = null;
+    // Unsubscribe main scanner event listener
+    this.scannerUnsubscribe();
+    // Subscribe divide
+    this.scannerSubscription2 = this.scannerService.scanner_event.subscribe(code => {
+      this.upl_id_to_divide = code;
+      this.loadUplToDivide();
+    });
+    // Open modal
+    this.modalDivide.open();
+  }
+
+  closeDivide() {
+    this.upl_to_divide = null;
+    // Subscribe main scanner event listener
+    this.scannerSubscribe();
+  }
+
+  scannerSubscribe() {
     // Subscribe for scanner events
     this.scannerSubscription = this.scannerService.scanner_event.subscribe(code => {
       this.manageScannerUpl(code);
     });
   }
 
-  ngOnDestroy() {
+  scannerUnsubscribe() {
     // Unsubscribe from scanner service
     // when this component is destroyed.
     if (this.scannerSubscription) {
       this.scannerSubscription.unsubscribe();
     }
+  }
+
+  ngOnInit() {
+    this.loadCart();
+    this.scannerSubscribe();
+  }
+
+  ngOnDestroy() {
+    this.scannerUnsubscribe();
   }
 
   // ngAfterViewInit() {
@@ -353,4 +409,13 @@ export class PosDetailsComponent implements OnInit {
   //   }
   //   return hasAnyFocus;
   // }
+}
+
+export class UplToDivide {
+  constructor(
+    public upl: Upl,
+    public product: Product | null = null,
+    public sku: Sku | null = null,
+    public price: Price | null = null,
+  ) { }
 }

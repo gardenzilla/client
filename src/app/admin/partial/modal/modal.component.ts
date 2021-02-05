@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, HostListener } from '@angular/core';
+import { Component, Input, OnChanges, HostListener, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -15,17 +15,24 @@ export class ModalComponent implements OnChanges {
   @Input() callbackSubmit?: [string, Function];
   @Input() isWide?: boolean = false;
   @Input() isActive?: boolean = false;
-  @Input() callbackClose?: Function;
+  // @Input() callbackClose?: Function;
+  @Output() callbackClose?: EventEmitter<any> = new EventEmitter();
   // @Input() verify?: boolean = false;
-  // @Input() autoClose?: boolean = true;
+  @Input() autoClose?: boolean = true;
 
   subscription: Subscription;
 
   @HostListener('document:keydown.esc')
+  tryClose() {
+    if (this.autoClose) {
+      this.close();
+    }
+  }
+
   close() {
     this.isActive = false;
     if (this.callbackClose) {
-      this.callbackClose();
+      this.callbackClose.emit();
     }
   }
 

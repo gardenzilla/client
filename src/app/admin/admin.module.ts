@@ -17,6 +17,7 @@ import { CustomerNewComponent } from './customer/new/customer-new.component';
 import { CustomerDetailComponent } from './customer/details/customer-detail.component';
 import { PosComponent } from './pos/pos.component';
 import { PosDetailsComponent } from './pos/pos-details.component';
+import { PosUplEditComponent } from './pos/pos-upledit.component';
 import { PaginationComponent } from './partial/pagination/pagination.component';
 import { StockComponent } from './stock/stock.component';
 import { ProcurementComponent } from './procurement/procurement.component';
@@ -54,6 +55,7 @@ import { GzHufPipe } from '../pipes/gz-huf.pipe';
     CustomerComponent,
     PosComponent,
     PosDetailsComponent,
+    PosUplEditComponent,
     StockComponent,
     ProcurementComponent,
     ProcurementDetailsComponent,

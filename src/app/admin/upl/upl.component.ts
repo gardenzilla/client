@@ -7,7 +7,7 @@ import { Product, ProductService } from 'src/app/services/product.service';
 import { ScannerBridgeService } from 'src/app/services/scanner-bridge.service';
 import { Sku, SkuService } from 'src/app/services/sku.service';
 import { NewSource, Source, SourceService } from 'src/app/services/source.service';
-import { Upl, UplService } from 'src/app/services/upl.service';
+import { Upl, UplLocation, UplService } from 'src/app/services/upl.service';
 
 @Component({
   selector: 'app-user',
@@ -63,14 +63,14 @@ export class UplComponent implements OnInit {
   }
 
   getLocation(): [string, string | number] {
-    if (this.upl.location.Cart) {
-      return ["kosár", this.upl.location.Cart]
-    } else if (this.upl.location.Stock) {
-      return ["raktár", this.upl.location.Stock]
-    } else if (this.upl.location.Delivery) {
-      return ["szállítás", this.upl.location.Delivery];
-    } else if (this.upl.location.Discard) {
-      return ["selejtezett", this.upl.location.Discard];
+    if (this.upl.location == UplLocation.Cart) {
+      return ["kosár", this.upl.location_id]
+    } else if (this.upl.location == UplLocation.Stock) {
+      return ["raktár", this.upl.location_id]
+    } else if (this.upl.location == UplLocation.Delivery) {
+      return ["szállítás", this.upl.location_id];
+    } else if (this.upl.location == UplLocation.Discard) {
+      return ["selejtezett", this.upl.location_id];
     } else {
       return ["ismeretlen", "ismeretlen"];
     }
@@ -80,7 +80,7 @@ export class UplComponent implements OnInit {
     this.not_found = false;
     this.uplService.get_by_id(this.upl_id).subscribe(
       res => {
-        this.upl = new Upl(res);
+        this.upl = res;
         console.log(res);
         this.productService.get_by_id(res.product_id).subscribe(
           res => {
@@ -109,5 +109,11 @@ export class UplComponent implements OnInit {
       this.upl_id = code;
       this.loadUpl();
     });
+  }
+
+  ngOnDestroy() {
+    if (this.scannerSubscription) {
+      this.scannerSubscription.unsubscribe();
+    }
   }
 }

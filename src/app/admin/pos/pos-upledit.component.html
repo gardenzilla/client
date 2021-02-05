@@ -1,0 +1,133 @@
+<modal
+    [title]="upl.upl_kind['BulkSku'] ? 'Gyüjtő termék' : upl.upl_kind['DerivedProduct'] ? 'Kimérhető termék' : '?'"
+    #modalDivide
+    [isActive]="true"
+    (callbackClose)="closeForm()"
+    [autoClose]="false"
+>
+    <div class="columns">
+        <div class="column is-5">
+            <p class="subtitle">UPL adatok</p>
+            <span *ngIf="!upl">Nincs UPL kiválasztva</span>
+            <table
+                class="table"
+                *ngIf="upl && sku"
+            >
+                <tbody>
+                    <tr>
+                        <td>UPL ID</td>
+                        <td>{{upl.upl_id}}</td>
+                    </tr>
+                    <tr>
+                        <td>Termék név</td>
+                        <td>{{sku.display_name}}</td>
+                    </tr>
+                    <tr>
+                        <td>Típus</td>
+                        <td>..</td>
+                    </tr>
+                    <tr>
+                        <td>Mennyiség</td>
+                        <td>..</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="column is-7">
+            <p class="title is-4 is-spaced">Gyűjtő termék</p>
+            <p class="subtitle">A gyüjtő tartalma:</p>
+            <p class="title is-4">12 db</p>
+            <div
+                class="field is-grouped"
+                *ngIf="!split_mode"
+            >
+                <div class="control">
+                    <button
+                        class="button is-link"
+                        (click)="putInCart()"
+                    >
+                        Kosárba helyezés
+                    </button>
+                </div>
+                <div class="control">
+                    <button
+                        class="button"
+                        (click)="split_mode=true"
+                    >
+                        Megbontás
+                    </button>
+                </div>
+            </div>
+            <div *ngIf="split_mode">
+                <div class="field">
+                    <label class="label">Leválasztott darabszám</label>
+                </div>
+                <div class="field is-grouped">
+                    <div class="control is-expanded">
+                        <input
+                            #input_piece
+                            type="number"
+                            class="input is-danger"
+                            placeholder="UPL darabszám"
+                            value="1"
+                        >
+                    </div>
+                    <div class="control">
+                        <button
+                            class="button is-success is-outlined"
+                            (click)="input_piece.value = +input_piece.value + 1"
+                        >
+                            +
+                        </button>
+                    </div>
+                    <div class="control">
+                        <button
+                            class="button is-danger is-outlined"
+                            (click)="input_piece.value = +input_piece.value - 1"
+                        >
+                            -
+                        </button>
+                    </div>
+                </div>
+                <label class="label">Új UPL azonosító</label>
+                <div class="field is-grouped">
+                    <div class="control">
+                        <input
+                            type="text"
+                            class="input"
+                            placeholder="UPL azonosító"
+                            [ngClass]="{'disabled':!code_manual}"
+                            [disabled]="!code_manual"
+                            [(ngModel)]="code"
+                        >
+                    </div>
+                    <div class="control">
+                        <button
+                            class="button"
+                            (click)="code_manual=true"
+                            *ngIf="!code_manual"
+                        >
+                            Kézi bevitel
+                        </button>
+                    </div>
+                </div>
+                <div class="field is-grouped">
+                    <div
+                        class="control"
+                        *ngIf="code_ok"
+                    >
+                        <button class="button is-success">Megbont, és kosárba</button>
+                    </div>
+                    <div class="control">
+                        <button
+                            class="button"
+                            (click)="split_mode=false"
+                        >
+                            Mégse
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</modal>

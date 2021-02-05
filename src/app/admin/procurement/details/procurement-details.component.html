@@ -217,7 +217,7 @@
 <modal
     #modal_edit_sku
     title="{{model_edit_sku ? procurement.getSkuName(model_edit_sku.sku_details.sku) : ''}}"
-    [callbackClose]="unsetModelEditSku"
+    (callbackClose)="unsetModelEditSku()"
 >
     <div
         class="columns"
