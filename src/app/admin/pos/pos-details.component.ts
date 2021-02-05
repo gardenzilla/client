@@ -9,7 +9,7 @@ import { Customer, CustomerService } from 'src/app/services/customer/customer.se
 import { ScannerBridgeService } from 'src/app/services/scanner-bridge.service';
 import { Subscription } from 'rxjs';
 import { Price, PriceService } from 'src/app/services/price.service';
-import { Upl, UplService } from 'src/app/services/upl.service';
+import { LocationInfo, Upl, UplService } from 'src/app/services/upl.service';
 import { Product, ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -46,6 +46,8 @@ export class PosDetailsComponent implements OnInit {
   upl_to_divide: Upl | null = null;
 
   payment_mode_quick: boolean = true;
+
+  sku_location_info: Map<number, LocationInfo> = new Map();
 
   constructor(
     private http: HttpClient,
@@ -189,6 +191,9 @@ export class PosDetailsComponent implements OnInit {
             this.search_result_prices[res.sku] = res.price_gross_retail;
           })
         });
+        this.uplService.get_location_info_bulk(sku_ids).subscribe(
+          res => res.forEach(location_info => this.sku_location_info[location_info.sku] = location_info)
+        );
       });
     });
   }

@@ -5,6 +5,7 @@ import { tap } from 'rxjs/operators';
 import { Product, ProductService } from 'src/app/services/product.service';
 import { Sku, SkuNew, SkuService } from 'src/app/services/sku.service';
 import { Price, PriceHistory, PriceService } from 'src/app/services/price.service';
+import { LocationInfo, UplService } from 'src/app/services/upl.service';
 
 @Component({
   selector: 'app-details',
@@ -23,12 +24,15 @@ export class ProductDetailsComponent implements OnInit {
   _new_sku: SkuNew = new SkuNew();
   _selected_price_sku_name: string = '';
 
+  sku_location_info: Map<number, LocationInfo> = new Map();
+
   constructor(
     private productService: ProductService,
     private skuService: SkuService,
     private price_service: PriceService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private uplService: UplService,
   ) {
   }
 
@@ -141,6 +145,9 @@ export class ProductDetailsComponent implements OnInit {
               this.prices[price.sku] = price;
             })
           });
+        this.uplService.get_location_info_bulk(this.product.skus).subscribe(
+          res => res.forEach(location_info => this.sku_location_info[location_info.sku] = location_info)
+        );
       });
     });
   }

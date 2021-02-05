@@ -268,6 +268,7 @@
         <thead>
             <tr>
                 <th>Megnevezés</th>
+                <th>Készlet</th>
                 <th>Ár</th>
                 <th></th>
                 <th></th>
@@ -276,10 +277,13 @@
         <tbody>
             <tr *ngFor="let sku of search_result_sku">
                 <td>{{sku.display_name}}</td>
-                <td>
+                <td class="is-narrow">
+                    {{sku_location_info[sku.sku] ? sku_location_info[sku.sku]["stocks"][1]["total"] : "-"}} / {{sku_location_info[sku.sku] ? sku_location_info[sku.sku]["stocks"][1]["healthy"] : "-"}}
+                </td>
+                <td class="is-narrow">
                     {{search_result_prices[sku.sku] ?  (search_result_prices[sku.sku] | gzHuf) : "-"}}
                 </td>
-                <td>
+                <td class="is-narrow">
                     <span
                         class="icon has-text-grey-light"
                         *ngIf="skuInCart(sku.sku)"
@@ -287,7 +291,7 @@
                         <i class="fas fa-check-circle"></i>
                     </span>
                 </td>
-                <td>
+                <td class="is-narrow">
                     <button
                         class="button is-small"
                         (click)="addSku(sku.sku)"

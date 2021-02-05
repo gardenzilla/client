@@ -33,6 +33,7 @@
                                     <th>SKU</th>
                                     <th>Név</th>
                                     <th>Bruttó ár</th>
+                                    <th>Raktáron</th>
                                     <th>Kimérhető</th>
                                     <th>Kifutó</th>
                                     <th>Romlandó</th>
@@ -47,6 +48,9 @@
                                     </td>
                                     <td>
                                         {{prices[sku.sku] ? prices[sku.sku].price_gross_retail.toLocaleString() : "-"}} HUF
+                                    </td>
+                                    <td>
+                                        {{sku_location_info[sku.sku] ? sku_location_info[sku.sku]["stocks"][1]["total"] : ""}}
                                     </td>
                                     <td>{{sku.can_divide ? 'kimérhető' : ''}}</td>
                                     <td>{{sku.discontinued ? 'kifutó' : ''}}</td>
