@@ -39,6 +39,7 @@ import { PurchaseComponent } from './purchase/purchase.component';
 import { GzDatePipe } from '../pipes/gz-date.pipe';
 import { GzDateTimePipe } from '../pipes/gz-datetime.pipe';
 import { GzHufPipe } from '../pipes/gz-huf.pipe';
+import { PdetailsLinfoComponent } from './product/details/pdetails-linfo/pdetails-linfo.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,7 @@ import { GzHufPipe } from '../pipes/gz-huf.pipe';
     GzDatePipe,
     GzDateTimePipe,
     GzHufPipe,
+    PdetailsLinfoComponent,
   ],
   imports: [
     ChartsModule,

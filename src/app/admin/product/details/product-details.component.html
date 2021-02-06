@@ -50,7 +50,9 @@
                                         {{prices[sku.sku] ? prices[sku.sku].price_gross_retail.toLocaleString() : "-"}} HUF
                                     </td>
                                     <td>
-                                        {{sku_location_info[sku.sku] ? sku_location_info[sku.sku]["stocks"][1]["total"] : ""}}
+                                        <a (click)="openLocationInfo(sku.sku)">
+                                            {{sku_location_info[sku.sku] ? sku_location_info[sku.sku]["stocks"][1]["total"] : ""}}
+                                        </a>
                                     </td>
                                     <td>{{sku.can_divide ? 'kimérhető' : ''}}</td>
                                     <td>{{sku.discontinued ? 'kifutó' : ''}}</td>
@@ -231,6 +233,11 @@
         </div>
     </div>
 </modal>
+
+<pdetails-linfo
+    [sku]="sku_for_upl_info"
+    (close_callback)="closeLocationInfo()"
+></pdetails-linfo>
 
 <modal
     #add_price

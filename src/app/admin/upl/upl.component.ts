@@ -21,7 +21,7 @@ export class UplComponent implements OnInit {
   sku: Sku | null = null;
   procurement: Procurement | null = null;
   price: Price | null = null;
-  not_found: boolean = false;
+  found: boolean = false;
   scannerSubscription: Subscription;
 
   constructor(
@@ -30,7 +30,7 @@ export class UplComponent implements OnInit {
     private procurementService: ProcurementService,
     private priceService: PriceService,
     private scannerService: ScannerBridgeService,
-    private uplService: UplService
+    private uplService: UplService,
   ) { }
 
   getKind(): string {
@@ -77,30 +77,89 @@ export class UplComponent implements OnInit {
   }
 
   loadUpl() {
-    this.not_found = false;
+    this.found = false;
     this.uplService.get_by_id(this.upl_id).subscribe(
       res => {
-        this.upl = res;
-        console.log(res);
-        this.productService.get_by_id(res.product_id).subscribe(
-          res => {
-            this.product = res
-            if (this.getSku()) {
-              this.skuService.get_by_id(this.getSku()).subscribe(
-                res => this.sku = res
-              );
-              this.priceService.get_by_id(this.getSku()).subscribe(
-                res => this.price = res
-              );
+        if (res) {
+          this.found = true;
+          this.upl = res;
+          console.log(res);
+          this.productService.get_by_id(res.product_id).subscribe(
+            res => {
+              this.product = res
+              if (this.getSku()) {
+                this.skuService.get_by_id(this.getSku()).subscribe(
+                  res => this.sku = res
+                );
+                this.priceService.get_by_id(this.getSku()).subscribe(
+                  res => this.price = res
+                );
+              }
             }
-          }
-        );
-        this.procurementService.get_by_id(res.procurement_id).subscribe(
-          res => this.procurement = res
-        );
+          );
+          this.procurementService.get_by_id(res.procurement_id).subscribe(
+            res => this.procurement = res
+          );
+        } else {
+          this.uplService.get_by_id_archive(this.upl_id).subscribe(
+            res => {
+              if (res) {
+                this.found = true;
+                this.upl = res;
+                console.log(res);
+                this.productService.get_by_id(res.product_id).subscribe(
+                  res => {
+                    this.product = res
+                    if (this.getSku()) {
+                      this.skuService.get_by_id(this.getSku()).subscribe(
+                        res => this.sku = res
+                      );
+                      this.priceService.get_by_id(this.getSku()).subscribe(
+                        res => this.price = res
+                      );
+                    }
+                  }
+                );
+                this.procurementService.get_by_id(res.procurement_id).subscribe(
+                  res => this.procurement = res
+                );
+              }
+            }
+          )
+        }
       },
-      err => this.not_found = true
+      err => this.uplService.get_by_id_archive(this.upl_id).subscribe(
+        res => this.found = false
+      )
     );
+  }
+
+  openUpl() {
+    this.uplService.open(this.upl.upl_id).subscribe(
+      res => this.upl = res
+    );
+  }
+
+  closeUpl() {
+    this.uplService.close(this.upl.upl_id).subscribe(
+      res => this.upl = res
+    );
+  }
+
+  mergeBack() {
+    if (this.upl.derived_from) {
+      let parent_upl_id = this.upl.derived_from;
+      this.uplService.merge_back(this.upl.upl_id).subscribe(
+        res => {
+          if (res) {
+            this.upl = res;
+          } else {
+            this.upl_id = parent_upl_id;
+            this.loadUpl();
+          }
+        }
+      );
+    }
   }
 
   ngOnInit() {

@@ -6,7 +6,7 @@ import { ModalComponent } from '../partial/modal/modal.component';
 import { Sku, SkuService } from 'src/app/services/sku.service';
 import { ScannerBridgeService } from 'src/app/services/scanner-bridge.service';
 import { Subscription } from 'rxjs';
-import { Upl } from 'src/app/services/upl.service';
+import { Upl, UplKind, UplService } from 'src/app/services/upl.service';
 import { Product, ProductService } from 'src/app/services/product.service';
 import { Price, PriceService } from 'src/app/services/price.service';
 
@@ -21,9 +21,11 @@ export class PosUplEditComponent implements OnInit {
   @Output() close_event: EventEmitter<void> = new EventEmitter<void>();
   @Output() add_upl_event: EventEmitter<string> = new EventEmitter<string>();
 
+  do_work: boolean = false;
   split_mode: boolean = false;
   scanner_subscription: Subscription | null = null;
   code: string = "";
+  amount: number = 1;
   code_manual: boolean = false;
   code_ok: boolean = false;
   product: Product;
@@ -34,7 +36,8 @@ export class PosUplEditComponent implements OnInit {
     private scannerService: ScannerBridgeService,
     private productService: ProductService,
     private skuService: SkuService,
-    private priceService: PriceService
+    private priceService: PriceService,
+    private uplService: UplService
   ) { }
 
   putInCart() {
@@ -43,7 +46,31 @@ export class PosUplEditComponent implements OnInit {
   }
 
   splitUpl() {
-    console.log('Split UPL');
+    this.uplService.split(this.upl.upl_id, this.code, this.amount).subscribe(
+      res => {
+        this.add_upl_event.emit(this.code);
+        this.close_event.emit();
+      }
+
+    );
+  }
+
+  divideUpl() {
+    this.uplService.divide(this.upl.upl_id, this.code, this.amount).subscribe(
+      res => {
+        this.add_upl_event.emit(this.code);
+        this.close_event.emit();
+      }
+
+    );
+  }
+
+  submit() {
+    if (this.split_mode) {
+      this.splitUpl();
+    } else {
+      this.divideUpl();
+    }
   }
 
   closeForm() {
@@ -59,6 +86,9 @@ export class PosUplEditComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.upl.upl_kind == UplKind.BulkSku) {
+      this.split_mode = true;
+    }
     this.scannerService.scanner_event.subscribe(code => this.code);
     this.productService.get_by_id(this.upl.product_id).subscribe(
       res => this.product = res

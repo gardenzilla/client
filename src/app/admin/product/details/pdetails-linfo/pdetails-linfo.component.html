@@ -1,0 +1,96 @@
+<modal
+    *ngIf="sku_object"
+    [title]="sku_object.display_name"
+    [isActive]="sku"
+    (callbackClose)="exit()"
+>
+    <table
+        class="table is-hoverable"
+        *ngIf="upls"
+    >
+        <thead>
+            <tr>
+                <th>UPL ID</th>
+                <th>Típus</th>
+                <th></th>
+                <th>Darabszám</th>
+                <th>Tartalma</th>
+                <th>Zárolt</th>
+                <th>Lejárati dátum</th>
+                <th *ngIf="display_select">Kiválasztás</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let upl of upls">
+                <td>{{upl.upl_id}}</td>
+                <td>
+                    <span
+                        class="icon"
+                        [ngSwitch]="upl.upl_kind"
+                    >
+                        <i
+                            *ngSwitchCase="'Sku'"
+                            class="fas fa-cube"
+                            title="SKU"
+                        ></i>
+                        <i
+                            *ngSwitchCase="'BulkSku'"
+                            class="fas fa-cubes"
+                            title="Gyüjtő"
+                        ></i>
+                        <i
+                            *ngSwitchCase="'OpenedSku'"
+                            class="fas fa-box-open"
+                            title="Bontott SKU"
+                        ></i>
+                        <i
+                            *ngSwitchCase="'DerivedProduct'"
+                            class="fas fa-box-open"
+                            title="Kimért termék"
+                        ></i>
+                    </span>
+                </td>
+                <td [ngSwitch]="upl.upl_kind">
+                    <span *ngSwitchCase="'Sku'">SKU</span>
+                    <span *ngSwitchCase="'BulkSku'">gyüjtő</span>
+                    <span *ngSwitchCase="'OpenedSku'">bontott</span>
+                    <span *ngSwitchCase="'DerivedProduct'">kimért</span>
+                </td>
+                <td>{{upl.pieces}}</td>
+                <td [ngSwitch]="upl.upl_kind">
+                    <span *ngSwitchCase="'Sku'">
+                        {{upl.sku_divisible_amount}} {{upl.product_unit}}
+                    </span>
+                    <span *ngSwitchCase="'BulkSku'">
+                        {{upl.pieces}} x {{upl.sku_divisible_amount}} {{upl.product_unit}}
+                    </span>
+                    <span *ngSwitchCase="'OpenedSku'">
+                        {{upl.divisible_amount}} {{upl.product_unit}}
+                    </span>
+                    <span *ngSwitchCase="'DerivedProduct'">
+                        {{upl.divisible_amount}} {{upl.product_unit}}
+                    </span>
+                </td>
+                <td>
+                    <span
+                        class="icon"
+                        *ngIf="upl.lock"
+                    >
+                        <i class="fas fa-lock"></i>
+                    </span>
+                </td>
+                <td>
+                    {{upl.best_before ? (upl.best_before | gzDate) : "-"}}
+                </td>
+                <td *ngIf="display_select && (upl.upl_kind == 'BulkSku' || upl.upl_kind == 'OpenedSku' || upl.upl_kind == 'DerivedProduct')">
+                    <button
+                        class="button is-small"
+                        (click)="selectEvent(upl.upl_id)"
+                    >
+                        Kiválaszt
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</modal>

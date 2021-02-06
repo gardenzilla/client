@@ -152,7 +152,7 @@
                             <td>{{item.name}}</td>
                             <td class="is-narrow"></td>
                             <td class="is-narrow">
-                                <a>1/1</a>
+                                <a (click)="openUniqueUpl(item)">1/1</a>
                             </td>
                             <td class="is-narrow">{{item.retail_price_gross | gzHuf}}</td>
                         </tr>
@@ -221,10 +221,6 @@
     </section>
 </ng-template>
 
-<!-- <button (click)="demo1.open()">Demo1</button>
-<button (click)="demo2.open()">Demo2</button>
-<button (click)="demo3.open()">Demo3</button> -->
-
 <modal
     title="Kereső"
     #searchModal
@@ -268,6 +264,8 @@
         <thead>
             <tr>
                 <th>Megnevezés</th>
+                <th>Gyüjtő</th>
+                <th>Bontott</th>
                 <th>Készlet</th>
                 <th>Ár</th>
                 <th></th>
@@ -277,8 +275,34 @@
         <tbody>
             <tr *ngFor="let sku of search_result_sku">
                 <td>{{sku.display_name}}</td>
+                <td>
+                    <div *ngIf="sku_location_info[sku.sku] ? ( sku_location_info[sku.sku]['stocks'][1]['bulk'] >  0) : false">
+                        <span class="icon">
+                            <i
+                                class="fas fa-boxes"
+                                title="gyüjtő"
+                            ></i>
+                        </span>
+                        <span *ngIf="sku_location_info[sku.sku] ? ( sku_location_info[sku.sku]['stocks'][1]['bulk'] >  0) : false">
+                            {{sku_location_info[sku.sku]['stocks'][1]['bulk']}} db
+                        </span>
+                    </div>
+                </td>
+                <td>
+                    <span
+                        class="icon"
+                        *ngIf="sku_location_info[sku.sku] ? ( sku_location_info[sku.sku]['stocks'][1]['opened'] >  0) : false"
+                    >
+                        <i class="fas fa-box-open"></i>
+                    </span>
+                    <span *ngIf="sku_location_info[sku.sku] ? ( sku_location_info[sku.sku]['stocks'][1]['opened'] >  0) : false">
+                        {{sku_location_info[sku.sku]['stocks'][1]['opened']}} db
+                    </span>
+                </td>
                 <td class="is-narrow">
-                    {{sku_location_info[sku.sku] ? sku_location_info[sku.sku]["stocks"][1]["total"] : "-"}} / {{sku_location_info[sku.sku] ? sku_location_info[sku.sku]["stocks"][1]["healthy"] : "-"}}
+                    <a (click)="openUplList(sku.sku, null)">
+                        {{sku_location_info[sku.sku] ? sku_location_info[sku.sku]["stocks"][1]["total"] : "-"}} / {{sku_location_info[sku.sku] ? sku_location_info[sku.sku]["stocks"][1]["healthy"] : "-"}}
+                    </a>
                 </td>
                 <td class="is-narrow">
                     {{search_result_prices[sku.sku] ?  (search_result_prices[sku.sku] | gzHuf) : "-"}}
@@ -333,6 +357,14 @@
         </tbody>
     </table>
 </modal>
+
+<pdetails-linfo
+    [sku]="sku_for_upl_info"
+    [display_filter]="upl_list_filter"
+    [display_select]="true"
+    (close_callback)="closeUplList()"
+    (upl_select_callback)="manageScannerUpl($event)"
+></pdetails-linfo>
 
 <modal
     title="Vásárlás befejezése"
@@ -564,6 +596,37 @@
                         <td *ngIf="upl.kind.Sku">{{upl.kind.Sku.piece}} db</td>
                         <td>
                             {{upl.best_before ? (upl.best_before | gzDate) : "-"}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</modal>
+
+<modal
+    title="UPL adatok"
+    #modalUniqueUpl
+>
+    <div
+        class="columns"
+        *ngIf="unique_upl"
+    >
+        <div class="column is-12">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td>ID</td>
+                        <td>{{unique_upl.upl_id}}</td>
+                    </tr>
+                    <tr>
+                        <td>Név</td>
+                        <td>{{unique_upl.name}}</td>
+                    </tr>
+                    <tr>
+                        <td>Lejárati idő</td>
+                        <td>
+                            {{unique_upl.best_before ? (unique_upl.best_before | gzDate) : "-"}}
                         </td>
                     </tr>
                 </tbody>

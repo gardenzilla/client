@@ -9,7 +9,7 @@ import { Customer, CustomerService } from 'src/app/services/customer/customer.se
 import { ScannerBridgeService } from 'src/app/services/scanner-bridge.service';
 import { Subscription } from 'rxjs';
 import { Price, PriceService } from 'src/app/services/price.service';
-import { LocationInfo, Upl, UplService } from 'src/app/services/upl.service';
+import { LocationInfo, Upl, UplKind, UplService } from 'src/app/services/upl.service';
 import { Product, ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -49,6 +49,12 @@ export class PosDetailsComponent implements OnInit {
 
   sku_location_info: Map<number, LocationInfo> = new Map();
 
+  unique_upl: UplInfoObj | null = null;
+
+  // To display UPLs in detailed
+  sku_for_upl_info: number | null = null;
+  upl_list_filter: string[] | null = null;
+
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
@@ -62,6 +68,16 @@ export class PosDetailsComponent implements OnInit {
     private customerService: CustomerService,
     private uplService: UplService,
   ) { }
+
+  openUplList(sku: number, display_filter: string[]) {
+    this.sku_for_upl_info = null;
+    this.upl_list_filter = display_filter;
+    this.sku_for_upl_info = sku;
+  }
+
+  closeUplList() {
+    this.sku_for_upl_info = null;
+  }
 
   @ViewChild('searchInput') searchInput: ElementRef;
   @ViewChild('searchModal') searchModal: ModalComponent;
@@ -119,6 +135,13 @@ export class PosDetailsComponent implements OnInit {
         }
       });
     }
+  }
+
+  @ViewChild('modalUniqueUpl') modalUniqueUpl: ModalComponent;
+  openUniqueUpl(upl_info_object: UplInfoObj) {
+    this.modalUniqueUpl.open();
+    this.unique_upl = null;
+    this.unique_upl = upl_info_object;
   }
 
   skuInCart(sku: number): boolean {
@@ -217,6 +240,7 @@ export class PosDetailsComponent implements OnInit {
   }
 
   addUpl(upl_id: string) {
+    this.searchModal.close();
     this.cartService.add_upl(this.cart_id, upl_id).subscribe(res => {
       this.cart = res;
       this.loadEditSku();
@@ -262,9 +286,10 @@ export class PosDetailsComponent implements OnInit {
       // First load UPL and check if its a single UPL or Derived Product
       this.uplService.get_by_id(code).subscribe(
         upl => {
-          if (upl.upl_kind["Sku"] || upl.upl_kind["DerivedProduct"]) {
+          if (upl.upl_kind == UplKind.Sku || upl.upl_kind == UplKind.DerivedProduct) {
             this.cartService.add_upl(this.cart_id, code).subscribe(
               res => {
+                this.searchModal.close();
                 this.cart = res;
               },
               err => {

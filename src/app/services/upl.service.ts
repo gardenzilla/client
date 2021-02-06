@@ -10,8 +10,11 @@ export class UplService {
   get_by_id(upl_id: string): Observable<Upl> {
     return this.http.get<Upl>("/upl/" + upl_id);
   }
+  get_bulk(upl_ids: string[]): Observable<Upl[]> {
+    return this.http.post<Upl[]>("/upl/bulk", upl_ids);
+  }
   get_by_id_archive(upl_id: string): Observable<Upl> {
-    return this.http.get<Upl>("/upl/archive/" + upl_id);
+    return this.http.post<Upl>("/upl/archive/", { upl_id: upl_id });
   }
   get_by_sku_and_stock(sku: number, stock_id: number): Observable<string[]> {
     return this.http.post<string[]>("/upl/get_by_sku_stock/", { sku: sku, stock_id: stock_id });
@@ -68,7 +71,7 @@ export class Upl {
   public divisible_amount: number;
   public sku_divisible_amount: number;
   public derived_successors: number[];
-  public derived_from: number;
+  public derived_from: string;
   public is_healthy: boolean;
   public best_before: string;
   public is_depreciated: boolean;
@@ -96,6 +99,8 @@ export class Upl {
 export class StockInfo {
   total: number;
   healthy: number;
+  bulk: number;
+  opened: number;
 }
 
 export class LocationInfo {

@@ -1,5 +1,5 @@
 <modal
-    [title]="upl.upl_kind['BulkSku'] ? 'Gyüjtő termék' : upl.upl_kind['DerivedProduct'] ? 'Kimérhető termék' : '?'"
+    [title]="upl.upl_kind == 'BulkSku' ? 'Gyüjtő termék' : upl.upl_kind == 'OpenedSku' ? 'Kimérhető termék' : '?'"
     #modalDivide
     [isActive]="true"
     (callbackClose)="closeForm()"
@@ -24,7 +24,7 @@
                     </tr>
                     <tr>
                         <td>Típus</td>
-                        <td>..</td>
+                        <td>{{upl.upl_kind}}</td>
                     </tr>
                     <tr>
                         <td>Mennyiség</td>
@@ -34,13 +34,23 @@
             </table>
         </div>
         <div class="column is-7">
-            <p class="title is-4 is-spaced">Gyűjtő termék</p>
-            <p class="subtitle">A gyüjtő tartalma:</p>
-            <p class="title is-4">12 db</p>
-            <div
-                class="field is-grouped"
-                *ngIf="!split_mode"
+            <p class="title is-4 is-spaced">
+                {{upl.upl_kind == 'BulkSku' ? 'Gyüjtő termék' : upl.upl_kind == 'OpenedSku' ? 'Kimérhető termék' : '?'}}
+            </p>
+            <p class="subtitle">A UPL tartalma:</p>
+            <p
+                class="title is-4"
+                *ngIf="upl.upl_kind == 'BulkSku'"
             >
+                {{upl.pieces}} db
+            </p>
+            <p
+                class="title is-4"
+                *ngIf="upl.upl_kind == 'OpenedSku'"
+            >
+                {{upl.divisible_amount}} {{upl.product_unit}}
+            </p>
+            <div class="field is-grouped">
                 <div class="control">
                     <button
                         class="button is-link"
@@ -52,15 +62,27 @@
                 <div class="control">
                     <button
                         class="button"
-                        (click)="split_mode=true"
+                        (click)="do_work=true"
                     >
-                        Megbontás
+                        <ng-container *ngIf="split_mode">Megbontás</ng-container>
+                        <ng-container *ngIf="!split_mode">Kimérés</ng-container>
                     </button>
                 </div>
             </div>
-            <div *ngIf="split_mode">
+            <div *ngIf="do_work">
                 <div class="field">
-                    <label class="label">Leválasztott darabszám</label>
+                    <label
+                        class="label"
+                        *ngIf="split_mode"
+                    >
+                        Leválasztott darabszám
+                    </label>
+                    <label
+                        class="label"
+                        *ngIf="!split_mode"
+                    >
+                        Kimérendő mennyiség ({{upl.product_unit}})
+                    </label>
                 </div>
                 <div class="field is-grouped">
                     <div class="control is-expanded">
@@ -69,13 +91,13 @@
                             type="number"
                             class="input is-danger"
                             placeholder="UPL darabszám"
-                            value="1"
+                            [(ngModel)]="amount"
                         >
                     </div>
                     <div class="control">
                         <button
                             class="button is-success is-outlined"
-                            (click)="input_piece.value = +input_piece.value + 1"
+                            (click)="amount = amount + 1"
                         >
                             +
                         </button>
@@ -83,7 +105,7 @@
                     <div class="control">
                         <button
                             class="button is-danger is-outlined"
-                            (click)="input_piece.value = +input_piece.value - 1"
+                            (click)="amount = amount - 1"
                         >
                             -
                         </button>
@@ -112,11 +134,14 @@
                     </div>
                 </div>
                 <div class="field is-grouped">
-                    <div
-                        class="control"
-                        *ngIf="code_ok"
-                    >
-                        <button class="button is-success">Megbont, és kosárba</button>
+                    <div class="control">
+                        <button
+                            class="button is-success"
+                            (click)="submit()"
+                        >
+                            <ng-container *ngIf="split_mode">Megbont, és kosárba</ng-container>
+                            <ng-container *ngIf="!split_mode">Kimér, és kosárba</ng-container>
+                        </button>
                     </div>
                     <div class="control">
                         <button

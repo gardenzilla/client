@@ -24,6 +24,8 @@ export class ProductDetailsComponent implements OnInit {
   _new_sku: SkuNew = new SkuNew();
   _selected_price_sku_name: string = '';
 
+  sku_for_upl_info: number | null = null;
+
   sku_location_info: Map<number, LocationInfo> = new Map();
 
   constructor(
@@ -34,6 +36,15 @@ export class ProductDetailsComponent implements OnInit {
     private router: Router,
     private uplService: UplService,
   ) {
+  }
+
+  openLocationInfo(sku: number) {
+    this.sku_for_upl_info = null;
+    this.sku_for_upl_info = sku;
+  }
+
+  closeLocationInfo() {
+    this.sku_for_upl_info = null;
   }
 
   submit = (): Observable<any> => {
