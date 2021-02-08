@@ -85,11 +85,11 @@ export class PosUplEditComponent implements OnInit {
     this.close_event.emit();
   }
 
-  ngOnInit() {
+  open() {
     if (this.upl.upl_kind == UplKind.BulkSku) {
       this.split_mode = true;
     }
-    this.scannerService.scanner_event.subscribe(code => this.code);
+    this.scannerService.scanner_event.subscribe(code => this.code = code);
     this.productService.get_by_id(this.upl.product_id).subscribe(
       res => this.product = res
     );
@@ -98,9 +98,17 @@ export class PosUplEditComponent implements OnInit {
     );
   }
 
-  ngOnDestroy() {
+  close() {
     if (this.scanner_subscription) {
       this.scanner_subscription.unsubscribe();
     }
+  }
+
+  ngOnInit() {
+    this.open();
+  }
+
+  ngOnDestroy() {
+    this.close();
   }
 }

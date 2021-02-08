@@ -1,0 +1,177 @@
+<modal
+    title="Vásárlás befejezése"
+    #modalClose
+>
+    <div
+        class="columns"
+        *ngIf="cart"
+    >
+        <div class="column is-5">
+            <p class="subtitle">Fizetés módja</p>
+            <div class="buttons has-addons are-small">
+                <button
+                    class="button"
+                    [ngClass]="{'is-info':cart.payment_kind=='Cash'}"
+                    (click)="cartSetPayment('Cash')"
+                >
+                    Készpénz
+                </button>
+                <button
+                    class="button"
+                    [ngClass]="{'is-info':cart.payment_kind=='Card'}"
+                    (click)="cartSetPayment('Card')"
+                >
+                    Bankkártya
+                </button>
+                <button
+                    class="button"
+                    [ngClass]="{'is-info':cart.payment_kind=='Transfer'}"
+                    (click)="cartSetPayment('Transfer')"
+                >
+                    Átutalás
+                </button>
+            </div>
+            <p class="subtitle">Fizetési adatok</p>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td>Kosár összege</td>
+                        <td>{{cart.total_gross | gzHuf}}</td>
+                    </tr>
+                    <tr>
+                        <td>Fizetendő összesen</td>
+                        <td>{{cart.payable | gzHuf}}</td>
+                    </tr>
+                    <tr class="has-background-success">
+                        <td>Még fizetendő</td>
+                        <td>{{cart.payment_balance | gzHuf}}</td>
+                    </tr>
+                    <tr>
+                        <td>Számla</td>
+                        <td>{{cart.need_invoice ? 'igen': 'nem'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="subtitle is-6">Befizetések</p>
+            <table class="table">
+                <tbody>
+                    <tr *ngFor="let p of cart.payments">
+                        <td>{{p.amount | gzHuf}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div
+            class="column is-5"
+            *ngIf="cart.payment_balance == 0"
+        >
+            <button
+                class="button is-success is-large"
+                (click)="closeCart()"
+            >
+                Kosár lezárása
+            </button>
+        </div>
+        <div
+            class="column is-5"
+            *ngIf="cart.payment_balance != 0"
+        >
+            <div class="buttons has-addons are-small is-centered">
+                <button
+                    class="button"
+                    [ngClass]="{'is-info':payment_mode_quick}"
+                    (click)="payment_mode_quick = true"
+                >
+                    Gyors
+                </button>
+                <button
+                    class="button"
+                    [ngClass]="{'is-info':!payment_mode_quick}"
+                    (click)="payment_mode_quick = false"
+                >
+                    Egyedi
+                </button>
+            </div>
+            <!-- Quick payment -->
+            <div *ngIf="payment_mode_quick">
+                <p class="title is-4">
+                    Fizetendő: {{cart.payment_balance | gzHuf}}
+                </p>
+                <div class="field">
+                    <label class="label">Kapott összeg</label>
+                    <div class="control">
+                        <input
+                            class="input"
+                            type="number"
+                            placeholder="Fizetendő összeg.."
+                            #payment_amount
+                            [(ngModel)]="payment_modal"
+                            (click)="payment_amount.value = ''"
+                        >
+                    </div>
+                </div>
+                <p
+                    *ngIf="cart.payment_kind == 'Cash' && payment_amount.value >= cart.payment_balance"
+                    class="title is-4 has-background-warning"
+                >
+                    Visszajár {{payment_modal != 0 ? ((payment_amount.value - cart.payment_balance) | gzHuf) : ""}}
+                </p>
+                <p *ngIf="cart.payment_kind == 'Cash' && payment_amount.value < cart.payment_balance">
+                    Még fizessen: {{(cart.payment_balance - payment_amount.value) | gzHuf}}
+                </p>
+                <div
+                    class="field"
+                    *ngIf="payment_amount.value >= cart.payment_balance"
+                >
+                    <button
+                        class="button is-success is-large"
+                        (click)="addPayment(cart.payment_kind, cart.payment_balance)"
+                    >
+                        Fizetés
+                    </button>
+                </div>
+            </div>
+            <!-- Detiled payment -->
+            <div *ngIf="!payment_mode_quick">
+                <div class="field">
+                    <div class="control">
+                        <div class="select">
+                            <select
+                                #payment_method
+                                name="pmethod"
+                                [(ngModel)]="payment_method_model"
+                            >
+                                <option
+                                    value="Cash"
+                                    selected
+                                >
+                                    Készpénz
+                                </option>
+                                <option value="Card">Bankkártya</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Kapott összeg</label>
+                    <div class="control">
+                        <input
+                            class="input"
+                            type="number"
+                            placeholder="Fizetendő összeg.."
+                            #payment_amount_detailed
+                        >
+                    </div>
+                </div>
+                <div class="field">
+                    <button
+                        class="button is-success is-large"
+                        (click)="addPayment(payment_method.value, payment_amount_detailed.value)"
+                    >
+                        Összeg befizetése
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</modal>

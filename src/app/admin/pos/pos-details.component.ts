@@ -286,20 +286,24 @@ export class PosDetailsComponent implements OnInit {
       // First load UPL and check if its a single UPL or Derived Product
       this.uplService.get_by_id(code).subscribe(
         upl => {
-          if (upl.upl_kind == UplKind.Sku || upl.upl_kind == UplKind.DerivedProduct) {
-            this.cartService.add_upl(this.cart_id, code).subscribe(
-              res => {
-                this.searchModal.close();
-                this.cart = res;
-              },
-              err => {
-                console.log(err);
-                this.scannerService.sendError();
-              }
-            );
+          if (upl) {
+            if (upl.upl_kind == UplKind.Sku || upl.upl_kind == UplKind.DerivedProduct) {
+              this.cartService.add_upl(this.cart_id, code).subscribe(
+                res => {
+                  this.searchModal.close();
+                  this.cart = res;
+                },
+                err => {
+                  console.log(err);
+                  this.scannerService.sendError();
+                }
+              );
+            } else {
+              // Set UPL to divide or split
+              this.openDivide(upl)
+            }
           } else {
-            // Set UPL to divide or split
-            this.upl_to_divide = upl;
+            this.scannerService.sendError();
           }
         }
       );
@@ -322,18 +326,11 @@ export class PosDetailsComponent implements OnInit {
   }
 
   @ViewChild('modalDivide') modalDivide: ModalComponent;
-  openDivide() {
+  openDivide(upl: Upl) {
     // Reset UPL model
-    this.upl_to_divide = null;
+    this.upl_to_divide = upl;
     // Unsubscribe main scanner event listener
     this.scannerUnsubscribe();
-    // Subscribe divide
-    this.scannerSubscription2 = this.scannerService.scanner_event.subscribe(code => {
-      this.upl_id_to_divide = code;
-      this.loadUplToDivide();
-    });
-    // Open modal
-    this.modalDivide.open();
   }
 
   closeDivide() {
