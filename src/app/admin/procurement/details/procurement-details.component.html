@@ -73,6 +73,7 @@
                                     <th class="is-narrow">Rendelt darabszám</th>
                                     <th class="is-narrow">UPL darabszám</th>
                                     <th class="is-narrow">Várható besz. ár (nettó)</th>
+                                    <th class="is-narrow">Várható besz. ár (összesen nettó)</th>
                                     <th class="is-narrow"></th>
                                 </tr>
                             </thead>
@@ -113,6 +114,9 @@
                                     <td>{{procurement.uplCount(item.sku)}}</td>
                                     <td>{{item.expected_net_price | gzHuf}}</td>
                                     <td>
+                                        {{item.expected_net_price * item.ordered_amount | gzHuf}}
+                                    </td>
+                                    <td>
                                         <button
                                             class="button is-small"
                                             *ngIf="procurement.uplCount(item.sku) == 0"
@@ -135,6 +139,19 @@
                                             </span>
                                         </a>
                                     </td> -->
+                                </tr>
+                                <!-- Display total net value -->
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        {{procurement.getProcurementTotalNetValue() | gzHuf}}
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

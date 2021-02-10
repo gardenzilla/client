@@ -274,6 +274,14 @@ export class ProcurementObject {
       this.procurementService.remove_upl(new RemoveUpl(this.procurement_id, upl_id)).subscribe(res => this.reloadWithData(res));
     }
   }
+  // Get total net value
+  getProcurementTotalNetValue(): number {
+    let res: number = 0;
+    this.procurement.items.forEach(item => {
+      res += (item.ordered_amount * item.expected_net_price);
+    });
+    return res;
+  }
 }
 
 export class NewSkuObject {
