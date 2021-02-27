@@ -386,6 +386,23 @@
                     Átutalás
                 </button>
             </div>
+            <p class="subtitle">Bizonylat típusa</p>
+            <div class="buttons has-addons are-small">
+                <button
+                    class="button"
+                    [ngClass]="{'is-info':!cart.need_invoice}"
+                    (click)="cartSetNeedInvoice(false)"
+                >
+                    Blokk
+                </button>
+                <button
+                    class="button"
+                    [ngClass]="{'is-info':cart.need_invoice}"
+                    (click)="cartSetNeedInvoice(true)"
+                >
+                    Számla
+                </button>
+            </div>
             <p class="subtitle">Fizetési adatok</p>
             <table class="table">
                 <tbody>

@@ -44,6 +44,7 @@ import { PosSearchComponent } from './pos/pos-search/pos-search.component';
 import { PosPaymentComponent } from './pos/pos-payment/pos-payment.component';
 import { PosSplitComponent } from './pos/pos-split/pos-split.component';
 import { PosUplinfoComponent } from './pos/pos-uplinfo/pos-uplinfo.component';
+import { ButtonTestComponent } from './partial/button-test/button-test.component';
 
 @NgModule({
   declarations: [
@@ -86,6 +87,7 @@ import { PosUplinfoComponent } from './pos/pos-uplinfo/pos-uplinfo.component';
     PosPaymentComponent,
     PosSplitComponent,
     PosUplinfoComponent,
+    ButtonTestComponent,
   ],
   imports: [
     ChartsModule,

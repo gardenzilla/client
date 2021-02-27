@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { interval, Observable, of, throwError } from 'rxjs';
+import { catchError, map, mergeMap, take, tap } from 'rxjs/operators';
 import { NewStock, Stock, StockService } from 'src/app/services/stock.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ButtonTestComponent } from '../partial/button-test/button-test.component';
 
 @Component({
   selector: 'app-user',
@@ -12,6 +14,26 @@ export class StockComponent implements OnInit {
   stocks: Stock[] = [];
   model_new_stock: NewStock = new NewStock();
   model_update_stock: Stock = new Stock();
+
+  demo_form = new FormGroup({
+    'name': new FormControl(''),
+    'age': new FormControl('', [
+      Validators.required,
+      Validators.pattern("^[0-9]*$"),
+      Validators.minLength(1),
+    ]),
+    'email': new FormControl('', [
+      Validators.required,
+      Validators.minLength(4)
+    ])
+  });
+
+  get email() { return this.demo_form.get('email') }
+
+
+  submit() {
+    console.log(this.demo_form.value);
+  }
 
   constructor(private stockService: StockService) { }
 
@@ -37,7 +59,17 @@ export class StockComponent implements OnInit {
     );
   }
 
+  demoTitle$: Observable<string>;
+
   ngOnInit() {
     this.stockService.get_all().subscribe((res) => this.stocks = res);
+
+    // Demo
+    this.demoTitle$ = interval(1000).pipe(mergeMap(x => x < 4 ? `${x}` : throwError("too high"))).pipe(catchError(_ => of("?")));
+  }
+
+  @ViewChild('btn') btn: ButtonTestComponent;
+  ngAfterViewInit() {
+    this.btn.afterClicked().subscribe(res => console.log("Clicked! :)"));
   }
 }

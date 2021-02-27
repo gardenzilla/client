@@ -7,10 +7,14 @@ import { CartObj, CartService, ItemObj, UplInfoObj } from 'src/app/services/cart
 import { Sku, SkuService } from 'src/app/services/sku.service';
 import { Customer, CustomerService } from 'src/app/services/customer/customer.service';
 import { ScannerBridgeService } from 'src/app/services/scanner-bridge.service';
-import { Subscription } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { Price, PriceService } from 'src/app/services/price.service';
 import { LocationInfo, Upl, UplKind, UplService } from 'src/app/services/upl.service';
 import { Product, ProductService } from 'src/app/services/product.service';
+import { PrinterBridgeService } from 'src/app/services/printer-bridge.service';
+import { InvoiceService } from 'src/app/services/invoice.service';
+import { delay } from 'rxjs/operators';
+import { PurchaseService } from 'src/app/services/purchase.service';
 
 @Component({
   selector: 'app-user',
@@ -67,6 +71,9 @@ export class PosDetailsComponent implements OnInit {
     private priceService: PriceService,
     private customerService: CustomerService,
     private uplService: UplService,
+    private printerService: PrinterBridgeService,
+    private invoiceService: InvoiceService,
+    private purchaseService: PurchaseService
   ) { }
 
   openUplList(sku: number, display_filter: string[]) {
@@ -114,6 +121,12 @@ export class PosDetailsComponent implements OnInit {
 
   cartSetPayment(to: string) {
     this.cartService.set_payment(this.cart_id, to).subscribe(
+      res => this.cart = res
+    );
+  }
+
+  cartSetNeedInvoice(need_invoice: boolean) {
+    this.cartService.set_document(this.cart_id, need_invoice).subscribe(
       res => this.cart = res
     );
   }
@@ -171,9 +184,41 @@ export class PosDetailsComponent implements OnInit {
     this.cartService.remove_customer(this.cart_id).subscribe(res => this.cart = res);
   }
 
+  tryDownloadInvoice(purchase_id: string) {
+    this.purchaseService.get_by_id(purchase_id).pipe(delay(500)).subscribe(
+      purchase => {
+        this.invoiceService.get_by_id(purchase.invoice_id).pipe(delay(500)).subscribe(
+          res => {
+            if (res.invoice_id) {
+              this.invoiceService.download(res.invoice_id).subscribe(
+                res => {
+                  this.printerService.print_base64(res.pdf_base64);
+                  this.router.navigateByUrl(`/pos`);
+                }
+              )
+            } else {
+              this.tryDownloadInvoice(purchase_id);
+            }
+          },
+          err => this.tryDownloadInvoice(purchase_id)
+        );
+      }
+    );
+  }
+
   closeCart() {
     this.cartService.close(this.cart_id).subscribe(res => {
-      this.router.navigateByUrl(`/pos`);
+      // Print receipt
+      this.purchaseService.download_receipt(this.cart_id).subscribe(
+        res => { console.log(res); this.printerService.print_base64(res.pdf_base64) }
+      );
+
+      // Print invoice if we have one
+      if (this.cart.need_invoice) {
+        this.tryDownloadInvoice(this.cart_id);
+      } else {
+        this.router.navigateByUrl(`/pos`);
+      }
     });
   }
 

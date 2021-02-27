@@ -32,6 +32,72 @@
     </div>
 </section>
 
+<section>
+    <div class="container">
+        <p class="title">{{demoTitle$ | async}}</p>
+        <button-test #btn>Click me!</button-test>
+        <form
+            [formGroup]="demo_form"
+            (ngSubmit)="submit()"
+        >
+
+            <div class="field">
+                <label class="label">Név:</label>
+                <div class="control">
+                    <input
+                        type="text"
+                        class="input"
+                        formControlName="name"
+                    >
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Email:</label>
+                <div class="control">
+                    <input
+                        type="text"
+                        class="input"
+                        formControlName="email"
+                    >
+                </div>
+                <p
+                    class="help is-danger"
+                    *ngIf="email.invalid && (email.dirty || email.touched)"
+                >
+                    <span *ngFor="let error of email.errors | keyvalue">{{error.key}} - {{error.value}}</span>
+                    <span *ngIf="email.errors.required">Ez a mező kötelező!</span>
+                    <span *ngIf="email.errors.minlength">Nem elég hosszú!</span>
+                </p>
+            </div>
+
+            <div class="field">
+                <label class="label">Age:</label>
+                <div class="control">
+                    <input
+                        type="number"
+                        class="input"
+                        formControlName="age"
+                    >
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <button
+                        [disabled]="!demo_form.valid"
+                        type="submit"
+                        class="button"
+                    >
+                        Ok
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</section>
+
 <modal
     #modal_new
     title="Új raktár"

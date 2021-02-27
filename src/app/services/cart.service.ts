@@ -46,6 +46,9 @@ export class CartService {
   add_payment(cart_id: string, kind: string, amount: number): Observable<CartObj> {
     return this.http.put<CartObj>('/cart/add_payment', { cart_id: cart_id, kind: kind, amount: amount });
   }
+  set_document(cart_id: string, need_invoice: boolean): Observable<CartObj> {
+    return this.http.put<CartObj>('/cart/set_document', { cart_id: cart_id, need_invoice: need_invoice });
+  }
   close(cart_id: string): Observable<null> {
     return this.http.put<null>(`/cart/close`, { cart_id: cart_id });
   }
