@@ -39,12 +39,14 @@ import { PurchaseComponent } from './purchase/purchase.component';
 import { GzDatePipe } from '../pipes/gz-date.pipe';
 import { GzDateTimePipe } from '../pipes/gz-datetime.pipe';
 import { GzHufPipe } from '../pipes/gz-huf.pipe';
+import { GzNumberPipe } from '../pipes/gz-number.pipe';
 import { PdetailsLinfoComponent } from './product/details/pdetails-linfo/pdetails-linfo.component';
 import { PosSearchComponent } from './pos/pos-search/pos-search.component';
 import { PosPaymentComponent } from './pos/pos-payment/pos-payment.component';
 import { PosSplitComponent } from './pos/pos-split/pos-split.component';
 import { PosUplinfoComponent } from './pos/pos-uplinfo/pos-uplinfo.component';
 import { ButtonTestComponent } from './partial/button-test/button-test.component';
+import { CommitmentComponent } from './commitment/commitment.component';
 
 @NgModule({
   declarations: [
@@ -79,9 +81,11 @@ import { ButtonTestComponent } from './partial/button-test/button-test.component
     PurchaseComponent,
     SourceComponent,
     UplComponent,
+    CommitmentComponent,
     GzDatePipe,
     GzDateTimePipe,
     GzHufPipe,
+    GzNumberPipe,
     PdetailsLinfoComponent,
     PosSearchComponent,
     PosPaymentComponent,

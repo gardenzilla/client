@@ -25,6 +25,7 @@ import { CustomerListResolverService } from './customer/customer-resolver.servic
 import { UplComponent } from './upl/upl.component';
 import { PurchaseComponent } from './purchase/purchase.component';
 import { PosDetailsComponent } from './pos/pos-details.component';
+import { CommitmentComponent } from './commitment/commitment.component';
 
 const routes: Routes = [
   {
@@ -38,6 +39,13 @@ const routes: Routes = [
       { path: '', component: ProductComponent, data: { title: "Termékek" } },
       { path: 'new', component: ProductNewComponent },
       { path: ':sku', component: ProductDetailsComponent }
+    ]
+  },
+  {
+    path: 'commitment', component: LayoutComponent, canActivateChild: [AuthGuard], children: [
+      { path: '', component: CommitmentComponent },
+      // { path: 'new', component: ProductNewComponent },
+      // { path: ':sku', component: ProductDetailsComponent }
     ]
   },
   {

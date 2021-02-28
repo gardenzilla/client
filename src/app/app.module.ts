@@ -24,6 +24,7 @@ import { ScannerBridgeService } from './services/scanner-bridge.service';
 import { PrinterBridgeService } from './services/printer-bridge.service';
 import { StockService } from './services/stock.service';
 import { CartService } from './services/cart.service';
+import { CommitmentService } from './services/commitment.service';
 import { InvoiceService } from './services/invoice.service';
 import { PurchaseService } from './services/purchase.service';
 import { SourceService } from './services/source.service';
@@ -68,6 +69,7 @@ import { SnackBarService } from './services/snack-bar/snack-bar.service';
     ProcurementService,
     UplService,
     CashService,
+    CommitmentService,
     CartService,
     PurchaseService,
     InvoiceService,

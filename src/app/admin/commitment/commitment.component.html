@@ -1,0 +1,160 @@
+<section class="section">
+    <div class="container">
+        <p class="title">Commitment</p>
+        <div class="level">
+            <div class="level-left">
+                <div class="level-item">
+                    <a
+                        class="button is-rounded"
+                        (click)="modal_new_commitment.open()"
+                    >
+                        <span class="icon">
+                            <i class="fas fa-plus"></i>
+                        </span>
+                        <span>Új commitment</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column is-4">
+                <table class="table is-fullwidth is-hoverable">
+                    <thead>
+                        <tr>
+                            <th>Vásárló neve</th>
+                            <th>Cím</th>
+                            <th>Adószám</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                            style="cursor: pointer;"
+                            class="is-clickable"
+                            *ngFor="let customer of customers_with_commitments"
+                            (click)="loadCustomerCommitment(customer.id)"
+                            [ngClass]="{'is-selected': customer_details && (customer.id == customer_details.customer_id)}"
+                        >
+                            <td>{{customer.name}}</td>
+                            <td>
+                                {{customer.address_zip}}, {{customer.address_location}} {{customer.address_street}}
+                            </td>
+                            <td>{{customer.tax_number || "nincs"}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="column is-7 is-offset-1">
+                <div *ngIf="customer_details; else SelectedCustomerEmpty">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Cél</th>
+                                <th>Kedvezmény mértéke</th>
+                                <th>Érvényes</th>
+                                <th>Egyenleg</th>
+                                <th>Aktív?</th>
+                                <th>Visszavont?</th>
+                                <th>Készítette</th>
+                                <th>Készült</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let c of customer_details.commitments">
+                                <td>{{c.target | gzHuf}}</td>
+                                <td>{{c.discount_percentage}}</td>
+                                <td>{{c.valid_still | gzDateTime}}</td>
+                                <td>{{c.balance}}</td>
+                                <td>{{c.is_active ? "Igen" : "Nem"}}</td>
+                                <td>{{c.is_withdrawn ? "Igen" : "Nem"}}</td>
+                                <td>{{c.created_by}}</td>
+                                <td>{{c.created_at | gzDateTime}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <ng-template #SelectedCustomerEmpty>Nincs vásárló kiválasztva</ng-template>
+            </div>
+        </div>
+    </div>
+</section>
+
+<modal
+    #modal_new_commitment
+    title="Új commitment"
+>
+    <div class="columns">
+        <div class="column is-6">
+            <div class="field">
+                <label class="label">Vásárló keresése</label>
+                <div class="control">
+                    <input
+                        class="input"
+                        type="text"
+                        placeholder="Vásárló neve"
+                        name="customer_name"
+                        autofocus
+                        #customerSearchInput
+                        (keydown.enter)="searchCustomers(customerSearchInput.value)"
+                    >
+                </div>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Név</th>
+                        <th>Lakcím</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        style="cursor: pointer;"
+                        class="is-clickable"
+                        *ngFor="let customer of customer_search_result_list"
+                        (click)="new_commitment_customer_id = customer.id"
+                        [ngClass]="{'is-selected': new_commitment_customer_id && (customer.id == new_commitment_customer_id)}"
+                    >
+                        <td>{{customer.name}}</td>
+                        <td>
+                            {{customer.address_zip}}, {{customer.address_location}} {{customer.address_street}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div
+            class="column is-6"
+            *ngIf="new_commitment_customer_id"
+        >
+            <form
+                [formGroup]="new_commitment_form"
+                (ngSubmit)="addCommitment()"
+            >
+                <div class="field">
+                    <label class="label">Éves cél (HUF)</label>
+                    <div class="control">
+                        <input
+                            class="input"
+                            type="number"
+                            placeholder="1000"
+                            formControlName="target"
+                        >
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Kedvezmény mértéke (%)</label>
+                    <div class="control">
+                        <input
+                            class="input"
+                            type="number"
+                            placeholder="2"
+                            formControlName="discount_percentage"
+                        >
+                    </div>
+                </div>
+                <div class="control">
+                    <button class="button is-primary">Létrehoz</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</modal>
