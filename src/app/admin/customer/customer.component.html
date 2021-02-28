@@ -1,7 +1,7 @@
 <section class="section">
     <div class="container">
         <div class="columns">
-            <div class="column is-12">
+            <div class="column is-5">
                 <p class="title">Vásárlóink</p>
                 <div class="level">
                     <div class="level-left">
@@ -43,42 +43,44 @@
                         </div>
                     </div>
                 </div>
+
                 <ng-container *ngIf="source; else loading">
                     <table class="table is-fullwidth">
                         <thead>
                             <tr>
                                 <th>Név</th>
-                                <th>Email</th>
                                 <th>Cím</th>
                                 <th>Adószám</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let customer of source">
+                            <tr
+                                *ngFor="let customer of source | keyvalue"
+                                style="cursor: pointer;"
+                                (click)="selectCustomer(customer.value)"
+                                [ngClass]="{'is-selected': customer_selected && (customer_selected.id == customer.value.id)}"
+                            >
+                                <td>{{customer.value.name || "-"}}</td>
                                 <td>
-                                    <a [routerLink]="['.', customer.id]">{{customer.name || "-"}}</a>
+                                    {{customer.value.address_zip}} {{customer.value.address_location}}, {{customer.value.address_street}}
                                 </td>
-                                <td>{{customer.email}}</td>
-                                <td>
-                                    {{customer.address_zip}} {{customer.address_location}}, {{customer.address_street}}
-                                </td>
-                                <td>{{customer.tax_number || "-"}}</td>
+                                <td>{{customer.value.tax_number || "-"}}</td>
                             </tr>
                         </tbody>
                     </table>
                     <div class="columns">
                         <div
                             class="column has-text-centered"
-                            *ngIf="source_ids.length > source.length"
+                            *ngIf="source_ids.length > source.size"
                         >
                             <p class="is-size-7">
-                                {{source_ids.length}} / {{source.length}} elem
+                                {{source_ids.length}} / {{source.size}} elem
                             </p>
                             <a
                                 class="button is-info is-outlined is-small"
                                 (click)="load()"
                             >
-                                További {{source_ids.length - source.length > page_count ? page_count : source_ids.length - source.length}} elem betöltése
+                                További {{source_ids.length - source.size > page_count ? page_count : source_ids.length - source.size}} elem betöltése
                             </a>
                         </div>
                     </div>
@@ -86,6 +88,287 @@
                 </ng-container>
                 <ng-template #loading>Loading customers ...</ng-template>
             </div>
+            <div class="column is-6 is-offset-1">
+                <div *ngIf="customer_selected; else no_customer">
+                    <!-- Customer details -->
+                    <div class="card">
+                        <header class="card-header">
+                            <p class="card-header-title">Vásárló adatai</p>
+                            <span class="card-header-icon">
+                                <i
+                                    class="fas fa-edit"
+                                    aria-hidden="true"
+                                ></i>
+                            </span>
+                        </header>
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-content">
+                                    <p class="title is-4 is-spaced">{{customer_selected.name}}</p>
+                                    <p class="subtitle is-6">
+                                        email: {{customer_selected.email || "-"}}, 
+                                        adószám: {{customer_selected.tax_number || "-"}}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="content">
+                                {{customer_selected.address_zip}} {{customer_selected.address_location}}, {{customer_selected.address_street}}
+                                <br>
+                                <time>
+                                    {{customer_selected.date_created | gzDateTime}}
+                                </time>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Loyalty account details -->
+                    <div
+                        class="mt-6"
+                        [ngClass]="{'card has-background-info-light': customer_secelted_loyalty_account, 'card has-background-danger-light': !customer_secelted_loyalty_account}"
+                    >
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-content">
+                                    <p class="title is-4 is-spaced mb-3">Törzsvásárlói fiók</p>
+                                </div>
+                            </div>
+
+                            <div
+                                class="content"
+                                *ngIf="customer_secelted_loyalty_account"
+                            >
+                                <p>
+                                    Fiók azonosító: {{customer_secelted_loyalty_account.account_id}}
+                                </p>
+                                <p>
+                                    Kedvezmény mértéke: {{customer_secelted_loyalty_account.loyalty_level == 'L1' ? "2%" : "4%"}}
+                                </p>
+                                <p>
+                                    Kártya száma: {{customer_secelted_loyalty_account.card_id || "Nincs kártya hozzárendelve"}}
+                                </p>
+                                <p>
+                                    Éves vásárlás bruttó összege: {{customer_secelted_loyalty_account.yearly_gross_turnover | gzHuf}}
+                                </p>
+                                <p>
+                                    Születési idő: {{customer_secelted_loyalty_account.customer_birthdate || "-"}}
+                                </p>
+                            </div>
+
+                            <div
+                                class="content"
+                                *ngIf="!customer_secelted_loyalty_account"
+                            >
+                                <p>
+                                    A vásárló még nem rendelkezik törzsvásárlói fiókkal.
+                                </p>
+                                <p>
+                                    Regisztrálsz neki? Klikk a regisztrációra!
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <footer
+                            class="card-footer"
+                            *ngIf="customer_secelted_loyalty_account"
+                        >
+                            <a
+                                class="card-footer-item"
+                                (click)="modal_add_card.open()"
+                            >
+                                Kártya hozzáadása
+                            </a>
+                            <a
+                                class="card-footer-item"
+                                (click)="modal_set_level.open()"
+                            >
+                                Kedvezmény módosítása
+                            </a>
+                            <a
+                                class="card-footer-item"
+                                (click)="modal_set_birthdate.open()"
+                            >
+                                Születési dátum módosítása
+                            </a>
+                        </footer>
+
+                        <footer
+                            class="card-footer"
+                            *ngIf="!customer_secelted_loyalty_account"
+                        >
+                            <a
+                                class="card-footer-item"
+                                (click)="modal_create_loyalty_account.open()"
+                            >
+                                Fiók létrehozása
+                            </a>
+                        </footer>
+                    </div>
+                </div>
+                <ng-template #no_customer>Nincs vásárló kiválasztva</ng-template>
+            </div>
         </div>
     </div>
 </section>
+
+<modal
+    #modal_create_loyalty_account
+    title="Törzsvásárlói fiók létrehozása"
+>
+    <div
+        class="columns"
+        *ngIf="customer_selected"
+    >
+        <div class="column is-12">
+            <div class="content">
+                Törzsvásárlói kártya létrehozása {{customer_selected.name}} részére!
+            </div>
+            <div class="field">
+                <label class="label">Születési dátum</label>
+                <div class="control">
+                    <input
+                        class="input"
+                        type="text"
+                        placeholder="1988-10-15"
+                        name="birthdate"
+                        #birthdate_new
+                    >
+                </div>
+            </div>
+            <div class="control">
+                <button
+                    class="button is-primary"
+                    (click)="loyaltyCreate(birthdate_new.value)"
+                >
+                    Fiók létrehozása
+                </button>
+            </div>
+        </div>
+    </div>
+</modal>
+
+<modal
+    #modal_add_card
+    title="Törzsvásárlói kártya hozzárendelése"
+>
+    <div
+        class="columns"
+        *ngIf="customer_selected"
+    >
+        <div class="column is-12">
+            <div class="content">
+                Törzsvásárlói kártya
+                <b>hozzárendelése</b>
+                {{customer_selected.name}} részére!
+            </div>
+            <div class="field">
+                <label class="label">Kártya azonosítója</label>
+                <div class="control">
+                    <input
+                        class="input"
+                        type="text"
+                        placeholder="1ab"
+                        name="card_id"
+                        #card_id
+                    >
+                </div>
+            </div>
+            <div class="control">
+                <button
+                    class="button is-primary"
+                    (click)="addCard(card_id.value)"
+                >
+                    Kártya hozzáadása
+                </button>
+            </div>
+        </div>
+    </div>
+</modal>
+
+<modal
+    #modal_set_level
+    title="Törzsvásárlói kártya kedvezmény szint módosítása"
+>
+    <div
+        class="columns"
+        *ngIf="customer_selected && customer_secelted_loyalty_account"
+    >
+        <div class="column is-12">
+            <div class="content">
+                Törzsvásárlói kártya
+                <b>kedvezmény módosítása</b>
+                {{customer_selected.name}} részére!
+            </div>
+            <div class="field">
+                <label class="label">Kedvezmény szint (L1, L2)</label>
+                <div class="control">
+                    <select
+                        name="account_level"
+                        #card_level
+                    >
+                        <option
+                            value="L1"
+                            [selected]="customer_secelted_loyalty_account.loyalty_level=='L1'"
+                        >
+                            2%
+                        </option>
+                        <option
+                            value="L2"
+                            [selected]="customer_secelted_loyalty_account.loyalty_level=='L2'"
+                        >
+                            4%
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="control">
+                <button
+                    class="button is-primary"
+                    (click)="setAccountLevel(card_level.value)"
+                >
+                    Kedvezmény módosítása
+                </button>
+            </div>
+        </div>
+    </div>
+</modal>
+
+<modal
+    #modal_set_birthdate
+    title="Törzsvásárlói kártya születési idő módosítása"
+>
+    <div
+        class="columns"
+        *ngIf="customer_selected && customer_secelted_loyalty_account"
+    >
+        <div class="column is-12">
+            <div class="content">
+                Törzsvásárlói kártya
+                <b>születési idő módosítása</b>
+                {{customer_selected.name}} részére!
+            </div>
+            <div class="field">
+                <label class="label">Születési idő</label>
+                <div class="control">
+                    <input
+                        class="input"
+                        type="text"
+                        placeholder="1988-10-15"
+                        name="birthdate_set"
+                        #card_birthdate_set
+                        [ngModel]="customer_secelted_loyalty_account.customer_birthdate"
+                    >
+                </div>
+            </div>
+            <div class="control">
+                <button
+                    class="button is-primary"
+                    (click)="setAccountBirthdate(card_birthdate_set.value)"
+                >
+                    Születési idő módosítása
+                </button>
+            </div>
+        </div>
+    </div>
+</modal>

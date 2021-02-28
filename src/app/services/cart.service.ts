@@ -49,6 +49,9 @@ export class CartService {
   set_document(cart_id: string, need_invoice: boolean): Observable<CartObj> {
     return this.http.put<CartObj>('/cart/set_document', { cart_id: cart_id, need_invoice: need_invoice });
   }
+  add_loyalty_card(cart_id: string, loyalty_card_id: string): Observable<CartObj> {
+    return this.http.put<CartObj>('/cart/add_loyalty_card', { cart_id: cart_id, loyalty_card_id: loyalty_card_id });
+  }
   close(cart_id: string): Observable<null> {
     return this.http.put<null>(`/cart/close`, { cart_id: cart_id });
   }

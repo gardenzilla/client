@@ -233,6 +233,9 @@ export class PosDetailsComponent implements OnInit {
     } else if (query.charAt(0) == '#') {
       this.search_mode = 'upl';
       this.manageScannerUpl(query.slice(1));
+    } else if (query.charAt(0) == '!') {
+      this.search_mode = 'upl';
+      this.manageScannerUpl(`lc/${query.slice(1)}`);
     } else {
       this.search_mode = 'sku';
       this.searchProduct(query.slice(1));
@@ -330,6 +333,15 @@ export class PosDetailsComponent implements OnInit {
   }
 
   manageScannerUpl(code: string) {
+    // Manage loyalty card
+    if (code.startsWith("lc/")) {
+      let parts: string[] = code.split('/');
+      this.cartService.add_loyalty_card(this.cart.id, parts[1]).subscribe(
+        res => this.cart = res
+      );
+      return false;
+    }
+    // Manage UPL scan
     if (!this.upl_mode_out) {
       // First load UPL and check if its a single UPL or Derived Product
       this.uplService.get_by_id(code).subscribe(
