@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { mergeMap } from 'rxjs/operators';
-import { CommitmentService, CustomerInfo } from 'src/app/services/commitment.service';
+import { CommitmentService, CustomerInfo, PurchaseInfo } from 'src/app/services/commitment.service';
 import { Customer, CustomerService } from 'src/app/services/customer/customer.service';
 import { ModalComponent } from '../partial/modal/modal.component';
 
@@ -20,6 +20,8 @@ export class CommitmentComponent implements OnInit {
   customers_with_commitments: Customer[] = [];
 
   customer_details: CustomerInfo | null = null;
+
+  purchase_info: PurchaseInfo[] = [];
 
   customer_search_result_list: Customer[] = [];
 

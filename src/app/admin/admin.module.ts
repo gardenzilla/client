@@ -39,6 +39,7 @@ import { PurchaseComponent } from './purchase/purchase.component';
 import { GzDatePipe } from '../pipes/gz-date.pipe';
 import { GzDateTimePipe } from '../pipes/gz-datetime.pipe';
 import { GzHufPipe } from '../pipes/gz-huf.pipe';
+import { GzUserPipe } from '../pipes/gz-user.pipe';
 import { GzNumberPipe } from '../pipes/gz-number.pipe';
 import { PdetailsLinfoComponent } from './product/details/pdetails-linfo/pdetails-linfo.component';
 import { PosSearchComponent } from './pos/pos-search/pos-search.component';
@@ -85,6 +86,7 @@ import { CommitmentComponent } from './commitment/commitment.component';
     GzDatePipe,
     GzDateTimePipe,
     GzHufPipe,
+    GzUserPipe,
     GzNumberPipe,
     PdetailsLinfoComponent,
     PosSearchComponent,

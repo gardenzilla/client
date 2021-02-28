@@ -6,9 +6,12 @@
                 <div class="level">
                     <div class="level-left">
                         <div class="level-item">
-                            <a class="button is-rounded" [routerLink]="['new']">
+                            <a
+                                class="button is-rounded"
+                                [routerLink]="['new']"
+                            >
                                 <span class="icon">
-                                <i class="fas fa-plus"></i>
+                                    <i class="fas fa-plus"></i>
                                 </span>
                                 <span>Új vásárló</span>
                             </a>
@@ -17,45 +20,29 @@
                             <!-- <app-filter (filter)="applyFilter($event)"></app-filter> -->
                             <div class="field has-addons">
                                 <div class="control">
-                                    <input #filter class="input" type="text" placeholder="Vásárló keresése" name="filter"
-                                        (keyup.esc)="query=''; find()" (keyup.enter)="find()" [(ngModel)]="query">
+                                    <input
+                                        #filter
+                                        class="input"
+                                        type="text"
+                                        placeholder="Vásárló keresése"
+                                        name="filter"
+                                        (keyup.esc)="query=''; find()"
+                                        (keyup.enter)="find()"
+                                        [(ngModel)]="query"
+                                    >
                                 </div>
                                 <div class="control">
-                                    <a class="button is-info" (click)="find()">
-                                    Keresés
+                                    <a
+                                        class="button is-info"
+                                        (click)="find()"
+                                    >
+                                        Keresés
                                     </a>
                                 </div>
                             </div>
                         </div>
-                        <div class="level-item">
-                            <!-- <div *ngIf="filter">
-                                szűrő:
-                                <span class="tag is-primary is-light">
-                                    {{filterString}}
-                                    <button class="delete is-small" (click)="removeFilter()"></button>
-                                </span>
-                            </div> -->
-                        </div>
                     </div>
                 </div>
-                <!-- <app-table #table [dataSource]="customers" [filter]="filter">
-                    <thead>
-                        <tr>
-                            <th>Név</th>
-                            <th>Email</th>
-                            <th>Cím</th>
-                            <th>Adószám</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let customer of table.display">
-                            <td><a [routerLink]="['.', customer.id]">{{customer.name || "-"}}</a></td>
-                            <td>{{customer.email}}</td>
-                            <td>{{customer.address.zip}} {{customer.address.location}}, {{customer.address.address}}</td>
-                            <td>{{customer.tax_number || "-"}}</td>
-                        </tr>
-                    </tbody>
-                </app-table> -->
                 <ng-container *ngIf="source; else loading">
                     <table class="table is-fullwidth">
                         <thead>
@@ -68,17 +55,31 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let customer of source">
-                                <td><a [routerLink]="['.', customer.id]">{{customer.name || "-"}}</a></td>
+                                <td>
+                                    <a [routerLink]="['.', customer.id]">{{customer.name || "-"}}</a>
+                                </td>
                                 <td>{{customer.email}}</td>
-                                <td>{{customer.address_zip}} {{customer.address_location}}, {{customer.address_street}}</td>
+                                <td>
+                                    {{customer.address_zip}} {{customer.address_location}}, {{customer.address_street}}
+                                </td>
                                 <td>{{customer.tax_number || "-"}}</td>
                             </tr>
                         </tbody>
                     </table>
                     <div class="columns">
-                        <div class="column has-text-centered" *ngIf="source_ids.length > source.length">
-                            <p class="is-size-7">{{source_ids.length}} / {{source.length}} elem</p>
-                            <a class="button is-info is-outlined is-small" (click)="load()">További {{source_ids.length - source.length > page_count ? page_count : source_ids.length - source.length}} elem betöltése</a>
+                        <div
+                            class="column has-text-centered"
+                            *ngIf="source_ids.length > source.length"
+                        >
+                            <p class="is-size-7">
+                                {{source_ids.length}} / {{source.length}} elem
+                            </p>
+                            <a
+                                class="button is-info is-outlined is-small"
+                                (click)="load()"
+                            >
+                                További {{source_ids.length - source.length > page_count ? page_count : source_ids.length - source.length}} elem betöltése
+                            </a>
                         </div>
                     </div>
                     <!-- <pagination [data]="customers" [handleUrl]="false"></pagination> -->

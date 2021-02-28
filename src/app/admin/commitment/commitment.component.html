@@ -52,22 +52,39 @@
                                 <th>Kedvezmény mértéke</th>
                                 <th>Érvényes</th>
                                 <th>Egyenleg</th>
+                                <th>%</th>
                                 <th>Aktív?</th>
                                 <th>Visszavont?</th>
                                 <th>Készítette</th>
                                 <th>Készült</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let c of customer_details.commitments">
+                            <tr
+                                *ngFor="let c of customer_details.commitments"
+                                [ngClass]="{'has-background-info-light': c.is_active}"
+                            >
                                 <td>{{c.target | gzHuf}}</td>
                                 <td>{{c.discount_percentage}}</td>
                                 <td>{{c.valid_still | gzDateTime}}</td>
-                                <td>{{c.balance}}</td>
+                                <td>{{c.balance | gzHuf}}</td>
+                                <td>{{(c.balance / c.target) | percent}}</td>
                                 <td>{{c.is_active ? "Igen" : "Nem"}}</td>
                                 <td>{{c.is_withdrawn ? "Igen" : "Nem"}}</td>
                                 <td>{{c.created_by}}</td>
                                 <td>{{c.created_at | gzDateTime}}</td>
+                                <td>
+                                    <button
+                                        class="button is-small"
+                                        (click)="purchase_info=[]; purchase_info=c.purchase_log; modal_show_puchase_info.open()"
+                                        title="Vásárlások listája"
+                                    >
+                                        <span class="icon is-small">
+                                            <i class="fas fa-list"></i>
+                                        </span>
+                                    </button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -155,6 +172,36 @@
                     <button class="button is-primary">Létrehoz</button>
                 </div>
             </form>
+        </div>
+    </div>
+</modal>
+
+<modal
+    #modal_show_puchase_info
+    title="Vásárlások"
+>
+    <div class="columns">
+        <div class="column is-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Vásárlás azonosító</th>
+                        <th>Nettó</th>
+                        <th>Bruttó</th>
+                        <th>Kedvezmény mértéke (%)</th>
+                        <th>Vásárlás ideje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let p of purchase_info">
+                        <td>{{p.purchase_id}}</td>
+                        <td>{{p.total_net | gzHuf}}</td>
+                        <td>{{p.total_gross | gzHuf}}</td>
+                        <td>{{p.applied_discount}}%</td>
+                        <td>{{p.created_at | gzDateTime}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </modal>

@@ -196,8 +196,11 @@ export class PosDetailsComponent implements OnInit {
                   this.router.navigateByUrl(`/pos`);
                 }
               )
-            } else {
+            } else if (!res.has_error) {
               this.tryDownloadInvoice(purchase_id);
+            } else {
+              alert("Hiba! A számla valami oknál fogva nem készült el!");
+              this.router.navigateByUrl(`/pos`);
             }
           },
           err => this.tryDownloadInvoice(purchase_id)
