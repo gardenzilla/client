@@ -70,6 +70,7 @@
                                     <th>SKU</th>
                                     <th></th>
                                     <th class="is-narrow">Kisker ár (nettó)</th>
+                                    <th class="is-narrow">Haszonkulcs (%)</th>
                                     <th class="is-narrow">Rendelt darabszám</th>
                                     <th class="is-narrow">UPL darabszám</th>
                                     <th class="is-narrow">Várható besz. ár (nettó)</th>
@@ -109,6 +110,17 @@
                                         >
                                             <i class="fas fa-exclamation-triangle"></i>
                                         </span>
+                                    </td>
+                                    <td *ngIf="!procurement.getPrice(item.sku)">..</td>
+                                    <td
+                                        *ngIf="procurement.getPrice(item.sku)"
+                                        [ngClass]="{
+                                        'has-background-danger-dark': (((procurement.getPrice(item.sku).price_net_retail / item.expected_net_price) - 1) < 0.1),
+                                        'has-background-danger': (((procurement.getPrice(item.sku).price_net_retail / item.expected_net_price) - 1) < 0.2),
+                                        'has-background-warning': (((procurement.getPrice(item.sku).price_net_retail / item.expected_net_price) - 1) < 0.3)
+                                    }"
+                                    >
+                                        {{((procurement.getPrice(item.sku).price_net_retail / item.expected_net_price) - 1) | percent}}
                                     </td>
                                     <td>{{item.ordered_amount}}</td>
                                     <td>{{procurement.uplCount(item.sku)}}</td>

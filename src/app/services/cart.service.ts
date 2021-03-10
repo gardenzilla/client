@@ -52,6 +52,12 @@ export class CartService {
   add_loyalty_card(cart_id: string, loyalty_card_id: string): Observable<CartObj> {
     return this.http.put<CartObj>('/cart/add_loyalty_card', { cart_id: cart_id, loyalty_card_id: loyalty_card_id });
   }
+  remove_loyalty_card(cart_id: string): Observable<CartObj> {
+    return this.http.put<CartObj>('/cart/remove_loyalty_card', { cart_id: cart_id });
+  }
+  burn_loyalty_points(cart_id: string, points_to_burn: number): Observable<CartObj> {
+    return this.http.put<CartObj>('/cart/burn_loyalty_points', { cart_id: cart_id, points_to_burn: points_to_burn });
+  }
   close(cart_id: string): Observable<null> {
     return this.http.put<null>(`/cart/close`, { cart_id: cart_id });
   }
@@ -74,13 +80,17 @@ export class CartObj {
     public ancestor: String,
     public id: string,
     public customer: CustomerObj | null,
-    public discount_percentage: number,
+    public commitment_id: string,
+    public commitment_discount_percentage: number,
+    public loyalty_card: LoyaltyCard | null,
     public shopping_list: ItemObj[],
     public upls_sku: UplInfoObj[],
     public upls_unique: UplInfoObj[],
     public total_net: number,
     public total_vat: number,
     public total_gross: number,
+    public commitment_discount_amount_gross: number,
+    public burned_points: LoyaltyTransaction[],
     public need_invoice: boolean,
     public payment_kind: string,
     public payments: PaymentObj[],
@@ -94,6 +104,18 @@ export class CartObj {
     public created_by: number,
     public created_at: string,
   ) { }
+}
+
+export interface LoyaltyTransaction {
+  loyalty_account_id: string,
+  transaction_id: string,
+  burned_points: number,
+}
+
+export interface LoyaltyCard {
+  account_id: string,
+  card_id: string,
+  loyalty_level: string,
 }
 
 export class ItemObj {

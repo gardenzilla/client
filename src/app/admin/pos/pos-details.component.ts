@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { ModalComponent } from '../partial/modal/modal.component';
-import { CartObj, CartService, ItemObj, UplInfoObj } from 'src/app/services/cart.service';
+import { CartObj, CartService, ItemObj, LoyaltyTransaction, UplInfoObj } from 'src/app/services/cart.service';
 import { Sku, SkuService } from 'src/app/services/sku.service';
 import { Customer, CustomerService } from 'src/app/services/customer/customer.service';
 import { ScannerBridgeService } from 'src/app/services/scanner-bridge.service';
@@ -15,6 +15,7 @@ import { PrinterBridgeService } from 'src/app/services/printer-bridge.service';
 import { InvoiceService } from 'src/app/services/invoice.service';
 import { delay } from 'rxjs/operators';
 import { PurchaseService } from 'src/app/services/purchase.service';
+import { Account, LoyaltyService, Transaction } from 'src/app/services/loyalty.service';
 
 @Component({
   selector: 'app-user',
@@ -59,6 +60,8 @@ export class PosDetailsComponent implements OnInit {
   sku_for_upl_info: number | null = null;
   upl_list_filter: string[] | null = null;
 
+  loyalty_account: Account | null = null;
+
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
@@ -73,7 +76,8 @@ export class PosDetailsComponent implements OnInit {
     private uplService: UplService,
     private printerService: PrinterBridgeService,
     private invoiceService: InvoiceService,
-    private purchaseService: PurchaseService
+    private purchaseService: PurchaseService,
+    private loyaltyService: LoyaltyService
   ) { }
 
   openUplList(sku: number, display_filter: string[]) {
@@ -113,15 +117,57 @@ export class PosDetailsComponent implements OnInit {
       event.preventDefault();
     }
     this.modalClose.open();
+    // Load loyalty account if has any
+    this.loyalty_account = null;
+    if (this.cart.loyalty_card) {
+      this.loyaltyService.get_by_card_id(this.cart.loyalty_card.card_id).subscribe(
+        res => this.loyalty_account = res
+      );
+    }
     setTimeout(() => {
       this.payment_amount.nativeElement.select();
       this.payment_amount.nativeElement.focus();
     }, 0);
   }
 
+  cartBurnPoints() {
+    if (!confirm("Biztosan felhasználod a pontokat?")) {
+      return false;
+    }
+    if (this.loyalty_account) {
+      if (this.loyalty_account.balance_points > 0) {
+        let points_to_burn = this.cart.payment_balance > this.loyalty_account.balance_points
+          ? this.loyalty_account.balance_points
+          : this.cart.payment_balance;
+        this.cartService.burn_loyalty_points(this.cart.id, points_to_burn).subscribe(
+          res => {
+            this.cart = res;
+            this.loyaltyService.get_by_card_id(this.cart.loyalty_card.card_id).subscribe(
+              res => this.loyalty_account = res
+            );
+          }
+        );
+      }
+    }
+  }
+
+  getBurnedPointsTotal(points: LoyaltyTransaction[]): number {
+    let result = 0;
+    points.forEach(tr => {
+      result += tr.burned_points;
+    });
+    return result;
+  }
+
   cartSetPayment(to: string) {
     this.cartService.set_payment(this.cart_id, to).subscribe(
-      res => this.cart = res
+      res => {
+        this.cart = res;
+        // If payment is transfer, then must need invoice
+        if (to == 'Transfer' && !this.cart.need_invoice) {
+          this.cartSetNeedInvoice(true);
+        }
+      }
     );
   }
 
@@ -177,7 +223,10 @@ export class PosDetailsComponent implements OnInit {
   }
 
   addCustomer(customer_id: number) {
-    this.cartService.add_customer(this.cart_id, customer_id).subscribe(res => this.cart = res);
+    this.cartService.add_customer(this.cart_id, customer_id).subscribe(res => {
+      // Set customer
+      this.cart = res;
+    });
   }
 
   removeCustomer() {
@@ -192,6 +241,8 @@ export class PosDetailsComponent implements OnInit {
             if (res.invoice_id) {
               this.invoiceService.download(res.invoice_id).subscribe(
                 res => {
+                  this.printerService.print_base64(res.pdf_base64);
+                  // Print again
                   this.printerService.print_base64(res.pdf_base64);
                   this.router.navigateByUrl(`/pos`);
                 }
@@ -337,7 +388,15 @@ export class PosDetailsComponent implements OnInit {
     if (code.startsWith("lc/")) {
       let parts: string[] = code.split('/');
       this.cartService.add_loyalty_card(this.cart.id, parts[1]).subscribe(
-        res => this.cart = res
+        res => {
+          this.cart = res;
+          // If no customer, then add customer by loyalty card
+          if (!this.cart.customer) {
+            this.loyaltyService.get_by_card_id(res.loyalty_card.card_id).subscribe(
+              res => this.addCustomer(res.customer_id)
+            );
+          }
+        }
       );
       return false;
     }

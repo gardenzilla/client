@@ -1,9 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { DataTable } from 'src/app/class/data-table';
-import { Customer, CustomerService } from 'src/app/services/customer/customer.service';
-import { ErrorService } from 'src/app/services/error/error.service';
-import { Account, LoyaltyService } from 'src/app/services/loyalty.service';
+import { Customer, CustomerNew, CustomerService } from 'src/app/services/customer/customer.service';
+import { Account, LoyaltyService, Transaction } from 'src/app/services/loyalty.service';
 import { ModalComponent } from '../partial/modal/modal.component';
 
 @Component({
@@ -20,6 +19,30 @@ export class CustomerComponent implements OnInit {
 
   customer_selected: Customer | null = null;
   customer_secelted_loyalty_account: Account | null = null;
+  loyalty_transactions: Transaction[] = [];
+
+  customer_form = new FormGroup({
+    id: new FormControl(''),
+    name: new FormControl(''),
+    email: new FormControl(''),
+    phone: new FormControl(''),
+    tax_number: new FormControl(''),
+    address_zip: new FormControl(''),
+    address_location: new FormControl(''),
+    address_street: new FormControl(''),
+    created_by: new FormControl(''),
+    date_created: new FormControl('')
+  });
+
+  new_customer_form = new FormGroup({
+    name: new FormControl(''),
+    email: new FormControl(''),
+    phone: new FormControl(''),
+    tax_number: new FormControl(''),
+    address_zip: new FormControl(''),
+    address_location: new FormControl(''),
+    address_street: new FormControl(''),
+  });
 
   constructor(
     private route: ActivatedRoute,
@@ -94,6 +117,44 @@ export class CustomerComponent implements OnInit {
         this.customer_secelted_loyalty_account = res;
         this.modalSetBirthdate.close();
       }
+    );
+  }
+
+  setCustomerToEdit(customer: Customer) {
+    this.customer_form.patchValue(customer);
+  }
+
+  @ViewChild('modal_edit_customer') modalEditCustomer: ModalComponent;
+  updateCustomer() {
+    this.customer_service.update_by_id(this.customer_form.value).subscribe(
+      res => {
+        this.source.set(res.id, res);
+        this.customer_selected = res;
+        this.modalEditCustomer.close();
+      }
+    );
+  }
+
+  openNewCustomer() {
+    this.new_customer_form.patchValue(new CustomerNew());
+    this.modalNewCustomer.open();
+  }
+
+  @ViewChild('modal_new_customer') modalNewCustomer: ModalComponent;
+  createCustomer() {
+    this.customer_service.new(this.new_customer_form.value).subscribe(
+      res => {
+        this.source.set(res.id, res);
+        this.customer_selected = res;
+        this.modalNewCustomer.close();
+      }
+    );
+  }
+
+  loadLoyaltyCardTransactions(account_id: string) {
+    this.loyalty_transactions = [];
+    this.loyaltyService.get_transactions(account_id).subscribe(
+      transactions => this.loyalty_transactions = transactions
     );
   }
 

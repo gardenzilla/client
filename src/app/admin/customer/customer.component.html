@@ -8,7 +8,7 @@
                         <div class="level-item">
                             <a
                                 class="button is-rounded"
-                                [routerLink]="['new']"
+                                (click)="openNewCustomer()"
                             >
                                 <span class="icon">
                                     <i class="fas fa-plus"></i>
@@ -94,7 +94,10 @@
                     <div class="card">
                         <header class="card-header">
                             <p class="card-header-title">Vásárló adatai</p>
-                            <span class="card-header-icon">
+                            <span
+                                class="card-header-icon"
+                                (click)="setCustomerToEdit(customer_selected) ;modal_edit_customer.open()"
+                            >
                                 <i
                                     class="fas fa-edit"
                                     aria-hidden="true"
@@ -127,10 +130,44 @@
                         class="mt-6"
                         [ngClass]="{'card has-background-info-light': customer_secelted_loyalty_account, 'card has-background-danger-light': !customer_secelted_loyalty_account}"
                     >
+                        <header class="card-header">
+                            <p class="card-header-title">Törzsvásárlói fiók</p>
+                            <span
+                                *ngIf="customer_secelted_loyalty_account"
+                                class="card-header-icon"
+                                (click)="loadLoyaltyCardTransactions(customer_secelted_loyalty_account.account_id); modal_transactions.open()"
+                            >
+                                <i
+                                    class="fas fa-clipboard-list"
+                                    aria-hidden="true"
+                                ></i>
+                            </span>
+                        </header>
                         <div class="card-content">
                             <div class="media">
                                 <div class="media-content">
-                                    <p class="title is-4 is-spaced mb-3">Törzsvásárlói fiók</p>
+                                    <!-- <div class="level">
+                                        <div class="level-left">
+                                            <div class="level-item">
+                                                <p class="title is-4 is-spaced mb-3">Törzsvásárlói fiók</p>
+                                            </div>
+                                        </div>
+                                        <div class="level-right">
+                                            <div
+                                                class="level-item"
+                                                *ngIf="customer_secelted_loyalty_account"
+                                            >
+                                                <button
+                                                    (click)="loadLoyaltyCardTransactions(customer_secelted_loyalty_account.account_id); modal_transactions.open()"
+                                                    class="button is-inverted"
+                                                >
+                                                    <span class="icon">
+                                                        <i class="fas fa-clipboard-list"></i>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div> -->
                                 </div>
                             </div>
 
@@ -149,6 +186,9 @@
                                 </p>
                                 <p>
                                     Éves vásárlás bruttó összege: {{customer_secelted_loyalty_account.yearly_gross_turnover | gzHuf}}
+                                </p>
+                                <p>
+                                    Egyenleg: {{customer_secelted_loyalty_account.balance_points | gzHuf}}
                                 </p>
                                 <p>
                                     Születési idő: {{customer_secelted_loyalty_account.customer_birthdate || "-"}}
@@ -370,5 +410,245 @@
                 </button>
             </div>
         </div>
+    </div>
+</modal>
+
+<modal
+    #modal_edit_customer
+    title="Vásárló szerkesztése"
+>
+    <div class="content">Vásárlói adatok módosítása.</div>
+
+    <form
+        [formGroup]="customer_form"
+        (ngSubmit)="updateCustomer()"
+    >
+        <div class="columns">
+            <div class="column is-6">
+                <div class="field">
+                    <label class="label">Név</label>
+                    <div class="control">
+                        <input
+                            class="input"
+                            type="text"
+                            placeholder="Vásárló neve"
+                            formControlName="name"
+                        >
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Email</label>
+                    <div class="control">
+                        <input
+                            class="input"
+                            type="email"
+                            placeholder="Vásárló email címe"
+                            formControlName="email"
+                        >
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Telefonszám</label>
+                    <div class="control">
+                        <input
+                            class="input"
+                            type="text"
+                            placeholder="Vásárló telefonszáma"
+                            formControlName="phone"
+                        >
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Adószám</label>
+                    <div class="control">
+                        <input
+                            class="input"
+                            type="text"
+                            placeholder="Vásárló adószáma"
+                            formControlName="tax_number"
+                        >
+                    </div>
+                </div>
+            </div>
+            <div class="column is-6">
+                <div class="field">
+                    <label class="label">Irányítószám</label>
+                    <div class="control">
+                        <input
+                            class="input"
+                            type="text"
+                            placeholder="Irányítószám"
+                            name="zip"
+                            formControlName="address_zip"
+                        >
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Település</label>
+                    <div class="control">
+                        <input
+                            class="input"
+                            type="text"
+                            placeholder="Település neve"
+                            formControlName="address_location"
+                        >
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Utca, házszám</label>
+                    <div class="control">
+                        <input
+                            class="input"
+                            type="text"
+                            placeholder="Utca, házszám"
+                            formControlName="address_street"
+                        >
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <div class="control">
+                <button class="button is-primary">Adatok mentése</button>
+            </div>
+        </div>
+    </form>
+</modal>
+
+<modal
+    #modal_new_customer
+    title="Új vásárló létrehozása"
+>
+    <div class="content">
+        Mielőtt létrehoznánk, ellenőrizzük le, hogy valóban nem létezik még az adott vásárló!
+    </div>
+
+    <form
+        [formGroup]="new_customer_form"
+        (ngSubmit)="createCustomer()"
+    >
+        <div class="columns">
+            <div class="column is-6">
+                <div class="field">
+                    <label class="label">Név</label>
+                    <div class="control">
+                        <input
+                            class="input"
+                            type="text"
+                            placeholder="Vásárló neve"
+                            formControlName="name"
+                        >
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Email</label>
+                    <div class="control">
+                        <input
+                            class="input"
+                            type="email"
+                            placeholder="Vásárló email címe"
+                            formControlName="email"
+                        >
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Telefonszám</label>
+                    <div class="control">
+                        <input
+                            class="input"
+                            type="text"
+                            placeholder="Vásárló telefonszáma"
+                            formControlName="phone"
+                        >
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Adószám</label>
+                    <div class="control">
+                        <input
+                            class="input"
+                            type="text"
+                            placeholder="Vásárló adószáma"
+                            formControlName="tax_number"
+                        >
+                    </div>
+                </div>
+            </div>
+            <div class="column is-6">
+                <div class="field">
+                    <label class="label">Irányítószám</label>
+                    <div class="control">
+                        <input
+                            class="input"
+                            type="text"
+                            placeholder="Irányítószám"
+                            name="zip"
+                            formControlName="address_zip"
+                        >
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Település</label>
+                    <div class="control">
+                        <input
+                            class="input"
+                            type="text"
+                            placeholder="Település neve"
+                            formControlName="address_location"
+                        >
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Utca, házszám</label>
+                    <div class="control">
+                        <input
+                            class="input"
+                            type="text"
+                            placeholder="Utca, házszám"
+                            formControlName="address_street"
+                        >
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <div class="control">
+                <button class="button is-primary">Vásárló létrehozása</button>
+            </div>
+        </div>
+    </form>
+</modal>
+
+<modal
+    #modal_transactions
+    title="Tranzakciók"
+>
+    <div class="container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Vásárlási azonosító</th>
+                    <th>Típus</th>
+                    <th>Pont összeg</th>
+                    <th>Időpont</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr
+                    *ngFor="let tr of loyalty_transactions"
+                    [ngClass]="{
+                        'has-background-info-light': tr.transaction_kind == 'Earn',
+                        'has-background-danger-light': tr.transaction_kind == 'Burn'
+                    }"
+                >
+                    <td>{{tr.purchase_id}}</td>
+                    <td>
+                        {{tr.transaction_kind == 'Earn' ? 'Jóváírt' : 'Felhasznált' }}
+                    </td>
+                    <td>{{tr.amount}}</td>
+                    <td>{{tr.created_at | gzDateTime}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </modal>

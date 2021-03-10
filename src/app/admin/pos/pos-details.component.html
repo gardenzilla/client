@@ -175,8 +175,16 @@
                         </span>
                     </a>
                 </p>
-                <p class="title is-5">Kedvezmény</p>
-                <p class="subtitle is-5 is-spaced">{{cart.discount_percentage}} %</p>
+                <!-- Commitment -->
+                <p class="title is-5">Commitment</p>
+                <p class="subtitle is-5 is-spaced">
+                    {{cart.commitment_discount_percentage ? cart.commitment_discount_percentage + "%" : "-"}}
+                </p>
+                <!-- Loyalty -->
+                <p class="title is-5">Törzsvásárlói kártya</p>
+                <p class="subtitle is-6 is-spaced">
+                    {{cart.loyalty_card ? cart.loyalty_card.loyalty_level == "L1" ? "2%" : "4%" : "-"}}
+                </p>
                 <!-- <p class="title is-5">Számla</p> -->
                 <!-- <p
                     class="subtitle is-5 is-spaced"
@@ -403,6 +411,22 @@
                     Számla
                 </button>
             </div>
+            <div
+                *ngIf="loyalty_account"
+                class="mb-5"
+            >
+                <p class="subtitle mb-3">Törzsvásárlói pontok</p>
+                Beváltható pontok: {{loyalty_account.balance_points}}
+                <br>
+                <button
+                    class="button is-small"
+                    *ngIf="loyalty_account.balance_points > 0"
+                    (click)="cartBurnPoints()"
+                >
+                    Bevált
+                </button>
+            </div>
+
             <p class="subtitle">Fizetési adatok</p>
             <table class="table">
                 <tbody>
@@ -414,6 +438,18 @@
                         <td>Fizetendő összesen</td>
                         <td>{{cart.payable | gzHuf}}</td>
                     </tr>
+                    <tr>
+                        <td>Adott egyedi kedvezmény</td>
+                        <td>
+                            {{cart.commitment_discount_amount_gross | gzHuf}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Beváltott pontok</td>
+                        <td>
+                            {{(cart.loyalty_card ? getBurnedPointsTotal(cart.burned_points) : 0) | gzHuf}}
+                        </td>
+                    </tr>
                     <tr class="has-background-success">
                         <td>Még fizetendő</td>
                         <td>{{cart.payment_balance | gzHuf}}</td>
@@ -424,6 +460,7 @@
                     </tr>
                 </tbody>
             </table>
+
             <p class="subtitle is-6">Befizetések</p>
             <table class="table">
                 <tbody>
@@ -435,8 +472,17 @@
         </div>
         <div
             class="column is-5"
-            *ngIf="cart.payment_balance == 0"
+            *ngIf="(cart.payment_balance == 0 || cart.payment_kind == 'Transfer') && cart.payable > 0"
         >
+            <!-- <div
+                *ngIf="cart.need_invoice"
+                class="mb-3"
+            >
+                <p class="subtitle">Számlázási adatok</p>
+                <p class="subtitle">
+                    Fizetési határidő: {{cart.payment_duedate | gzDate}}
+                </p>
+            </div> -->
             <button
                 class="button is-success is-large"
                 (click)="closeCart()"
@@ -444,9 +490,10 @@
                 Kosár lezárása
             </button>
         </div>
+
         <div
             class="column is-5"
-            *ngIf="cart.payment_balance != 0"
+            *ngIf="cart.payment_balance != 0 && cart.payment_kind != 'Transfer'"
         >
             <div class="buttons has-addons are-small is-centered">
                 <button
@@ -469,37 +516,50 @@
                 <p class="title is-4">
                     Fizetendő: {{cart.payment_balance | gzHuf}}
                 </p>
-                <div class="field">
-                    <label class="label">Kapott összeg</label>
-                    <div class="control">
-                        <input
-                            class="input"
-                            type="number"
-                            placeholder="Fizetendő összeg.."
-                            #payment_amount
-                            [(ngModel)]="payment_modal"
-                            (click)="payment_amount.value = ''"
+                <div *ngIf="cart.payment_kind != 'Card'">
+                    <div class="field">
+                        <label class="label">Kapott összeg</label>
+                        <div class="control">
+                            <input
+                                class="input"
+                                type="number"
+                                placeholder="Fizetendő összeg.."
+                                #payment_amount
+                                [(ngModel)]="payment_modal"
+                                (click)="payment_amount.value = ''"
+                            >
+                        </div>
+                    </div>
+                    <p
+                        *ngIf="cart.payment_kind == 'Cash' && payment_amount.value >= cart.payment_balance"
+                        class="title is-4 has-background-warning"
+                    >
+                        Visszajár {{payment_modal != 0 ? ((payment_amount.value - cart.payment_balance) | gzHuf) : ""}}
+                    </p>
+                    <p *ngIf="cart.payment_kind == 'Cash' && payment_amount.value < cart.payment_balance">
+                        Még fizessen: {{(cart.payment_balance - payment_amount.value) | gzHuf}}
+                    </p>
+                    <div
+                        class="field"
+                        *ngIf="payment_amount.value >= cart.payment_balance"
+                    >
+                        <button
+                            class="button is-success is-large"
+                            (click)="addPayment(cart.payment_kind, cart.payment_balance)"
                         >
+                            Fizetés
+                        </button>
                     </div>
                 </div>
-                <p
-                    *ngIf="cart.payment_kind == 'Cash' && payment_amount.value >= cart.payment_balance"
-                    class="title is-4 has-background-warning"
-                >
-                    Visszajár {{payment_modal != 0 ? ((payment_amount.value - cart.payment_balance) | gzHuf) : ""}}
-                </p>
-                <p *ngIf="cart.payment_kind == 'Cash' && payment_amount.value < cart.payment_balance">
-                    Még fizessen: {{(cart.payment_balance - payment_amount.value) | gzHuf}}
-                </p>
                 <div
                     class="field"
-                    *ngIf="payment_amount.value >= cart.payment_balance"
+                    *ngIf="cart.payment_kind == 'Card'"
                 >
                     <button
                         class="button is-success is-large"
                         (click)="addPayment(cart.payment_kind, cart.payment_balance)"
                     >
-                        Fizetés
+                        Befizetve
                     </button>
                 </div>
             </div>

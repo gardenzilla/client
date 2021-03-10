@@ -47,6 +47,16 @@ export class PurchaseInfoObj {
   ) { }
 }
 
+export interface LoyaltyCard {
+  account_id: string,
+  card_id: string,
+  loyalty_level: string,
+  balance_opening: number,
+  burned_points: number,
+  earned_points: number,
+  balance_closing: number,
+}
+
 export class CustomerObj {
   constructor(
     public id: number,
@@ -87,9 +97,7 @@ export interface IPurchaseObj {
   commitment_id: string,
   commitment_discount_percentage: number,
   commitment_discount_amount_gross: number,
-  loyalty_account_id: string,
-  loyalty_card_id: string,
-  loyalty_level: string,
+  loyalty_card: LoyaltyCard,
   burned_loyalty_points: number,
   upl_info_objects: UplInfoObj[],
   need_invoice: boolean,
