@@ -29,6 +29,6 @@ export class GzDateTimePipe implements PipeTransform {
 }
 
 const todayDistance = (someDate: Date): number => {
-    const today: Date = new Date();
-    return Math.round((today.getTime()-someDate.getTime())/(1000*60*60*24)) * -1;
+    const now: Date = new Date();
+    return Math.round((now.getTime()-someDate.getTime())/(1000*60*60*24)) * -1;
 }

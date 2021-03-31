@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { CashService, NewTransaction, Transaction } from 'src/app/services/cash.service';
 import { Profile } from 'src/app/services/profile/profile.service';
@@ -11,6 +11,8 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./cash.component.scss']
 })
 export class CashComponent implements OnInit {
+
+  dtOptions: DataTables.Settings = {};
 
   transaction_kinds = [{ code: 'Cash', display: 'Készpénz' }, { code: 'Card', display: 'Bankkártya' }];
 
@@ -76,7 +78,10 @@ export class CashComponent implements OnInit {
     let tomorrow = _tomorrow.toISOString().slice(0, 10);
     this.cashService.get_by_date_range(new Date(from).toISOString(), new Date(tomorrow).toISOString()).subscribe(
       res => {
-        this.cashService.get_bulk(res).subscribe(res => this.display_transactions = res);
+        this.cashService.get_bulk(res).subscribe(res => {
+          this.display_transactions = res;
+          this.dtTrigger.next();
+        });
       }
     );
   }
@@ -97,7 +102,18 @@ export class CashComponent implements OnInit {
     );
   }
 
+  dtTrigger: Subject<any> = new Subject<any>();
+  
   ngOnInit(): void {
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      language: {
+        lengthMenu: 'mutat _MENU_ elem',
+        search: 'Keresés'
+      }
+    };
+
     this.loadBalance();
     this.loadTodayTransactions();
     this.loadDisplayTransactions();

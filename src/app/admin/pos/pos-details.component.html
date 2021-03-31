@@ -1,9 +1,6 @@
 <section class="section">
     <div class="container is-fluid is-overlay">
-        <div
-            class="columns"
-            *ngIf="cart; else loading"
-        >
+        <div class="columns" *ngIf="cart; else loading">
             <div class="column is-9">
                 <p class="title is-4 is-inline-block">Kosár</p>
                 <!-- <p class="subtitle is-inline-block ml-4">
@@ -48,39 +45,22 @@
                     </a>
                 </p> -->
                 <p class="subtitle is-inline-block ml-4">
-                    <a
-                        title="Új termék"
-                        (click)="displaySearch()"
-                    >
+                    <a title="Új termék" (click)="displaySearch()">
                         <span class="icon has-text-grey">
-                            <i
-                                class="fas fa-plus"
-                                aria-hidden="true"
-                            ></i>
+                            <i class="fas fa-plus" aria-hidden="true"></i>
                         </span>
                     </a>
                 </p>
                 <p class="subtitle is-inline-block is-pulled-right">
-                    <span
-                        class="mr-4 is-size-6 has-text-danger"
-                        *ngIf="upl_mode_out"
-                    >
+                    <span class="mr-4 is-size-6 has-text-danger" *ngIf="upl_mode_out">
                         Termék
                         eltávolítása
                     </span>
-                    <a
-                        (click)="upl_mode_out = !upl_mode_out"
-                        title="Termékek betétele, vagy eltávolítása"
-                    >
+                    <a (click)="upl_mode_out = !upl_mode_out" title="Termékek betétele, vagy eltávolítása">
                         <span class="icon has-text-grey">
-                            <i
-                                class="fas"
-                                [class.fa-toggle-off]="!upl_mode_out"
-                                [class.has-text-grey]="!upl_mode_out"
-                                [class.fa-toggle-on]="upl_mode_out"
-                                [class.has-text-success]="upl_mode_out"
-                                aria-hidden="true"
-                            ></i>
+                            <i class="fas" [class.fa-toggle-off]="!upl_mode_out" [class.has-text-grey]="!upl_mode_out"
+                                [class.fa-toggle-on]="upl_mode_out" [class.has-text-success]="upl_mode_out"
+                                aria-hidden="true"></i>
                         </span>
                     </a>
                 </p>
@@ -102,16 +82,12 @@
                             <td>{{item.name}}</td>
                             <td class="is-narrow">
                                 <a>
-                                    <span
-                                        class="icon has-text-success"
-                                        *ngIf="item.piece == getUplcountBySku(item.sku)"
-                                    >
+                                    <span class="icon has-text-success"
+                                        *ngIf="item.piece == getUplcountBySku(item.sku)">
                                         <i class="fas fa-check-circle"></i>
                                     </span>
-                                    <span
-                                        class="icon has-text-warning"
-                                        *ngIf="item.piece != getUplcountBySku(item.sku)"
-                                    >
+                                    <span class="icon has-text-warning"
+                                        *ngIf="item.piece != getUplcountBySku(item.sku)">
                                         <i class="fas fa-exclamation-triangle"></i>
                                     </span>
                                 </a>
@@ -125,10 +101,7 @@
                                 {{item.total_retail_price_gross | gzHuf}}
                             </td>
                             <td class="is-narrow">
-                                <button
-                                    class="button is-warning is-small"
-                                    (click)="removeSku(item.sku)"
-                                >
+                                <button class="button is-warning is-small" (click)="removeSku(item.sku)">
                                     Törlés
                                 </button>
                             </td>
@@ -150,28 +123,16 @@
                 <p class="title">{{cart.total_gross | gzHuf}}</p>
                 <p class="subtitle is-spaced">
                     {{cart.total_net | gzHuf}}
-                    <span
-                        class="icon has-text-grey"
-                        (click)="void()"
-                    >
+                    <span class="icon has-text-grey" (click)="void()">
                         <i class="fas fa-info-circle"></i>
                     </span>
                 </p>
                 <p class="title is-5">Vásárló</p>
-                <p
-                    class="subtitle is-5 is-spaced"
-                    *ngIf="cart.customer"
-                >
+                <p class="subtitle is-5 is-spaced" *ngIf="cart.customer">
                     {{cart.customer.name}}
                     <a title="Vásárló törlése">
-                        <span
-                            class="icon has-text-grey is-size-6"
-                            (click)="removeCustomer()"
-                        >
-                            <i
-                                class="fas fa-times"
-                                aria-hidden="true"
-                            ></i>
+                        <span class="icon has-text-grey is-size-6" (click)="removeCustomer()">
+                            <i class="fas fa-times" aria-hidden="true"></i>
                         </span>
                     </a>
                 </p>
@@ -195,10 +156,7 @@
                 <!-- <p class="title is-5" *ngIf="cart.customer">Adószám</p>
                 <p class="subtitle is-5 is-spaced">-</p> -->
                 <div class="buttons are-medium">
-                    <button
-                        class="button is-success is-fullwidth"
-                        (click)="OpenCloseForm()"
-                    >
+                    <button class="button is-success is-fullwidth" (click)="OpenCloseForm()">
                         Lezárás
                     </button>
                     <!-- <button class="button is-danger is-fullwidth is-outlined">Törlés</button> -->
@@ -216,35 +174,21 @@
     </section>
 </ng-template>
 
-<modal
-    title="Kereső"
-    #searchModal
-    [isWide]="'true'"
->
+<modal title="Kereső" #searchModal [isWide]="'true'">
     <div class="columns">
         <div class="column is-2"></div>
         <div class="column is-8">
             <div class="field has-addons">
                 <div class="control is-expanded has-icons-left">
-                    <input
-                        #searchInput
-                        type="text"
-                        class="input"
-                        placeholder="Keresés..."
-                        [(ngModel)]="search_query"
-                        (keydown.enter)="manageSearch()"
-                        (keydown.esc)="search_query = ''; search_result_sku = []"
-                    >
+                    <input #searchInput type="text" class="input" placeholder="Keresés..." [(ngModel)]="search_query"
+                        (keydown.enter)="manageSearch()" (keydown.esc)="search_query = ''; search_result_sku = []">
                     <span class="icon is-small is-left">
                         <!-- <i class="fas fa-box fa-xs" *ngIf="!isSearchUser"></i>
                     <i class="fas fa-user fa-xs" *ngIf="isSearchUser"></i> -->
                     </span>
                 </div>
                 <div class="control">
-                    <a
-                        class="button"
-                        (click)="manageSearch()"
-                    >
+                    <a class="button" (click)="manageSearch()">
                         Keresés
                     </a>
                 </div>
@@ -252,12 +196,10 @@
         </div>
         <div class="column is-2"></div>
     </div>
-    <table
-        class="table is-hoverable is-fullwidth"
-        *ngIf="search_mode=='sku'"
-    >
+    <table class="table is-hoverable is-fullwidth" *ngIf="search_mode=='sku'">
         <thead>
             <tr>
+                <th>Kép</th>
                 <th>Megnevezés</th>
                 <th>Gyüjtő</th>
                 <th>Bontott</th>
@@ -269,62 +211,62 @@
         </thead>
         <tbody>
             <tr *ngFor="let sku of search_result_sku">
+                <td class="is-narrow">
+                    <figure class="image is-48x48" *ngIf="search_result_sku_images[sku.sku]">
+                        <!-- <img src="https://bulma.io/images/placeholders/128x128.png"> -->
+                        <a href="https://static.gardenzilla.hu/sku_images/{{sku.sku}}/sized/xl_{{search_result_sku_images[sku.sku].cover_image_id}}"
+                            target="_blank">
+                            <img
+                                src="https://static.gardenzilla.hu/sku_images/{{sku.sku}}/sized/xs_{{search_result_sku_images[sku.sku].cover_image_id}}">
+                        </a>
+                    </figure>
+                </td>
                 <td>{{sku.display_name}}</td>
                 <td>
-                    <div *ngIf="sku_location_info[sku.sku] ? ( sku_location_info[sku.sku]['stocks'][1]['bulk'] >  0) : false">
+                    <div
+                        *ngIf="sku_location_info[sku.sku] ? ( sku_location_info[sku.sku]['stocks'][1]['bulk'] >  0) : false">
                         <span class="icon">
-                            <i
-                                class="fas fa-boxes"
-                                title="gyüjtő"
-                            ></i>
+                            <i class="fas fa-boxes" title="gyüjtő"></i>
                         </span>
-                        <span *ngIf="sku_location_info[sku.sku] ? ( sku_location_info[sku.sku]['stocks'][1]['bulk'] >  0) : false">
+                        <span
+                            *ngIf="sku_location_info[sku.sku] ? ( sku_location_info[sku.sku]['stocks'][1]['bulk'] >  0) : false">
                             {{sku_location_info[sku.sku]['stocks'][1]['bulk']}} db
                         </span>
                     </div>
                 </td>
                 <td>
-                    <span
-                        class="icon"
-                        *ngIf="sku_location_info[sku.sku] ? ( sku_location_info[sku.sku]['stocks'][1]['opened'] >  0) : false"
-                    >
+                    <span class="icon"
+                        *ngIf="sku_location_info[sku.sku] ? ( sku_location_info[sku.sku]['stocks'][1]['opened'] >  0) : false">
                         <i class="fas fa-box-open"></i>
                     </span>
-                    <span *ngIf="sku_location_info[sku.sku] ? ( sku_location_info[sku.sku]['stocks'][1]['opened'] >  0) : false">
+                    <span
+                        *ngIf="sku_location_info[sku.sku] ? ( sku_location_info[sku.sku]['stocks'][1]['opened'] >  0) : false">
                         {{sku_location_info[sku.sku]['stocks'][1]['opened']}} db
                     </span>
                 </td>
                 <td class="is-narrow">
                     <a (click)="openUplList(sku.sku, null)">
-                        {{sku_location_info[sku.sku] ? sku_location_info[sku.sku]["stocks"][1]["total"] : "-"}} / {{sku_location_info[sku.sku] ? sku_location_info[sku.sku]["stocks"][1]["healthy"] : "-"}}
+                        {{sku_location_info[sku.sku] ? sku_location_info[sku.sku]["stocks"][1]["total"] : "-"}} /
+                        {{sku_location_info[sku.sku] ? sku_location_info[sku.sku]["stocks"][1]["healthy"] : "-"}}
                     </a>
                 </td>
                 <td class="is-narrow">
-                    {{search_result_prices[sku.sku] ?  (search_result_prices[sku.sku] | gzHuf) : "-"}}
+                    {{search_result_prices[sku.sku] ? (search_result_prices[sku.sku] | gzHuf) : "-"}}
                 </td>
                 <td class="is-narrow">
-                    <span
-                        class="icon has-text-grey-light"
-                        *ngIf="skuInCart(sku.sku)"
-                    >
+                    <span class="icon has-text-grey-light" *ngIf="skuInCart(sku.sku)">
                         <i class="fas fa-check-circle"></i>
                     </span>
                 </td>
                 <td class="is-narrow">
-                    <button
-                        class="button is-small"
-                        (click)="addSku(sku.sku)"
-                    >
+                    <button class="button is-small" (click)="addSku(sku.sku)">
                         Kosárba
                     </button>
                 </td>
             </tr>
         </tbody>
     </table>
-    <table
-        class="table is-hoverable is-fullwidth"
-        *ngIf="search_mode=='customer'"
-    >
+    <table class="table is-hoverable is-fullwidth" *ngIf="search_mode=='customer'">
         <thead>
             <tr>
                 <th>Név</th>
@@ -341,10 +283,7 @@
                 </td>
                 <td>{{customer.tax_number || "-"}}</td>
                 <td>
-                    <button
-                        class="button is-small"
-                        (click)="addCustomer(customer.id)"
-                    >
+                    <button class="button is-small" (click)="addCustomer(customer.id)">
                         Hozzáadás
                     </button>
                 </td>
@@ -353,76 +292,41 @@
     </table>
 </modal>
 
-<pdetails-linfo
-    [sku]="sku_for_upl_info"
-    [display_filter]="upl_list_filter"
-    [display_select]="true"
-    (close_callback)="closeUplList()"
-    (upl_select_callback)="manageScannerUpl($event)"
-></pdetails-linfo>
+<pdetails-linfo [sku]="sku_for_upl_info" [display_filter]="upl_list_filter" [display_select]="true"
+    (close_callback)="closeUplList()" (upl_select_callback)="manageScannerUpl($event)"></pdetails-linfo>
 
-<modal
-    title="Vásárlás befejezése"
-    #modalClose
->
-    <div
-        class="columns"
-        *ngIf="cart"
-    >
+<modal title="Vásárlás befejezése" #modalClose>
+    <div class="columns" *ngIf="cart">
         <div class="column is-5">
             <p class="subtitle">Fizetés módja</p>
             <div class="buttons has-addons are-small">
-                <button
-                    class="button"
-                    [ngClass]="{'is-info':cart.payment_kind=='Cash'}"
-                    (click)="cartSetPayment('Cash')"
-                >
+                <button class="button" [ngClass]="{'is-info':cart.payment_kind=='Cash'}"
+                    (click)="cartSetPayment('Cash')">
                     Készpénz
                 </button>
-                <button
-                    class="button"
-                    [ngClass]="{'is-info':cart.payment_kind=='Card'}"
-                    (click)="cartSetPayment('Card')"
-                >
+                <button class="button" [ngClass]="{'is-info':cart.payment_kind=='Card'}"
+                    (click)="cartSetPayment('Card')">
                     Bankkártya
                 </button>
-                <button
-                    class="button"
-                    [ngClass]="{'is-info':cart.payment_kind=='Transfer'}"
-                    (click)="cartSetPayment('Transfer')"
-                >
+                <button class="button" [ngClass]="{'is-info':cart.payment_kind=='Transfer'}"
+                    (click)="cartSetPayment('Transfer')">
                     Átutalás
                 </button>
             </div>
             <p class="subtitle">Bizonylat típusa</p>
             <div class="buttons has-addons are-small">
-                <button
-                    class="button"
-                    [ngClass]="{'is-info':!cart.need_invoice}"
-                    (click)="cartSetNeedInvoice(false)"
-                >
+                <button class="button" [ngClass]="{'is-info':!cart.need_invoice}" (click)="cartSetNeedInvoice(false)">
                     Blokk
                 </button>
-                <button
-                    class="button"
-                    [ngClass]="{'is-info':cart.need_invoice}"
-                    (click)="cartSetNeedInvoice(true)"
-                >
+                <button class="button" [ngClass]="{'is-info':cart.need_invoice}" (click)="cartSetNeedInvoice(true)">
                     Számla
                 </button>
             </div>
-            <div
-                *ngIf="loyalty_account"
-                class="mb-5"
-            >
+            <div *ngIf="loyalty_account" class="mb-5">
                 <p class="subtitle mb-3">Törzsvásárlói pontok</p>
                 Beváltható pontok: {{loyalty_account.balance_points}}
                 <br>
-                <button
-                    class="button is-small"
-                    *ngIf="loyalty_account.balance_points > 0"
-                    (click)="cartBurnPoints()"
-                >
+                <button class="button is-small" *ngIf="loyalty_account.balance_points > 0" (click)="cartBurnPoints()">
                     Bevált
                 </button>
             </div>
@@ -470,10 +374,8 @@
                 </tbody>
             </table>
         </div>
-        <div
-            class="column is-5"
-            *ngIf="(cart.payment_balance == 0 || cart.payment_kind == 'Transfer') && cart.payable > 0"
-        >
+        <div class="column is-5"
+            *ngIf="(cart.payment_balance == 0 || cart.payment_kind == 'Transfer') && cart.payable > 0">
             <!-- <div
                 *ngIf="cart.need_invoice"
                 class="mb-3"
@@ -483,31 +385,17 @@
                     Fizetési határidő: {{cart.payment_duedate | gzDate}}
                 </p>
             </div> -->
-            <button
-                class="button is-success is-large"
-                (click)="closeCart()"
-            >
+            <button class="button is-success is-large" (click)="closeCart()">
                 Kosár lezárása
             </button>
         </div>
 
-        <div
-            class="column is-5"
-            *ngIf="cart.payment_balance != 0 && cart.payment_kind != 'Transfer'"
-        >
+        <div class="column is-5" *ngIf="cart.payment_balance != 0 && cart.payment_kind != 'Transfer'">
             <div class="buttons has-addons are-small is-centered">
-                <button
-                    class="button"
-                    [ngClass]="{'is-info':payment_mode_quick}"
-                    (click)="payment_mode_quick = true"
-                >
+                <button class="button" [ngClass]="{'is-info':payment_mode_quick}" (click)="payment_mode_quick = true">
                     Gyors
                 </button>
-                <button
-                    class="button"
-                    [ngClass]="{'is-info':!payment_mode_quick}"
-                    (click)="payment_mode_quick = false"
-                >
+                <button class="button" [ngClass]="{'is-info':!payment_mode_quick}" (click)="payment_mode_quick = false">
                     Egyedi
                 </button>
             </div>
@@ -520,45 +408,27 @@
                     <div class="field">
                         <label class="label">Kapott összeg</label>
                         <div class="control">
-                            <input
-                                class="input"
-                                type="number"
-                                placeholder="Fizetendő összeg.."
-                                #payment_amount
-                                [(ngModel)]="payment_modal"
-                                (click)="payment_amount.value = ''"
-                            >
+                            <input class="input" type="number" placeholder="Fizetendő összeg.." #payment_amount
+                                [(ngModel)]="payment_modal" (click)="payment_amount.value = ''">
                         </div>
                     </div>
-                    <p
-                        *ngIf="cart.payment_kind == 'Cash' && payment_amount.value >= cart.payment_balance"
-                        class="title is-4 has-background-warning"
-                    >
+                    <p *ngIf="cart.payment_kind == 'Cash' && payment_amount.value >= cart.payment_balance"
+                        class="title is-4 has-background-warning">
                         Visszajár {{payment_modal != 0 ? ((payment_amount.value - cart.payment_balance) | gzHuf) : ""}}
                     </p>
                     <p *ngIf="cart.payment_kind == 'Cash' && payment_amount.value < cart.payment_balance">
                         Még fizessen: {{(cart.payment_balance - payment_amount.value) | gzHuf}}
                     </p>
-                    <div
-                        class="field"
-                        *ngIf="payment_amount.value >= cart.payment_balance"
-                    >
-                        <button
-                            class="button is-success is-large"
-                            (click)="addPayment(cart.payment_kind, cart.payment_balance)"
-                        >
+                    <div class="field" *ngIf="payment_amount.value >= cart.payment_balance">
+                        <button class="button is-success is-large"
+                            (click)="addPayment(cart.payment_kind, cart.payment_balance)">
                             Fizetés
                         </button>
                     </div>
                 </div>
-                <div
-                    class="field"
-                    *ngIf="cart.payment_kind == 'Card'"
-                >
-                    <button
-                        class="button is-success is-large"
-                        (click)="addPayment(cart.payment_kind, cart.payment_balance)"
-                    >
+                <div class="field" *ngIf="cart.payment_kind == 'Card'">
+                    <button class="button is-success is-large"
+                        (click)="addPayment(cart.payment_kind, cart.payment_balance)">
                         Befizetve
                     </button>
                 </div>
@@ -568,15 +438,8 @@
                 <div class="field">
                     <div class="control">
                         <div class="select">
-                            <select
-                                #payment_method
-                                name="pmethod"
-                                [(ngModel)]="payment_method_model"
-                            >
-                                <option
-                                    value="Cash"
-                                    selected
-                                >
+                            <select #payment_method name="pmethod" [(ngModel)]="payment_method_model">
+                                <option value="Cash" selected>
                                     Készpénz
                                 </option>
                                 <option value="Card">Bankkártya</option>
@@ -587,19 +450,12 @@
                 <div class="field">
                     <label class="label">Kapott összeg</label>
                     <div class="control">
-                        <input
-                            class="input"
-                            type="number"
-                            placeholder="Fizetendő összeg.."
-                            #payment_amount_detailed
-                        >
+                        <input class="input" type="number" placeholder="Fizetendő összeg.." #payment_amount_detailed>
                     </div>
                 </div>
                 <div class="field">
-                    <button
-                        class="button is-success is-large"
-                        (click)="addPayment(payment_method.value, payment_amount_detailed.value)"
-                    >
+                    <button class="button is-success is-large"
+                        (click)="addPayment(payment_method.value, payment_amount_detailed.value)">
                         Összeg befizetése
                     </button>
                 </div>
@@ -608,43 +464,26 @@
     </div>
 </modal>
 
-<modal
-    title="SKU nézet"
-    #modalEditSku
->
-    <div
-        class="columns"
-        *ngIf="cart && model_sku_edit"
-    >
+<modal title="SKU nézet" #modalEditSku>
+    <div class="columns" *ngIf="cart && model_sku_edit">
         <div class="column is-4">
             <p class="subtitle">{{model_sku_edit.name}}</p>
             <div class="field">
                 <div class="control">
-                    <input
-                        class="input"
-                        type="number"
-                        placeholder="SKU darabszám"
-                        [(ngModel)]="model_sku_edit.piece"
-                        (keydown.enter)="resetSkuPiece()"
-                    >
+                    <input class="input" type="number" placeholder="SKU darabszám" [(ngModel)]="model_sku_edit.piece"
+                        (keydown.enter)="resetSkuPiece()">
                 </div>
             </div>
             <div class="field">
                 <div class="control">
-                    <button
-                        class="button is-small"
-                        (click)="resetSkuPiece()"
-                    >
+                    <button class="button is-small" (click)="resetSkuPiece()">
                         Darabszám beállítása
                     </button>
                 </div>
             </div>
         </div>
         <div class="column is-8">
-            <table
-                class="table"
-                *ngIf="model_sku_edit"
-            >
+            <table class="table" *ngIf="model_sku_edit">
                 <thead>
                     <tr>
                         <th>UPL ID</th>
@@ -668,14 +507,8 @@
     </div>
 </modal>
 
-<modal
-    title="UPL adatok"
-    #modalUniqueUpl
->
-    <div
-        class="columns"
-        *ngIf="unique_upl"
-    >
+<modal title="UPL adatok" #modalUniqueUpl>
+    <div class="columns" *ngIf="unique_upl">
         <div class="column is-12">
             <table class="table">
                 <tbody>
@@ -699,17 +532,10 @@
     </div>
 </modal>
 
-<upl-edit
-    [upl]="upl_to_divide"
-    (close_event)="closeDivide()"
-    (add_upl_event)="addUpl($event)"
-    *ngIf="upl_to_divide"
-></upl-edit>
+<upl-edit [upl]="upl_to_divide" (close_event)="closeDivide()" (add_upl_event)="addUpl($event)" *ngIf="upl_to_divide">
+</upl-edit>
 
-<modal
-    #uplDetails
-    [title]="'Raktári adatok'"
->
+<modal #uplDetails [title]="'Raktári adatok'">
     <div class="columns is-mobile">
         <div class="column">
             <p class="subtitle is-pulled-left is-text-5">
@@ -758,10 +584,7 @@
                 <td class="is-narrow">250 ml</td>
                 <td class="is-narrow">2021-08-12</td>
                 <td class="is-narrow">
-                    <span
-                        class="icon has-text-grey"
-                        *ngIf="i % 2 != 0"
-                    >
+                    <span class="icon has-text-grey" *ngIf="i % 2 != 0">
                         <i class="fas fa-cut"></i>
                     </span>
                 </td>
@@ -769,11 +592,7 @@
                 <td>
                     <div class="buttons">
                         <!-- <a title="Kosárba" class="button is-small">Kosárba</a> -->
-                        <a
-                            title="Megbont"
-                            class="button is-small"
-                            *ngIf="i % 2 != 0"
-                        >
+                        <a title="Megbont" class="button is-small" *ngIf="i % 2 != 0">
                             Megbont
                         </a>
                     </div>
@@ -792,10 +611,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr
-                *ngFor="let item of [0,1,2,3,4,5]; index as i"
-                [class.has-background-primary]="i % 2 == 0"
-            >
+            <tr *ngFor="let item of [0,1,2,3,4,5]; index as i" [class.has-background-primary]="i % 2 == 0">
                 <td>Nyírtass bolt - {{i}}</td>
                 <td>{{4 * (i % 3)}}</td>
                 <td>{{0}}</td>
@@ -806,10 +622,7 @@
     </table>
 </modal>
 
-<modal
-    #uplsPerSku
-    title="SKU részletek"
->
+<modal #uplsPerSku title="SKU részletek">
     <table class="table">
         <thead>
             <tr>
@@ -826,18 +639,11 @@
     </table>
 </modal>
 
-<modal
-    #cartItemPieceSetter
-    [title]="'Darabszám'"
->
+<modal #cartItemPieceSetter [title]="'Darabszám'">
     <p class="subtitle">Kerti lobseprű</p>
     <div class="field has-addons">
         <div class="control">
-            <input
-                type="text"
-                class="input"
-                value="9"
-            >
+            <input type="text" class="input" value="9">
         </div>
         <div class="control">
             <button class="button">+</button>

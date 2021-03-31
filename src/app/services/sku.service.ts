@@ -33,6 +33,19 @@ export class SkuService {
   }
 }
 
+@Injectable({
+  providedIn: 'root'
+})
+export class SkuImageService {
+  constructor(private http: HttpClient) { }
+  get_by_id(sku: number): Observable<SkuImage> {
+    return this.http.get<SkuImage>("/sku_image/" + sku);
+  }
+  get_bulk(sku_ids: number[]): Observable<SkuCover[]> {
+    return this.http.post<SkuCover[]>(`/sku_image/cover_bulk`, sku_ids);
+  }
+}
+
 export class SkuNew {
   constructor(
     public product_id: number = 0,
@@ -56,4 +69,15 @@ export class Sku {
     public created_at: string = "",
     public created_by: number = 0,
   ) { }
+}
+
+export interface SkuImage {
+  sku: number,
+  cover_image_id: string,
+  image_ids: string[]
+}
+
+export interface SkuCover {
+  sku: number,
+  cover_image_id: string
 }

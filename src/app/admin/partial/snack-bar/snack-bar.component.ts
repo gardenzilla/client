@@ -38,7 +38,7 @@ export class SnackBarComponent implements OnInit {
   text: string;
   // state: string = 'out';
   subscription: Subscription;
-  displaySubscription: number;
+  displaySubscription: any;
   sameCounter: number = 0;
 
   ngOnInit() {

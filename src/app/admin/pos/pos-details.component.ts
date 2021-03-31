@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { ModalComponent } from '../partial/modal/modal.component';
 import { CartObj, CartService, ItemObj, LoyaltyTransaction, UplInfoObj } from 'src/app/services/cart.service';
-import { Sku, SkuService } from 'src/app/services/sku.service';
+import { Sku, SkuCover, SkuImageService, SkuService } from 'src/app/services/sku.service';
 import { Customer, CustomerService } from 'src/app/services/customer/customer.service';
 import { ScannerBridgeService } from 'src/app/services/scanner-bridge.service';
 import { of, Subscription } from 'rxjs';
@@ -30,6 +30,7 @@ export class PosDetailsComponent implements OnInit {
   search_result_sku: Sku[] = [];
   search_result_prices: Map<number, number> = new Map();
   search_result_customer: Customer[] = [];
+  search_result_sku_images: Map<number, SkuCover> = new Map();
 
   upl_mode_out: boolean = false;
 
@@ -69,6 +70,7 @@ export class PosDetailsComponent implements OnInit {
     private title: Title,
     private cartService: CartService,
     private skuService: SkuService,
+    private SkuImageService: SkuImageService,
     private productService: ProductService,
     private scannerService: ScannerBridgeService,
     private priceService: PriceService,
@@ -318,6 +320,9 @@ export class PosDetailsComponent implements OnInit {
         });
         this.uplService.get_location_info_bulk(sku_ids).subscribe(
           res => res.forEach(location_info => this.sku_location_info[location_info.sku] = location_info)
+        );
+        this.SkuImageService.get_bulk(sku_ids).subscribe(
+          res => res.forEach(cover => this.search_result_sku_images[cover.sku] = cover)
         );
       });
     });

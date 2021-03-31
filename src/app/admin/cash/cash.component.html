@@ -3,7 +3,7 @@
         <p class="title">Pénztár</p>
         <div class="columns">
             <div class="column is-8">
-                <table class="table is-fullwidth is-bordered">
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table is-fullwidth is-bordered">
                     <thead>
                         <tr class="has-background-light">
                             <!-- <th>Azonosító</th> -->
@@ -22,7 +22,7 @@
                             [ngClass]="{'has-background-danger-light':item.amount < 0}"
                         >
                             <!-- <td>{{item.transaction_id}}</td> -->
-                            <td>{{item.created_at | gzDateTime}}</td>
+                            <td>{{item.created_at | gzDateTime}} {{item.created_at}}</td>
                             <td>{{item.amount | gzHuf}}</td>
                             <td [ngSwitch]="item.kind">
                                 <span *ngSwitchCase="'Cash'">készpénz</span>

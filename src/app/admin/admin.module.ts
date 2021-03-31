@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ChartsModule } from 'ng2-charts';
+import { DataTablesModule } from "angular-datatables";
 
 import { RoutingModule as AdminRouter } from './routing.module';
 import { LayoutComponent } from './layout/layout.component';
@@ -97,6 +98,7 @@ import { CommitmentComponent } from './commitment/commitment.component';
   ],
   imports: [
     ChartsModule,
+    DataTablesModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

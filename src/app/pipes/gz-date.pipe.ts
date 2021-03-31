@@ -15,10 +15,12 @@ const monthNames = ["január", "február", "március", "április", "május", "j�
 
 @Pipe({ name: 'gzDate' })
 export class GzDatePipe implements PipeTransform {
-    transform(dt: string): string {
+    transform(dt: any): string {
         if (dt.length == 0) return 'Nan';
         let date = new Date(dt);
         switch (todayDistance(date)) {
+            case 2: return 'holnapután';
+            case 1: return 'holnap';
             case 0: return 'ma';
             case -1: return 'tegnap';
             case -2: return 'tegnapelőtt';
