@@ -375,7 +375,7 @@
             </table>
         </div>
         <div class="column is-5"
-            *ngIf="(cart.payment_balance == 0 || cart.payment_kind == 'Transfer') && cart.payable > 0">
+            *ngIf="(cart.payment_kind != 'Transfer' && cart.payment_balance == 0) || cart.payment_kind == 'Transfer'">
             <!-- <div
                 *ngIf="cart.need_invoice"
                 class="mb-3"
