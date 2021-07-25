@@ -1,0 +1,8 @@
+{
+  "/api": {
+    "_target": "http://127.0.0.1:3030",
+    "target": "https://workspace.gardenzilla.hu",
+    "changeOrigin": true,
+    "secure": false
+  }
+}
