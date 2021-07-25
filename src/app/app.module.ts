@@ -24,6 +24,7 @@ import { ProductService } from './services/product.service';
 import { SkuService } from './services/sku.service';
 import { ScannerBridgeService } from './services/scanner-bridge.service';
 import { PrinterBridgeService } from './services/printer-bridge.service';
+import { CashregisterBridgeService } from './services/cashregister-bridge.service';
 import { StockService } from './services/stock.service';
 import { CartService } from './services/cart.service';
 import { CommitmentService } from './services/commitment.service';
@@ -79,6 +80,7 @@ import { SnackBarService } from './services/snack-bar/snack-bar.service';
     PurchaseService,
     InvoiceService,
     PrinterBridgeService,
+    CashregisterBridgeService,
     PriceService,
     ProfileService,
     ErrorService,

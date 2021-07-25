@@ -16,6 +16,7 @@ import { InvoiceService } from 'src/app/services/invoice.service';
 import { delay } from 'rxjs/operators';
 import { PurchaseService } from 'src/app/services/purchase.service';
 import { Account, LoyaltyService, Transaction } from 'src/app/services/loyalty.service';
+import { CashregisterBridgeService } from 'src/app/services/cashregister-bridge.service';
 
 @Component({
   selector: 'app-user',
@@ -77,6 +78,7 @@ export class PosDetailsComponent implements OnInit {
     private customerService: CustomerService,
     private uplService: UplService,
     private printerService: PrinterBridgeService,
+    private cashregisterService: CashregisterBridgeService,
     private invoiceService: InvoiceService,
     private purchaseService: PurchaseService,
     private loyaltyService: LoyaltyService
@@ -273,6 +275,10 @@ export class PosDetailsComponent implements OnInit {
       if (this.cart.need_invoice) {
         this.tryDownloadInvoice(this.cart_id);
       } else {
+        // If we don't need invoice, we must have a receipt
+        // so try to send a print request now
+        this.cashregisterService.print_receipt(this.cart.payable, this.cart.payment_kind == "Cash");
+        // Navigate to POS page
         this.router.navigateByUrl(`/pos`);
       }
     });
