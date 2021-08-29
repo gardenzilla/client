@@ -55,6 +55,9 @@ export class CartService {
   remove_loyalty_card(cart_id: string): Observable<CartObj> {
     return this.http.put<CartObj>('/cart/remove_loyalty_card', { cart_id: cart_id });
   }
+  remove_commitment(cart_id: string): Observable<CartObj> {
+    return this.http.put<CartObj>('/cart/remove_commitment', { cart_id: cart_id });
+  }
   burn_loyalty_points(cart_id: string, points_to_burn: number): Observable<CartObj> {
     return this.http.put<CartObj>('/cart/burn_loyalty_points', { cart_id: cart_id, points_to_burn: points_to_burn });
   }

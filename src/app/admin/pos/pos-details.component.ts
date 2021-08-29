@@ -237,6 +237,14 @@ export class PosDetailsComponent implements OnInit {
     this.cartService.remove_customer(this.cart_id).subscribe(res => this.cart = res);
   }
 
+  removeLoyalty() {
+    this.cartService.remove_loyalty_card(this.cart_id).subscribe(res => this.cart = res);
+  }
+
+  removeCommitment() {
+    this.cartService.remove_commitment(this.cart_id).subscribe(res => this.cart = res);
+  }
+
   tryDownloadInvoice(purchase_id: string) {
     this.purchaseService.get_by_id(purchase_id).pipe(delay(500)).subscribe(
       purchase => {
