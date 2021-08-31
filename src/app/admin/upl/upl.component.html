@@ -6,22 +6,11 @@
                 <div class="level-item">
                     <div class="field has-addons">
                         <div class="control">
-                            <input
-                                #filter
-                                class="input"
-                                type="text"
-                                placeholder="UPL keresése"
-                                name="upl_lookup"
-                                (keyup.esc)="upl=null"
-                                (keyup.enter)="loadUpl()"
-                                [(ngModel)]="upl_id"
-                            >
+                            <input #filter class="input" type="text" placeholder="UPL keresése" name="upl_lookup"
+                                (keyup.esc)="upl=null" (keyup.enter)="loadUpl()" [(ngModel)]="upl_id">
                         </div>
                         <div class="control">
-                            <a
-                                class="button is-info"
-                                (click)="loadUpl()"
-                            >
+                            <a class="button is-info" (click)="loadUpl()">
                                 Keresés
                             </a>
                         </div>
@@ -31,18 +20,12 @@
         </div>
     </div>
     <div class="container">
-        <p
-            class="content"
-            *ngIf="!found"
-        >
+        <p class="content" *ngIf="!found">
             A megadott UPL nem található
         </p>
         <div class="columns">
             <div class="column is-4">
-                <table
-                    class="table is-striped"
-                    *ngIf="upl"
-                >
+                <table class="table is-striped" *ngIf="upl">
                     <tbody>
                         <tr>
                             <td>UPL ID</td>
@@ -86,7 +69,7 @@
                                 {{upl.divisible_amount}} {{upl.product_unit}}
                             </td>
                         </tr>
-                        <tr>
+                        <tr class="has-background-warning">
                             <td>Kisker ár (bruttó)</td>
                             <td>
                                 {{price ? (price.price_gross_retail | gzHuf) : '-'}}
@@ -113,7 +96,9 @@
                         <tr>
                             <td>Típus</td>
                             <td>
-                                {{upl.upl_kind == 'Sku' ? "normál UPL" : upl.upl_kind == 'BulkSku' ? "gyüjtő UPL" : upl.upl_kind == 'OpenedSku' ? "bontott termék" : upl.upl_kind == 'DerivedProduct' ? "kimért termék" : "?"}}
+                                {{upl.upl_kind == 'Sku' ? "normál UPL" : upl.upl_kind == 'BulkSku' ? "gyüjtő UPL" :
+                                upl.upl_kind == 'OpenedSku' ? "bontott termék" : upl.upl_kind == 'DerivedProduct' ?
+                                "kimért termék" : "?"}}
                             </td>
                         </tr>
                         <tr>
@@ -177,30 +162,15 @@
                     </tbody>
                 </table>
             </div>
-            <div
-                class="column is-8"
-                *ngIf="upl && upl ? !upl.is_archived : false"
-            >
+            <div class="column is-8" *ngIf="upl && upl ? !upl.is_archived : false">
                 <p class="subtitle">Vezérlőpult</p>
-                <button
-                    class="button"
-                    *ngIf="upl.is_divisible && upl.upl_kind == 'Sku'"
-                    (click)="openUpl()"
-                >
+                <button class="button" *ngIf="upl.is_divisible && upl.upl_kind == 'Sku'" (click)="openUpl()">
                     Megbont
                 </button>
-                <button
-                    class="button"
-                    *ngIf="upl.upl_kind == 'OpenedSku'"
-                    (click)="closeUpl()"
-                >
+                <button class="button" *ngIf="upl.upl_kind == 'OpenedSku'" (click)="closeUpl()">
                     Visszazár
                 </button>
-                <button
-                    class="button"
-                    *ngIf="upl.upl_kind == 'DerivedProduct'"
-                    (click)="mergeBack()"
-                >
+                <button class="button" *ngIf="upl.upl_kind == 'DerivedProduct'" (click)="mergeBack()">
                     Visszatevés
                 </button>
             </div>
