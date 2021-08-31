@@ -142,7 +142,7 @@ export class PosDetailsComponent implements OnInit {
       if (this.loyalty_account.balance_points > 0) {
         let points_to_burn = this.cart.payment_balance > this.loyalty_account.balance_points
           ? this.loyalty_account.balance_points
-          : this.cart.payment_balance;
+          : this.cart.payment_balance - 1; // TODO! Check this; should be implemented at API side
         this.cartService.burn_loyalty_points(this.cart.id, points_to_burn).subscribe(
           res => {
             this.cart = res;
