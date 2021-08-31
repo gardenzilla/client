@@ -69,7 +69,7 @@
                                 {{upl.divisible_amount}} {{upl.product_unit}}
                             </td>
                         </tr>
-                        <tr class="has-background-warning">
+                        <tr>
                             <td>Kisker ár (bruttó)</td>
                             <td>
                                 {{price ? (price.price_gross_retail | gzHuf) : '-'}}
@@ -137,7 +137,7 @@
                             <td>Nettó ár</td>
                             <td>{{upl.price_net | gzHuf}}</td>
                         </tr>
-                        <tr>
+                        <tr class="has-background-warning">
                             <td>Bruttó ár</td>
                             <td>{{upl.price_gross | gzHuf}}</td>
                         </tr>
